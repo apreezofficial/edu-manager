@@ -37,6 +37,9 @@ if (APP_ENV === "development") {
     ini_set("display_errors", 0);
     error_reporting(0);
 }
+header('Access-Control-Allow-Origin: *');
+header('Access-Control-Allow-Methods: GET, OPTIONS');
+header('Access-Control-Allow-Headers: Content-Type');
 
 // ── Shared DB connection factory ─────────────────────────────
 // Every PHP file calls get_db() instead of repeating the PDO block

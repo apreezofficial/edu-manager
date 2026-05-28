@@ -169,7 +169,7 @@ function StudentPortal({ results, loading, onBack }: { results: ResultRecord[]; 
     setError("")
     
     // Fetch results for this specific admission number
-    fetch(`/get_results?adm=${encodeURIComponent(admNo.trim())}`)
+    fetch(`https://backenddd-eduu.gt.tc/get_results.php?adm=${encodeURIComponent(admNo.trim())}&i=1`)
         .then(r => r.json())
         .then(data => {
           const fetched = Array.isArray(data) ? data : []
