@@ -1,10 +1,10 @@
 import { NextResponse } from 'next/server'
-import axios from 'axios'
+import axios from '../../../utils/axiosInstance'
 
 export async function POST(request: Request) {
   try {
     const body = await request.json()
-    const response = await axios.post('http://localhost/edu/backend/save_result.php', body)
+    const response = await axios.post('/save_result.php', body)
     return NextResponse.json(response.data)
   } catch (error: any) {
     console.error('API Route Error:', {

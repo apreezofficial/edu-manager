@@ -1,0 +1,35 @@
+[
+  {
+    "id": "1",
+    "student": "Ada Lovelace",
+    "admissionNumber": "DKS/2024/001",
+    "classLevel": "Primary 1",
+    "term": "First Term",
+    "subject": "Mathematics",
+    "score": "95",
+    "remarks": "Excellent",
+    "date": "2024-09-01"
+  },
+  {
+    "id": "2",
+    "student": "Boris Khan",
+    "admissionNumber": "DKS/2024/002",
+    "classLevel": "Primary 2",
+    "term": "First Term",
+    "subject": "Science",
+    "score": "88",
+    "remarks": "Very Good",
+    "date": "2024-09-02"
+  },
+  {
+    "id": "3",
+    "student": "Chloe Ng",
+    "admissionNumber": "DKS/2024/003",
+    "classLevel": "Primary 3",
+    "term": "First Term",
+    "subject": "English",
+    "score": "92",
+    "remarks": "Excellent",
+    "date": "2024-09-03"
+  }
+]
