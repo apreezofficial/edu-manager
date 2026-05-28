@@ -1,4 +1,5 @@
 "use client"
+import React from "react";
 import { useState } from "react"
 import Link from "next/link"
 
@@ -304,10 +305,10 @@ export default function Header() {
           <span className="dk-topbar-divider">|</span>
           <Link href="/portal">Portal Login</Link>
           {LEGAL_LINKS.map((l) => (
-            <>
-              <span className="dk-topbar-divider" key={l.href + "-div"}>|</span>
-              <Link key={l.href} href={l.href}>{l.label}</Link>
-            </>
+            <React.Fragment key={l.href}>
+              <span className="dk-topbar-divider">|</span>
+              <Link href={l.href}>{l.label}</Link>
+            </React.Fragment>
           ))}
         </div>
 

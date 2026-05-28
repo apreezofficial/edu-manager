@@ -187,12 +187,12 @@ function StudentPortal({ results, loading, onBack }: { results: ResultRecord[]; 
   }
 
   const myResults = useMemo(() =>
-(results ?? []).filter(r =>
+    (Array.isArray(results) ? results : []).filter(r =>
       r.admissionNumber.toLowerCase() === admNo.trim().toLowerCase() &&
       (!filterTerm || r.term === filterTerm)
-), [results, admNo, filterTerm])
+    ), [results, admNo, filterTerm])
 
-  const myInfo = results.find(r => r.admissionNumber.toLowerCase() === admNo.trim().toLowerCase())
+  const myInfo = (Array.isArray(results) ? results : []).find(r => r.admissionNumber.toLowerCase() === admNo.trim().toLowerCase())
   const avgScore = myResults.length ? (myResults.reduce((s, r) => s + (parseFloat(r.score) || 0), 0) / myResults.length).toFixed(1) : "—"
   const bestSubject = myResults.length ? [...myResults].sort((a, b) => parseFloat(b.score) - parseFloat(a.score))[0] : null
 
