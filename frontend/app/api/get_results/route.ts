@@ -1,17 +1,13 @@
 import { NextResponse, NextRequest } from 'next/server'
-import axios from 'axios'
+import axios from '../../../utils/axiosInstance'
 
 export async function GET(request: NextRequest) {
   try {
     const searchParams = request.nextUrl.searchParams
     const adm = searchParams.get('adm')
+    const body = await request.json()
     
-    let url = 'http://localhost/edu/backend/get_results.php'
-    if (adm) {
-      url += `?adm=${encodeURIComponent(adm)}`
-    }
-    
-    const response = await axios.get(url)
+    const response = await axios.post('/backend/save_result.php', body)
     return NextResponse.json(response.data)
   } catch (error: any) {
     console.error('API Route Error:', {

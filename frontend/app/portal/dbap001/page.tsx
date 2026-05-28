@@ -33,7 +33,7 @@ export default function StudentResultPage() {
 
   // Load existing results
   useEffect(() => {
-    fetch('/backend/get_results.php')
+    fetch('https://backenddd-eduu.gt.tc/backend/get_results.php')
       .then(res => res.json())
       .then(data => setResults(data as ResultRecord[]))
       .catch(() => setResults([]))
@@ -65,12 +65,12 @@ export default function StudentResultPage() {
       remarks: form.remarks.trim() || "-",
       date: new Date().toLocaleDateString(),
     }
-    await fetch('/backend/save_result.php', {
+    await fetch('https://backenddd-eduu.gt.tc/backend/save_result.php', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify(newResult),
     })
-    const refreshed = await fetch('/backend/get_results.php').then(r => r.json())
+    const refreshed = await fetch('https://backenddd-eduu.gt.tc/backend/get_results.php').then(r => r.json())
     setResults(refreshed)
     setForm({ student: "", classLevel: "Primary 1", term: "First Term", subject: "", score: "", remarks: "" })
   }
