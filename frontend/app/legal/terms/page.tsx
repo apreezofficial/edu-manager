@@ -1,6 +1,6 @@
-"use client"
-import { useEffect, useRef, useState } from "react"
-import Link from "next/link"
+"use client";
+import { useEffect, useRef, useState } from "react";
+import Link from "next/link";
 
 function useReveal() {
   const ref = useRef<HTMLDivElement>(null)
@@ -120,67 +120,7 @@ const PRIVACY_SECTIONS = [
     paragraphs: ["You have the right to access, correct, or request deletion of your personal information at any time. To exercise these rights, please contact us using the details below."],
     bullets: ["Access the data we hold about you", "Request correction of inaccurate data", "Request deletion of your data", "Withdraw consent at any time"],
   },
-  {
-    id: "cookies", title: "Cookies", num: "06",
-    paragraphs: ["Our website uses cookies to improve your browsing experience. You may disable cookies through your browser settings. Some features of the site may not function correctly without cookies."],
-    bullets: [],
-  },
-  {
-    id: "changes", title: "Changes to This Policy", num: "07",
-    paragraphs: ["We may update this Privacy Policy from time to time. We will notify families of significant changes via the school notice board and our website. Continued use of the website after changes constitutes acceptance."],
-    bullets: [],
-  },
-]
-
-export function PrivacyPage() {
-  return (
-    <>
-      <style>{LEGAL_STYLES}</style>
-      <main>
-        <section className="lg-hero" style={{ background: "linear-gradient(145deg, #534AB7 0%, #26215C 100%)" }}>
-          <div className="lg-hero-badge">🔒 Legal</div>
-          <h1>Privacy Policy</h1>
-          <p>How Delightsome Kids School collects, uses, and protects your personal information.</p>
-        </section>
-
-        <div className="lg-layout">
-          {/* TOC */}
-          <aside className="lg-toc">
-            <p className="lg-toc-title">📋 On this page</p>
-            {PRIVACY_SECTIONS.map(s => <a key={s.id} href={`#${s.id}`}>{s.num}. {s.title}</a>)}
-          </aside>
-
-          {/* Content */}
-          <article className="lg-content">
-            <p className="lg-updated">Last updated: <span>January 1, 2026</span></p>
-
-            {PRIVACY_SECTIONS.map((s, i) => (
-              <Reveal key={s.id} delay={i * 50}>
-                <div className="lg-section" id={s.id}>
-                  <p className="lg-section-num">{s.num}</p>
-                  <h2>{s.title}</h2>
-                  {s.paragraphs.map((p, j) => <p key={j}>{p}</p>)}
-                  {s.bullets.length > 0 && (
-                    <ul>{s.bullets.map(b => <li key={b}>{b}</li>)}</ul>
-                  )}
-                </div>
-                {i < PRIVACY_SECTIONS.length - 1 && <hr className="lg-section-divider" />}
-              </Reveal>
-            ))}
-
-            <Reveal>
-              <div className="lg-contact-box">
-                <h3>🔒 Questions about your privacy?</h3>
-                <p>If you have any questions about this Privacy Policy or how we handle your data, please don't hesitate to reach out.</p>
-                <Link href="/legal/contact" className="lg-contact-btn">📧 Contact Us</Link>
-              </div>
-            </Reveal>
-          </article>
-        </div>
-      </main>
-    </>
-  )
-}
+];
 
 /* ══════════════════════════════════════════
    TERMS PAGE
