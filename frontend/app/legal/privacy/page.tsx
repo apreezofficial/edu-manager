@@ -1,4 +1,4 @@
-"use client"
+
 import { useEffect, useRef, useState } from "react"
 import Link from "next/link"
 
@@ -132,7 +132,7 @@ const PRIVACY_SECTIONS = [
   },
 ]
 
-export function PrivacyPage() {
+export default function PrivacyPage() {
   return (
     <>
       <style>{LEGAL_STYLES}</style>
@@ -180,102 +180,8 @@ export function PrivacyPage() {
       </main>
     </>
   )
-}
-
-/* ══════════════════════════════════════════
-   TERMS PAGE
-══════════════════════════════════════════ */
-const TERMS_SECTIONS = [
-  {
-    id: "acceptance", title: "Acceptance of Terms", num: "01",
-    paragraphs: ["By accessing or using the Delightsome Kids School website, you agree to be bound by these Terms of Use. If you do not agree with any part of these terms, please do not use our website."],
-    bullets: [],
-  },
-  {
-    id: "use", title: "Permitted Use", num: "02",
-    paragraphs: ["This website is provided for informational purposes relating to Delightsome Kids School. You may use this site to learn about our programmes, contact us, and access school updates."],
-    bullets: ["Do not reproduce or redistribute our content without written permission", "Do not use the site for any unlawful or fraudulent purpose", "Do not attempt to gain unauthorised access to any part of the website", "Do not post or transmit harmful, offensive, or misleading content"],
-  },
-  {
-    id: "ip", title: "Intellectual Property", num: "03",
-    paragraphs: ["All content on this website — including text, images, logos, and design — is the property of Delightsome Kids School and is protected by applicable intellectual property laws. Unauthorised use is prohibited."],
-    bullets: [],
-  },
-  {
-    id: "accuracy", title: "Accuracy of Information", num: "04",
-    paragraphs: ["We strive to keep the information on our website accurate and up to date. However, we make no warranties regarding the completeness, reliability, or accuracy of any information on this site. School policies, fees, and dates are subject to change — please contact us to confirm current details."],
-    bullets: [],
-  },
-  {
-    id: "links", title: "External Links", num: "05",
-    paragraphs: ["Our website may contain links to third-party websites for your convenience. We do not endorse or take responsibility for the content, privacy practices, or accuracy of any external websites."],
-    bullets: [],
-  },
-  {
-    id: "liability", title: "Limitation of Liability", num: "06",
-    paragraphs: ["To the fullest extent permitted by law, Delightsome Kids School shall not be liable for any indirect, incidental, or consequential damages arising from your use of this website or reliance on any information contained herein."],
-    bullets: [],
-  },
-  {
-    id: "changes", title: "Changes to These Terms", num: "07",
-    paragraphs: ["We reserve the right to update these Terms of Use at any time without prior notice. Your continued use of the website after changes are made constitutes your acceptance of the revised terms."],
-    bullets: [],
-  },
-  {
-    id: "governing", title: "Governing Law", num: "08",
-    paragraphs: ["These Terms of Use are governed by and construed in accordance with the laws of the Federal Republic of Nigeria. Any disputes shall be subject to the exclusive jurisdiction of the courts of Ogun State."],
-    bullets: [],
-  },
-]
-
-export function TermsPage() {
-  return (
-    <>
-      <style>{LEGAL_STYLES}</style>
-      <main>
-        <section className="lg-hero" style={{ background: "linear-gradient(145deg, #2C2C2A 0%, #444441 100%)" }}>
-          <div className="lg-hero-badge">📋 Legal</div>
-          <h1>Terms of Use</h1>
-          <p>Please read these terms carefully before using the Delightsome Kids School website.</p>
-        </section>
-
-        <div className="lg-layout">
-          {/* TOC */}
-          <aside className="lg-toc">
-            <p className="lg-toc-title">📋 On this page</p>
-            {TERMS_SECTIONS.map(s => <a key={s.id} href={`#${s.id}`}>{s.num}. {s.title}</a>)}
-          </aside>
-
-          {/* Content */}
-          <article className="lg-content">
-            <p className="lg-updated">Last updated: <span>January 1, 2026</span></p>
-
-            {TERMS_SECTIONS.map((s, i) => (
-              <Reveal key={s.id} delay={i * 45}>
-                <div className="lg-section" id={s.id}>
-                  <p className="lg-section-num">{s.num}</p>
-                  <h2>{s.title}</h2>
-                  {s.paragraphs.map((p, j) => <p key={j}>{p}</p>)}
-                  {s.bullets.length > 0 && (
-                    <ul>{s.bullets.map(b => <li key={b}>{b}</li>)}</ul>
-                  )}
-                </div>
-                {i < TERMS_SECTIONS.length - 1 && <hr className="lg-section-divider" />}
-              </Reveal>
-            ))}
-
-            <Reveal>
-              <div className="lg-contact-box">
-                <h3>📋 Questions about these terms?</h3>
-                <p>If you have any questions about our Terms of Use, please contact us and we'll be happy to help.</p>
-                <Link href="/legal/contact" className="lg-contact-btn">💬 Contact Us</Link>
-              </div>
-            </Reveal>
-          </article>
-        </div>
-      </main>
     </>
   )
 }
 
-export default PrivacyPage
+// export removed – default export now defined above
