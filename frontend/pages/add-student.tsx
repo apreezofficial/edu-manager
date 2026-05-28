@@ -1,6 +1,6 @@
 // pages/add-student.tsx
 import { useState } from 'react';
-import axios from 'axios';
+import { requestBackend } from '../utils/backendProxy';
 
 export default function AddStudent() {
   const [adm, setAdm] = useState('');
@@ -11,7 +11,7 @@ export default function AddStudent() {
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     try {
-      const res = await axios.post('/add_student.php', {
+      const res = await requestBackend('/add_student.php', 'POST', { admissionNumber: adm, full_name: fullName, class_level: classLevel });
         admissionNumber: adm,
         full_name: fullName,
         class_level: classLevel,

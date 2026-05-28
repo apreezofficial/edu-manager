@@ -1,6 +1,6 @@
 // pages/export-results.tsx
 import { useEffect, useState } from 'react';
-import axios from 'axios';
+import { requestBackend } from '../utils/backendProxy';
 import jsPDF from 'jspdf';
 import 'jspdf-autotable';
 

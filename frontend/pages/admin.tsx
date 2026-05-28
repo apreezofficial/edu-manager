@@ -1,6 +1,6 @@
 // pages/admin.tsx
 import { useState } from 'react';
-import axios from 'axios';
+import { requestBackend } from '../utils/backendProxy';
 
 export default function Admin() {
   const [pin, setPin] = useState('');
@@ -12,7 +12,7 @@ export default function Admin() {
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     try {
-      const res = await axios.post('/admin.php', { pin, name, role, email });
+      const res = await requestBackend('/admin.php', 'POST', { pin, name, role, email });
       setMsg(res.data.message || 'Staff added');
     } catch (err:any) {
       setMsg(err.response?.data?.error || 'Error');
