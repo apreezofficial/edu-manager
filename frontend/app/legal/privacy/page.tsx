@@ -1,3 +1,5 @@
+"use client"
+
 export default function PrivacyPage(){
   return (
     <section className="container">
