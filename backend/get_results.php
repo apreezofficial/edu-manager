@@ -7,10 +7,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'OPTIONS') {
     http_response_code(204);
     exit;
 }
-
-
-}
-
 require_once __DIR__ . '/json_db.php';
 
 $adm = isset($_GET['adm']) ? trim($_GET['adm']) : null;
