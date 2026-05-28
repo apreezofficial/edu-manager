@@ -154,6 +154,7 @@ function HomeScreen({ onSelect }: { onSelect: (s: Screen) => void }) {
 
 // STUDENT PORTAL
 function StudentPortal({ results, loading, onBack }: { results: ResultRecord[]; loading: boolean; onBack: () => void }) {
+  const [studentResults, setStudentResults] = useState<ResultRecord[]>([]);
   const [admNo, setAdmNo] = useState("")
   const [error, setError] = useState("")
   const [loggedIn, setLoggedIn] = useState(false)
@@ -169,30 +170,31 @@ function StudentPortal({ results, loading, onBack }: { results: ResultRecord[]; 
     
     // Fetch results for this specific admission number
     fetch(`/api/get_results?adm=${encodeURIComponent(admNo.trim())}`)
-      .then(r => r.json())
-      .then(data => {
-        const results = Array.isArray(data) ? data : []
-        if (results.length === 0) {
-          setError("No results found for this admission number. Please check and try again, or contact your class teacher.")
+        .then(r => r.json())
+        .then(data => {
+          const fetched = Array.isArray(data) ? data : []
+          if (fetched.length === 0) {
+            setError("No results found for this admission number. Please check and try again, or contact your class teacher.")
+            setStudentLoading(false)
+            return
+          }
+          setStudentResults(fetched);
+          setLoggedIn(true);
+          setStudentLoading(false);
+        })
+        .catch(err => {
+          console.error(err)
+          setError("Error fetching results. Please try again.")
           setStudentLoading(false)
-          return
-        }
-        setLoggedIn(true)
-      })
-      .catch(err => {
-        console.error(err)
-        setError("Error fetching results. Please try again.")
-        setStudentLoading(false)
-      })
+        })
   }
 
   const myResults = useMemo(() =>
-    (Array.isArray(results) ? results : []).filter(r =>
-      r.admissionNumber.toLowerCase() === admNo.trim().toLowerCase() &&
-      (!filterTerm || r.term === filterTerm)
-    ), [results, admNo, filterTerm])
+      (Array.isArray(studentResults) ? studentResults : []).filter(r =>
+        (!filterTerm || r.term === filterTerm)
+      ), [studentResults, filterTerm])
 
-  const myInfo = (Array.isArray(results) ? results : []).find(r => r.admissionNumber.toLowerCase() === admNo.trim().toLowerCase())
+  const myInfo = (Array.isArray(studentResults) ? studentResults : []).find(r => r.admissionNumber.toLowerCase() === admNo.trim().toLowerCase())
   const avgScore = myResults.length ? (myResults.reduce((s, r) => s + (parseFloat(r.score) || 0), 0) / myResults.length).toFixed(1) : "—"
   const bestSubject = myResults.length ? [...myResults].sort((a, b) => parseFloat(b.score) - parseFloat(a.score))[0] : null
 
