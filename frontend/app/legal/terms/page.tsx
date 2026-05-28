@@ -168,7 +168,7 @@ const TERMS_SECTIONS = [
   },
 ]
 
-export function TermsPage() {
+export default function TermsPage() {
   return (
     <>
       <style>{LEGAL_STYLES}</style>
@@ -217,5 +217,4 @@ export function TermsPage() {
     </>
   )
 }
-
-export default TermsPage
+
