@@ -302,7 +302,7 @@ export default function Header() {
           <span className="dk-topbar-divider">|</span>
           <a href="mailto:hello@delightsome.edu">📧 hello@delightsome.edu</a>
           <span className="dk-topbar-divider">|</span>
-          <Link href="/portal">Portal Login</Link>
+          <Link href="/portal">Result Checker</Link>
           {LEGAL_LINKS.map((l) => (
             <>
               <span className="dk-topbar-divider" key={l.href + "-div"}>|</span>
