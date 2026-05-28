@@ -9,6 +9,7 @@ const NAV_LINKS = [
   { href: "/blog", label: "Blog", icon: "📝" },
   { href: "/gallery", label: "Gallery", icon: "🖼️" },
   { href: "/admissions", label: "Admissions", icon: "📋" },
+  { href: "/portal", label: "Results", icon: "📊" },
   { href: "/legal/contact", label: "Contact", icon: "✉️" },
 ]
 
