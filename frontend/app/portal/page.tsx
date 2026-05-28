@@ -169,7 +169,7 @@ function StudentPortal({ results, loading, onBack }: { results: ResultRecord[]; 
     setError("")
     
     // Fetch results for this specific admission number
-    fetch(`/api/get_results?adm=${encodeURIComponent(admNo.trim())}`)
+    fetch(`/get_results?adm=${encodeURIComponent(admNo.trim())}`)
         .then(r => r.json())
         .then(data => {
           const fetched = Array.isArray(data) ? data : []
