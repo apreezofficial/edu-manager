@@ -6,7 +6,7 @@ export async function GET(request: NextRequest) {
     const searchParams = request.nextUrl.searchParams;
     const adm = searchParams.get('adm');
     const response = await axios.get('/get_results.php', {
-      params: { adm },
+      params: { adm, i: 1 },
     });
     return NextResponse.json(response.data);
   } catch (error: any) {
@@ -17,7 +17,10 @@ export async function GET(request: NextRequest) {
       data: error.response?.data,
     });
     return NextResponse.json(
-      { error: error.response?.data?.error || 'Failed to fetch results', details: error.message },
+      {
+        error: error.response?.data?.error || 'Failed to fetch results',
+        details: error.message,
+      },
       { status: error.response?.status || 500 }
     );
   }
