@@ -1,13 +1,14 @@
 <?php
 // backend/get_results.php – Return all results from JSON storage
-header('Access-Control-Allow-Origin: *');
-header('Access-Control-Allow-Methods: GET, OPTIONS');
-header('Access-Control-Allow-Headers: Content-Type');
-// Set CORS and JSON headers
+require_once __DIR__ . '/config.php';
+// Set CORS and JSON headers using helper
 set_headers('GET');
 if ($_SERVER['REQUEST_METHOD'] === 'OPTIONS') {
     http_response_code(204);
     exit;
+}
+
+
 }
 
 require_once __DIR__ . '/json_db.php';
