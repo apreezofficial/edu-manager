@@ -320,20 +320,20 @@ function StaffPortal({ results, loading, onRefresh, onBack }: { results: ResultR
   }
 
   const filtered = useMemo(() => {
-    let list = results.filter(r =>
+    const list = (Array.isArray(results) ? results : []).filter(r =>
       (!filter.search || r.student.toLowerCase().includes(filter.search.toLowerCase()) || r.admissionNumber.toLowerCase().includes(filter.search.toLowerCase())) &&
       (!filter.classLevel || r.classLevel === filter.classLevel) &&
       (!filter.term || r.term === filter.term) &&
       (!filter.subject || r.subject === filter.subject) &&
       (!filter.grade || r.grade === filter.grade)
-    )
+    );
     return [...list].sort((a, b) => {
       const cmp = sortBy === "name" ? a.student.localeCompare(b.student) :
         sortBy === "score" ? parseFloat(a.score) - parseFloat(b.score) :
-        new Date(a.date).getTime() - new Date(b.date).getTime()
-      return sortDir === "asc" ? cmp : -cmp
-    })
-  }, [results, filter, sortBy, sortDir])
+        new Date(a.date).getTime() - new Date(b.date).getTime();
+      return sortDir === "asc" ? cmp : -cmp;
+    });
+  }, [results, filter, sortBy, sortDir]);
 
   const summary = useMemo(() => {
     const total = results.length
