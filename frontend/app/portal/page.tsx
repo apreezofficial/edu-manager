@@ -168,8 +168,8 @@ function StudentPortal({ results, loading, onBack }: { results: ResultRecord[]; 
     setStudentLoading(true)
     setError("")
     
-    // Fetch results for this specific admission number
-    fetch(`https://backenddd-eduu.gt.tc/get_results.php?adm=${encodeURIComponent(admNo.trim())}&i=1`)
+    // Fetch results for this specific admission number via local API proxy
+    fetch(`/api/get_results?adm=${encodeURIComponent(admNo.trim())}`)
         .then(r => r.json())
         .then(data => {
           const fetched = Array.isArray(data) ? data : []

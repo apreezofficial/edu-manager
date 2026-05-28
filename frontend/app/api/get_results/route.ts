@@ -1,27 +1,20 @@
 import { NextResponse, NextRequest } from 'next/server';
-import axios from '../../../utils/axiosInstance';
+import { requestBackend } from '../../utils/backendProxy';
 
 export async function GET(request: NextRequest) {
   try {
     const searchParams = request.nextUrl.searchParams;
     const adm = searchParams.get('adm');
-    const response = await axios.get('/get_results.php', {
-      params: { adm, i: 1 },
-    });
-    return NextResponse.json(response.data);
+    const data = await requestBackend('/get_results.php', 'GET', { adm, i: 1 });
+    return NextResponse.json(data);
   } catch (error: any) {
-    console.error('API Route Error:', {
-      message: error.message,
-      status: error.response?.status,
-      statusText: error.response?.statusText,
-      data: error.response?.data,
-    });
+    console.error('API Route Error:', error.message);
     return NextResponse.json(
       {
-        error: error.response?.data?.error || 'Failed to fetch results',
+        error: 'Failed to fetch results',
         details: error.message,
       },
-      { status: error.response?.status || 500 }
+      { status: 500 }
     );
   }
 }
