@@ -12,10 +12,6 @@ export default function AddStudent() {
     e.preventDefault();
     try {
       const res = await requestBackend('/add_student.php', 'POST', { admissionNumber: adm, full_name: fullName, class_level: classLevel });
-        admissionNumber: adm,
-        full_name: fullName,
-        class_level: classLevel,
-      });
       setMsg(res.data.message || 'Student added');
     } catch (err:any) {
       setMsg(err.response?.data?.error || 'Error');
