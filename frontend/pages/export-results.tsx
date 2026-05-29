@@ -9,8 +9,8 @@ export default function ExportResults() {
   const [msg, setMsg] = useState('');
 
   useEffect(() => {
-    axios.get('/get_results.php')
-      .then(r => setResults(r.data))
+    requestBackend('/get_results.php', 'GET')
+      .then(r => setResults(r.results || r))
       .catch(() => setMsg('Failed to load results'));
   }, []);
 
