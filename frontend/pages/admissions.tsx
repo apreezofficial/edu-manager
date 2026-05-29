@@ -268,10 +268,12 @@ export default function AdmissionsPage() {
         {/* APPLICATION FORM */}
         <section className="ad-section ad-section-alt" id="apply">
           <div className="ad-container">
-            <Reveal style={{ marginBottom:"3rem" }}>
-              <p className="ad-label">Apply Now</p>
-              <h2 className="ad-title">Start your <span>application</span></h2>
-            </Reveal>
+            <div style={{ marginBottom:"3rem" }}>
+              <Reveal>
+                <p className="ad-label">Apply Now</p>
+                <h2 className="ad-title">Start your <span>application</span></h2>
+              </Reveal>
+            </div>
             <div className="ad-split">
 
               {/* FORM */}
