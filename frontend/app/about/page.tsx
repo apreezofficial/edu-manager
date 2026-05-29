@@ -387,7 +387,7 @@ export default function AboutPage() {
             {[
               { to: 500, suffix: "+", label: "Happy Students" },
               { to: 30, suffix: "+", label: "Expert Teachers" },
-              { to: 14, suffix: "", label: "Years of Excellence" },
+              { to: 9, suffix: "", label: "Years of Excellence" },
               { to: 6, suffix: "", label: "Facilities on Campus" },
             ].map((s) => (
               <Reveal key={s.label}>
