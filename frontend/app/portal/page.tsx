@@ -18,7 +18,6 @@ type ResultRecord = {
 const CLASS_LEVELS = ["Nursery 1", "Nursery 2", "Primary 1", "Primary 2", "Primary 3", "Primary 4", "Primary 5", "Primary 6"]
 const TERMS = ["First Term", "Second Term", "Third Term"]
 const SUBJECTS = ["Mathematics", "English Language", "Basic Science", "Social Studies", "Yoruba", "CRS", "Physical Education", "Creative Arts", "Computer Studies"]
-const VALID_STAFF = ["STF001", "STF002", "STF003", "ADMIN"]
 
 function getGrade(score: string): string {
   const n = parseFloat(score)
@@ -304,6 +303,7 @@ function StaffPortal({ results, loading, onRefresh, onBack }: { results: ResultR
   const [staffNo, setStaffNo] = useState("")
   const [error, setError] = useState("")
   const [loggedIn, setLoggedIn] = useState(false)
+  const [validating, setValidating] = useState(false)
   const [tab, setTab] = useState<"view" | "log">("view")
   const [filter, setFilter] = useState({ search:"", classLevel:"", term:"", subject:"", grade:"" })
   const [form, setForm] = useState({ student:"", admissionNumber:"", classLevel:"Primary 1", term:"First Term", subject:"", score:"", remarks:"" })
@@ -314,11 +314,28 @@ function StaffPortal({ results, loading, onRefresh, onBack }: { results: ResultR
   const [sortBy, setSortBy] = useState<"date"|"name"|"score">("date")
   const [sortDir, setSortDir] = useState<"asc"|"desc">("desc")
 
-  function login(e: React.FormEvent) {
+  async function login(e: React.FormEvent) {
     e.preventDefault()
     if (!staffNo.trim()) { setError("Enter your staff number"); return }
-    if (!VALID_STAFF.includes(staffNo.trim().toUpperCase())) { setError("Invalid staff number. Contact admin if you need access."); return }
-    setLoggedIn(true)
+    setValidating(true)
+    try {
+      const res = await fetch("/api/validate_staff", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ staffNumber: staffNo.trim().toUpperCase() })
+      })
+      const data = await res.json()
+      if (data.valid) {
+        setLoggedIn(true)
+      } else {
+        setError("Invalid staff number. Contact admin if you need access.")
+      }
+    } catch (err) {
+      console.error(err)
+      setError("Error validating staff number. Please try again.")
+    } finally {
+      setValidating(false)
+    }
   }
 
   const filtered = useMemo(() => {
@@ -432,10 +449,10 @@ function StaffPortal({ results, loading, onRefresh, onBack }: { results: ResultR
             <h2>Staff Login</h2>
             <p className="pk-login-sub">Enter your staff number to access the management portal</p>
             <form onSubmit={login}>
-              <input className="pk-login-input" type="text" placeholder="e.g. STF001"
-                value={staffNo} onChange={e => { setStaffNo(e.target.value); setError("") }} autoFocus />
+              <input className="pk-login-input" type="text" placeholder="e.g. STF0001"
+                value={staffNo} onChange={e => { setStaffNo(e.target.value); setError("") }} autoFocus disabled={validating} />
               {error && <p className="pk-login-error">{error}</p>}
-              <button className="pk-login-btn pk-btn-coral" type="submit">Enter Staff Portal →</button>
+              <button className="pk-login-btn pk-btn-coral" type="submit" disabled={validating}>{validating ? "Validating…" : "Enter Staff Portal →"}</button>
             </form>
             <p className="pk-login-hint">Staff numbers are assigned by the school admin.</p>
           </div>

@@ -10,6 +10,7 @@ const NAV_LINKS = [
   { href: "/gallery", label: "Gallery", icon: "🖼️" },
   { href: "/admissions", label: "Admissions", icon: "📋" },
   { href: "/portal", label: "Results", icon: "📊" },
+  { href: "/dashboard", label: "Admin", icon: "⚙️" },
   { href: "/legal/contact", label: "Contact", icon: "✉️" },
 ]
 

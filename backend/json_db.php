@@ -10,8 +10,20 @@ if (!defined('JSON_DB_FILE')) {
 /** Load the entire JSON database as an associative array */
 function load_json_db(): array {
     if (!file_exists(JSON_DB_FILE)) {
-        // Initialise empty structure with expected tables
-        $init = ['students' => [], 'results' => [], 'staff' => []];
+        // Initialise empty structure with expected tables and default staff
+        $init = [
+            'students' => [], 
+            'results' => [], 
+            'staff' => [
+                ['id' => 1, 'name' => 'Mr Ajayi Reuben Opeyemi', 'role' => 'Proprietor', 'email' => '', 'staff_number' => 'STF0001'],
+                ['id' => 2, 'name' => 'Mrs Ajayi Tosin', 'role' => 'Head of Administration', 'email' => '', 'staff_number' => 'STF0002'],
+                ['id' => 3, 'name' => 'Mrs Bankole Tomilade', 'role' => 'Supervisor', 'email' => '', 'staff_number' => 'STF0003'],
+                ['id' => 4, 'name' => 'Mrs Adedigba Esther', 'role' => 'HOD for Social and Prevocational Study', 'email' => '', 'staff_number' => 'STF0004'],
+                ['id' => 5, 'name' => 'Mrs Ajayi Oluwaseun', 'role' => 'Director for Phonetic', 'email' => '', 'staff_number' => 'STF0005'],
+                ['id' => 6, 'name' => 'Mr Olalekan Wasiu', 'role' => 'Director of Coding and Robotics', 'email' => '', 'staff_number' => 'STF0006'],
+                ['id' => 7, 'name' => 'Admin', 'role' => 'Administrator', 'email' => '', 'staff_number' => 'ADMIN']
+            ]
+        ];
         file_put_contents(JSON_DB_FILE, json_encode($init, JSON_PRETTY_PRINT));
     }
     $json = file_get_contents(JSON_DB_FILE);
