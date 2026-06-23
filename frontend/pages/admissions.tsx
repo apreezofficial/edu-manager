@@ -202,10 +202,10 @@ export default function AdmissionsPage() {
               <p className="ad-body">From as young as 1 year old to Primary 6, we offer programmes designed to nurture every stage of childhood.</p>
             </Reveal>
             <div className="ad-prog-grid">
-              {[{ name:"Crèche", age:"Ages 1–3", desc:"Warm, nurturing care and early stimulation for our youngest learners.", color:"#FAC77533", border:"#FAC775", icon:"👶" },
-                { name:"Nursery", age:"Ages 3–5", desc:"Playful structured learning that builds language, numbers, and social skills.", color:"#E1F5EE", border:"#5DCAA5", icon:"🌱" },
-                { name:"Primary 1–3", age:"Ages 5–8", desc:"Building strong foundations in literacy, numeracy, and discovery.", color:"#FAECE7", border:"#D85A30", icon:"📚" },
-                { name:"Primary 4–6", age:"Ages 8–12", desc:"Deepening skills, critical thinking, and preparing for secondary school.", color:"#EAF3DE", border:"#2A5C0A", icon:"🎓" }].map((p,i)=>(
+              {[{ name:"Crèche/Reception", age:"Ages 1–3", desc:"Warm, nurturing care and early stimulation for our youngest learners.", color:"#FAC77533", border:"#FAC775", icon:"👶" },
+                { name:"Learning to Read", age:"Ages 3–5", desc:"Playful structured learning focused on building early literacy, numbers, and social skills.", color:"#E1F5EE", border:"#5DCAA5", icon:"🌱" },
+                { name:"Pre-School", age:"Ages 5–7", desc:"A joyful curriculum preparing children for primary school with core subjects and creative activities.", color:"#FAECE7", border:"#D85A30", icon:"📚" },
+                { name:"Grade School", age:"Ages 7–11", desc:"Rigorous primary education covering core subjects, arts, and tech for confident, curious learners.", color:"#EAF3DE", border:"#2A5C0A", icon:"🎓" }].map((p,i)=>(
                 <Reveal key={p.name} delay={i*80}>
                   <div className="ad-prog-card" style={{ background: p.color, border:`2px solid ${p.border}` }}>
                     <span className="ad-prog-age">{p.age}</span>
@@ -318,8 +318,10 @@ export default function AdmissionsPage() {
                           <label>Programme Applying For *</label>
                           <select style={{ ...inp, cursor:"pointer", borderColor: errors.programme?"#D85A30":"#E8E6DE" }} value={form.programme} onChange={e=>set("programme",e.target.value)}>
                             <option value="">— Select programme —</option>
-                            <option>Crèche (Ages 1–3)</option>
-                            <option>Nursery (Ages 3–5)</option>
+                            <option>Crèche/Reception (Ages 1–3)</option>
+                            <option>Learning to Read (Ages 3–5)</option>
+                            <option>Pre-School (Ages 5–7)</option>
+                            <option>Grade School (Ages 7–11)</option>
                             <option>Primary 1</option>
                             <option>Primary 2</option>
                             <option>Primary 3</option>
@@ -348,8 +350,10 @@ export default function AdmissionsPage() {
                   <div className="ad-side-block">
                     <p className="ad-side-title">📞 Prefer to call?</p>
                     {[
-                      ["📞", "+234 800 000 0000"],
-                      ["📧", "admissions@delightsome.edu.ng"],
+                      ["📞", "08071690299"],
+                      ["📞", "08071690959"],
+                      ["💬", "08134526190 (WhatsApp)"],
+                      ["📧", "delightsomekidsschool@gmail.com"],
                       ["📍", "Itori, Ewekoro LGA, Ogun State"],
                       ["🕐", "Mon–Fri: 8am – 3pm"],
                     ].map(([icon, text])=>(

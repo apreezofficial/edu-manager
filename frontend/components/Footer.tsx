@@ -16,10 +16,10 @@ const LEGAL_LINKS = [
 ]
 
 const PROGRAMMES = [
-  { label: "Crèche (Ages 1–3)" },
-  { label: "Nursery (Ages 3–5)" },
-  { label: "Primary School (Ages 5–11)" },
-  { label: "After-School Club" },
+  { label: "Crèche/Reception (Ages 1–3)" },
+  { label: "Learning to Read (Ages 3–5)" },
+  { label: "Pre-School (Ages 5–7)" },
+  { label: "Grade School (Ages 7–11)" },
 ]
 
 export default function Footer() {
@@ -214,7 +214,7 @@ export default function Footer() {
               </div>
             </Link>
             <p className="dk-footer-brand-body">
-              A forward-thinking school in Itori, Ogun State, dedicated to raising confident, creative, and responsible children since 2010.
+              A forward-thinking school in Itori, Ogun State, dedicated to raising confident, creative, and responsible children since 2018.
             </p>
             <div className="dk-footer-socials" aria-label="Social media links">
               {[["📘","https://","Facebook"],["📸","https://","Instagram"],["🐦","https://","Twitter"],["▶️","https://","YouTube"]].map(([e, h, n]) => (
@@ -244,11 +244,19 @@ export default function Footer() {
             </div>
             <div className="dk-footer-contact-item">
               <span className="dk-footer-contact-icon">📞</span>
-              <span className="dk-footer-contact-text">+234 800 000 0000</span>
+              <span className="dk-footer-contact-text">08071690299</span>
+            </div>
+            <div className="dk-footer-contact-item">
+              <span className="dk-footer-contact-icon">📞</span>
+              <span className="dk-footer-contact-text">08071690959</span>
+            </div>
+            <div className="dk-footer-contact-item">
+              <span className="dk-footer-contact-icon">💬</span>
+              <span className="dk-footer-contact-text">08134526190 (WhatsApp)</span>
             </div>
             <div className="dk-footer-contact-item">
               <span className="dk-footer-contact-icon">📧</span>
-              <span className="dk-footer-contact-text">hello@delightsome.edu.ng</span>
+              <span className="dk-footer-contact-text">delightsomekidsschool@gmail.com</span>
             </div>
             <div className="dk-footer-contact-item">
               <span className="dk-footer-contact-icon">🕐</span>

@@ -51,16 +51,16 @@ const TEAM = [
 ]
 
 const TIMELINE = [
-  { year: "2010", title: "Founded", desc: "Delightsome Kids School opens its doors in Itori with 40 pioneer students." },
-  { year: "2013", title: "First Graduating Class", desc: "Our pioneer students complete primary school with outstanding FSLC results." },
-  { year: "2016", title: "New Campus", desc: "We move into our modern, purpose-built campus with science lab and computer room." },
-  { year: "2020", title: "Award of Excellence", desc: "Recognised by Ogun State government for outstanding academic performance." },
-  { year: "2024", title: "500+ Students", desc: "A thriving community of over 500 students, 30 staff, and thousands of proud alumni." },
+  { year: "2018", title: "Founded", desc: "Delightsome Kids School opens its doors in Itori with its first set of students." },
+  { year: "2021", title: "Growing Community", desc: "Our school community expands with more students and dedicated staff members." },
+  { year: "2023", title: "Enhanced Facilities", desc: "We upgrade our campus with improved facilities for better learning experiences." },
+  { year: "2024", title: "Recognition", desc: "Recognised for our commitment to quality education and child development." },
+  { year: "2026", title: "300+ Students", desc: "A thriving community of over 300 students, 20+ qualified teachers, and happy families." },
 ]
 
 const FACILITIES = [
   { emoji: "🖥️", name: "ICT Lab", desc: "Modern computers and internet access for digital literacy." },
-  { emoji: "🔬", name: "Science Lab", desc: "Hands-on experiments that bring science to life." },
+  { emoji: "🎵", name: "Music Lab", desc: "Musical instruments and creative space for learning music." },
   { emoji: "📚", name: "Library", desc: "Thousands of books and a cozy reading space." },
   { emoji: "⚽", name: "Sports Field", desc: "Full-size field for football, athletics, and games." },
   { emoji: "🎭", name: "Assembly Hall", desc: "A large hall for events, drama, and celebrations." },
@@ -273,7 +273,7 @@ export default function AboutPage() {
           {[200,350,500].map((s,i) => (
             <div key={i} className="ab-hero-ring" style={{ width: s, height: s, top: `calc(50% - ${s/2}px)`, left: `calc(50% - ${s/2}px)`, animationDuration: `${18+i*5}s`, animationDirection: i%2===0?"normal":"reverse" }} />
           ))}
-          <div className="ab-hero-badge">🏫 Est. 2010 · Itori, Ogun State</div>
+          <div className="ab-hero-badge">🏫 Est. 2018 · Itori, Ogun State</div>
           <h1>About <em>Delightsome</em><br />Kids School</h1>
           <p>A forward-thinking school dedicated to academic excellence, discipline, and the whole-child development of every student.</p>
           <div className="ab-hero-scroll" aria-hidden="true">
@@ -362,7 +362,7 @@ export default function AboutPage() {
           <div className="ab-container">
             <Reveal style={{ marginBottom: "3rem" }}>
               <p className="ab-label">Our Story</p>
-              <h2 className="ab-title">14 years of <span>growing together</span></h2>
+              <h2 className="ab-title">8 years of <span>growing together</span></h2>
             </Reveal>
             <div className="ab-timeline">
               {TIMELINE.map((item, i) => (
@@ -385,9 +385,9 @@ export default function AboutPage() {
         <section className="ab-stats-band">
           <div className="ab-stats-grid">
             {[
-              { to: 500, suffix: "+", label: "Happy Students" },
-              { to: 30, suffix: "+", label: "Expert Teachers" },
-              { to: 9, suffix: "", label: "Years of Excellence" },
+              { to: 300, suffix: "+", label: "Happy Students" },
+              { to: 20, suffix: "+", label: "Qualified Teachers" },
+              { to: 8, suffix: "", label: "Years of Excellence" },
               { to: 6, suffix: "", label: "Facilities on Campus" },
             ].map((s) => (
               <Reveal key={s.label}>

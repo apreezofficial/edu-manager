@@ -300,9 +300,11 @@ export default function Header() {
 
         {/* Top bar */}
         <div className="dk-topbar">
-          <a href="tel:+2348000000000">📞 +234 800 000 0000</a>
+          <a href="tel:08071690299">📞 08071690299</a>
           <span className="dk-topbar-divider">|</span>
-          <a href="mailto:hello@delightsome.edu">📧 hello@delightsome.edu</a>
+          <a href="https://wa.me/2348134526190" target="_blank" rel="noopener noreferrer">💬 WhatsApp: 08134526190</a>
+          <span className="dk-topbar-divider">|</span>
+          <a href="mailto:delightsomekidsschool@gmail.com">📧 delightsomekidsschool@gmail.com</a>
           <span className="dk-topbar-divider">|</span>
           <Link href="/portal">Portal Login</Link>
           {LEGAL_LINKS.map((l) => (

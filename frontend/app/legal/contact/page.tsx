@@ -23,9 +23,10 @@ function Reveal({ children, delay = 0, style = {} }: { children: React.ReactNode
 
 const CONTACT_CARDS = [
   { emoji: "📍", title: "Visit Us", lines: ["Delightsome Kids School", "Itori, Ewekoro LGA", "Ogun State, Nigeria"], color: "#E1F5EE", accent: "#1D9E75" },
-  { emoji: "📞", title: "Call Us", lines: ["+234 800 000 0000", "+234 801 111 1111", "Mon–Fri, 8am–4pm"], color: "#FAEEDA", accent: "#BA7517" },
-  { emoji: "📧", title: "Email Us", lines: ["hello@delightsome.edu.ng", "admissions@delightsome.edu.ng"], color: "#FAECE7", accent: "#993C1D" },
-  { emoji: "🕐", title: "School Hours", lines: ["Mon–Fri: 8:00am – 3:00pm", "After-school Club: till 5pm", "Sat–Sun: Closed"], color: "#EAF3DE", accent: "#2A5C0A" },
+  { emoji: "📞", title: "Call Us", lines: ["08071690299", "08071690959", "Mon–Fri, 8am–4pm"], color: "#FAEEDA", accent: "#BA7517" },
+  { emoji: "💬", title: "WhatsApp", lines: ["08134526190"], color: "#EAF3DE", accent: "#2A5C0A" },
+  { emoji: "📧", title: "Email Us", lines: ["delightsomekidsschool@gmail.com"], color: "#FAECE7", accent: "#993C1D" },
+  { emoji: "🕐", title: "School Hours", lines: ["Mon–Fri: 8:00am – 3:00pm", "After-school Club: till 5pm", "Sat–Sun: Closed"], color: "#F3E5F5", accent: "#7B1FA2" },
 ]
 
 const FAQS = [

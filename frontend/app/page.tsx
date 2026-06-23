@@ -71,10 +71,10 @@ const TESTIMONIALS = [
 ]
 
 const PROGRAMMES = [
-  { tag: "Ages 1–3", name: "Crèche", desc: "Warm, nurturing care and early stimulation for our youngest learners in a safe and loving space.", color: "#FAC775" },
-  { tag: "Ages 3–5", name: "Nursery", desc: "Playful, structured learning that builds language, numbers, creativity, and social skills.", color: "#5DCAA5" },
-  { tag: "Ages 5–11", name: "Primary School", desc: "A rigorous yet joyful curriculum covering core subjects, arts, and tech from Year 1 through Year 6.", color: "#D85A30" },
-  { tag: "Extra", name: "After-School Club", desc: "Supervised homework help, sports, and enrichment activities every weekday until 5 PM.", color: "#7F77DD" },
+  { tag: "Ages 1–3", name: "Crèche/Reception", desc: "Warm, nurturing care and early stimulation for our youngest learners in a safe and loving space.", color: "#FAC775" },
+  { tag: "Ages 3–5", name: "Learning to Read", desc: "Playful, structured learning focused on building early literacy, numbers, creativity, and social skills.", color: "#5DCAA5" },
+  { tag: "Ages 5–7", name: "Pre-School", desc: "A joyful curriculum preparing children for primary school with core subjects and creative activities.", color: "#D85A30" },
+  { tag: "Ages 7–11", name: "Grade School", desc: "Rigorous primary education covering core subjects, arts, and tech for confident, curious learners.", color: "#7F77DD" },
 ]
 
 const GALLERY_ITEMS = [
@@ -598,7 +598,7 @@ export default function HomePage() {
           <div className="dk-hero-blob2" />
 
           <div className="dk-hero-badge">
-            🌟 Itori, Ogun State &nbsp;·&nbsp; Est. 2010
+            🌟 Itori, Ogun State &nbsp;·&nbsp; Est. 2018
           </div>
 
           <h1>
@@ -628,9 +628,9 @@ export default function HomePage() {
         <section className="dk-stats">
           <div className="dk-stats-grid">
             {[
-              { to: 500, suffix: "+", label: "Happy Students" },
-              { to: 30, suffix: "+", label: "Qualified Staff" },
-              { to: 14, suffix: "", label: "Years of Excellence" },
+              { to: 300, suffix: "+", label: "Happy Students" },
+              { to: 20, suffix: "+", label: "Qualified Teachers" },
+              { to: 8, suffix: "", label: "Years of Excellence" },
               { to: 98, suffix: "%", label: "Parent Satisfaction" },
             ].map((s) => (
               <Reveal key={s.label}>
@@ -776,17 +776,17 @@ export default function HomePage() {
               </div>
             </Reveal>
             <Reveal delay={80}>
-              <div className="dk-contact-item">
-                <h4>📞 Call Us</h4>
-                <p>+234 800 000 0000<br />Mon – Fri, 8am – 4pm</p>
-              </div>
-            </Reveal>
-            <Reveal delay={160}>
-              <div className="dk-contact-item">
-                <h4>📧 Email Us</h4>
-                <p>hello@delightsome.edu.ng<br />admissions@delightsome.edu.ng</p>
-              </div>
-            </Reveal>
+                  <div className="dk-contact-item">
+                    <h4>📞 Call Us</h4>
+                    <p>08071690299<br />08071690959<br />Mon – Fri, 8am – 4pm</p>
+                  </div>
+                </Reveal>
+                <Reveal delay={160}>
+                  <div className="dk-contact-item">
+                    <h4>📧 Email Us</h4>
+                    <p>delightsomekidsschool@gmail.com</p>
+                  </div>
+                </Reveal>
             <Reveal delay={240}>
               <div className="dk-contact-item">
                 <h4>🕐 School Hours</h4>
