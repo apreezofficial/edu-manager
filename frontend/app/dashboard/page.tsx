@@ -13,10 +13,10 @@ type Staff = {
 
 type Student = {
     id: number;
-    name: string;
-    reg_number: string;
-    class: string;
-    email: string;
+    full_name: string;
+    admission_number: string;
+    class_level: string;
+    active?: number;
 };
 
 export default function DashboardPage() {
@@ -30,12 +30,12 @@ export default function DashboardPage() {
     
     // Staff form
     const [editingStaff, setEditingStaff] = useState<Staff | null>(null);
-    const [staffForm, setStaffForm] = useState({ name: "", role: "", email: "", staff_number: "" });
+    const [staffForm, setStaffForm] = useState({ name: "", role: "", email: "" });
     const [deleteStaffId, setDeleteStaffId] = useState<number | null>(null);
 
     // Student form
     const [editingStudent, setEditingStudent] = useState<Student | null>(null);
-    const [studentForm, setStudentForm] = useState({ name: "", reg_number: "", class: "", email: "" });
+    const [studentForm, setStudentForm] = useState({ full_name: "", admission_number: "", class_level: "" });
     const [deleteStudentId, setDeleteStudentId] = useState<number | null>(null);
 
     useEffect(() => {
@@ -95,7 +95,7 @@ export default function DashboardPage() {
             const data = await res.json();
             if (data.success) {
                 setMsg(data.message);
-                setStaffForm({ name: "", role: "", email: "", staff_number: "" });
+                setStaffForm({ name: "", role: "", email: "" });
                 loadStaff();
             } else {
                 setMsg(data.error || "Error adding staff");
@@ -121,7 +121,7 @@ export default function DashboardPage() {
             if (data.success) {
                 setMsg(data.message);
                 setEditingStaff(null);
-                setStaffForm({ name: "", role: "", email: "", staff_number: "" });
+                setStaffForm({ name: "", role: "", email: "" });
                 loadStaff();
             } else {
                 setMsg(data.error || "Error updating staff");
@@ -160,7 +160,7 @@ export default function DashboardPage() {
 
     const startEditStaff = (s: Staff) => {
         setEditingStaff(s);
-        setStaffForm({ name: s.name, role: s.role, email: s.email, staff_number: s.staff_number });
+        setStaffForm({ name: s.name, role: s.role, email: s.email });
     };
 
     // STUDENT OPERATIONS
@@ -175,7 +175,7 @@ export default function DashboardPage() {
             const data = await res.json();
             if (data.success) {
                 setMsg(data.message);
-                setStudentForm({ name: "", reg_number: "", class: "", email: "" });
+                setStudentForm({ full_name: "", admission_number: "", class_level: "" });
                 loadStudents();
             } else {
                 setMsg(data.error || "Error adding student");
@@ -214,7 +214,7 @@ export default function DashboardPage() {
 
     const startEditStudent = (s: Student) => {
         setEditingStudent(s);
-        setStudentForm({ name: s.name, reg_number: s.reg_number, class: s.class, email: s.email });
+        setStudentForm({ full_name: s.full_name, admission_number: s.admission_number, class_level: s.class_level });
     };
 
     return (
@@ -337,7 +337,7 @@ export default function DashboardPage() {
                                         <h3 className="card-title">{editingStaff ? 'Edit Staff' : 'Add New Staff'}</h3>
                                         <form onSubmit={editingStaff ? handleUpdateStaff : handleAddStaff}>
                                             <div className="form-grid">
-                                                <div style={{gridColumn: editingStaff ? '1 / -1' : 'auto'}}>
+                                                <div style={{gridColumn: '1 / -1'}}>
                                                     <label style={{fontSize:'13px', fontWeight:'800', marginBottom:'6px', display:'block'}}>Full Name *</label>
                                                     <input
                                                         className="form-input"
@@ -367,22 +367,13 @@ export default function DashboardPage() {
                                                         onChange={(e) => setStaffForm({...staffForm, email: e.target.value})}
                                                     />
                                                 </div>
-                                                <div>
-                                                    <label style={{fontSize:'13px', fontWeight:'800', marginBottom:'6px', display:'block'}}>Staff Number</label>
-                                                    <input
-                                                        className="form-input"
-                                                        placeholder="e.g., STF0007"
-                                                        value={staffForm.staff_number}
-                                                        onChange={(e) => setStaffForm({...staffForm, staff_number: e.target.value})}
-                                                    />
-                                                </div>
                                             </div>
                                             <div style={{display:'flex', gap:'.75rem', marginTop:'1.5rem', flexWrap:'wrap'}}>
                                                 <button type="submit" className="btn-primary">
                                                     {editingStaff ? 'Update Staff' : 'Add Staff'}
                                                 </button>
                                                 {editingStaff && (
-                                                    <button type="button" className="btn-outline" onClick={() => { setEditingStaff(null); setStaffForm({name:'', role:'', email:'', staff_number:''}); }}>
+                                                    <button type="button" className="btn-outline" onClick={() => { setEditingStaff(null); setStaffForm({name:'', role:'', email:''}); }}>
                                                         Cancel
                                                     </button>
                                                 )}
@@ -405,7 +396,7 @@ export default function DashboardPage() {
                                                     <div className="staff-name">{s.name}</div>
                                                     <div className="staff-role">{s.role}</div>
                                                     {s.email && <div style={{fontSize:'13px', color:'#5F5E5A', marginBottom:'.5rem'}}>{s.email}</div>}
-                                                    <div className="staff-number">Staff ID: {s.staff_number}</div>
+                                                    <div className="staff-number">ID: {s.staff_number}</div>
                                                     <div style={{marginTop:'1.25rem', display:'flex', gap:'.5rem', flexWrap:'wrap'}}>
                                                         <button className="btn-secondary" onClick={() => startEditStaff(s)} style={{fontSize:'13px', padding:'8px 16px'}}>
                                                             Edit
@@ -441,49 +432,38 @@ export default function DashboardPage() {
                                         <h3 className="card-title">{editingStudent ? 'Edit Student' : 'Add New Student'}</h3>
                                         <form onSubmit={editingStudent ? async (e) => {
                                             e.preventDefault();
-                                            // TODO: Implement student update when backend is ready
                                             setMsg("Student update feature coming soon");
                                             setTimeout(() => setMsg(""), 3000);
                                         } : handleAddStudent}>
                                             <div className="form-grid">
-                                                <div style={{gridColumn: editingStudent ? '1 / -1' : 'auto'}}>
+                                                <div style={{gridColumn: '1 / -1'}}>
                                                     <label style={{fontSize:'13px', fontWeight:'800', marginBottom:'6px', display:'block'}}>Student Name *</label>
                                                     <input
                                                         className="form-input"
                                                         placeholder="e.g., Chioma Adeyemi"
-                                                        value={studentForm.name}
-                                                        onChange={(e) => setStudentForm({...studentForm, name: e.target.value})}
+                                                        value={studentForm.full_name}
+                                                        onChange={(e) => setStudentForm({...studentForm, full_name: e.target.value})}
                                                         required
                                                     />
                                                 </div>
                                                 <div>
-                                                    <label style={{fontSize:'13px', fontWeight:'800', marginBottom:'6px', display:'block'}}>Reg Number *</label>
+                                                    <label style={{fontSize:'13px', fontWeight:'800', marginBottom:'6px', display:'block'}}>Admission Number *</label>
                                                     <input
                                                         className="form-input"
                                                         placeholder="e.g., STU0045"
-                                                        value={studentForm.reg_number}
-                                                        onChange={(e) => setStudentForm({...studentForm, reg_number: e.target.value})}
+                                                        value={studentForm.admission_number}
+                                                        onChange={(e) => setStudentForm({...studentForm, admission_number: e.target.value})}
                                                         required
                                                     />
                                                 </div>
                                                 <div>
-                                                    <label style={{fontSize:'13px', fontWeight:'800', marginBottom:'6px', display:'block'}}>Class *</label>
+                                                    <label style={{fontSize:'13px', fontWeight:'800', marginBottom:'6px', display:'block'}}>Class Level *</label>
                                                     <input
                                                         className="form-input"
                                                         placeholder="e.g., JSS1A"
-                                                        value={studentForm.class}
-                                                        onChange={(e) => setStudentForm({...studentForm, class: e.target.value})}
+                                                        value={studentForm.class_level}
+                                                        onChange={(e) => setStudentForm({...studentForm, class_level: e.target.value})}
                                                         required
-                                                    />
-                                                </div>
-                                                <div>
-                                                    <label style={{fontSize:'13px', fontWeight:'800', marginBottom:'6px', display:'block'}}>Email</label>
-                                                    <input
-                                                        className="form-input"
-                                                        type="email"
-                                                        placeholder="e.g., chioma@school.edu.ng"
-                                                        value={studentForm.email}
-                                                        onChange={(e) => setStudentForm({...studentForm, email: e.target.value})}
                                                     />
                                                 </div>
                                             </div>
@@ -492,7 +472,7 @@ export default function DashboardPage() {
                                                     {editingStudent ? 'Update Student' : 'Add Student'}
                                                 </button>
                                                 {editingStudent && (
-                                                    <button type="button" className="btn-outline" onClick={() => { setEditingStudent(null); setStudentForm({name:'', reg_number:'', class:'', email:''}); }}>
+                                                    <button type="button" className="btn-outline" onClick={() => { setEditingStudent(null); setStudentForm({full_name:'', admission_number:'', class_level:''}); }}>
                                                         Cancel
                                                     </button>
                                                 )}
@@ -519,10 +499,9 @@ export default function DashboardPage() {
                                             <div className="student-grid">
                                                 {students.map((s) => (
                                                     <div key={s.id} className="student-card">
-                                                        <div className="student-name">{s.name}</div>
-                                                        <div className="student-class">{s.class}</div>
-                                                        {s.email && <div style={{fontSize:'13px', color:'#5F5E5A', marginBottom:'.5rem'}}>{s.email}</div>}
-                                                        <div className="student-number">Reg: {s.reg_number}</div>
+                                                        <div className="student-name">{s.full_name}</div>
+                                                        <div className="student-class">{s.class_level}</div>
+                                                        <div className="student-number">Adm: {s.admission_number}</div>
                                                         <div style={{marginTop:'1.25rem', display:'flex', gap:'.5rem', flexWrap:'wrap'}}>
                                                             <button className="btn-secondary" onClick={() => startEditStudent(s)} style={{fontSize:'13px', padding:'8px 16px'}} disabled>
                                                                 Edit
