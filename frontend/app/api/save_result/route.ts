@@ -1,16 +1,16 @@
-import { NextResponse } from 'next/server'
-import { requestBackend } from '../../../utils/backendProxy'
+import { NextResponse } from 'next/server';
+import { requestBackend } from '@/utils/backendProxy';
 
 export async function POST(request: Request) {
   try {
-    const body = await request.json()
-    const data = await requestBackend('/save_result.php', 'POST', body)
-    return NextResponse.json(data)
-  } catch (error: any) {
-    console.error('API Route Error:', error.message)
+    const body = await request.json();
+    const data = await requestBackend('/save_result.php', 'POST', body);
+    return NextResponse.json(data);
+  } catch (err: any) {
     return NextResponse.json(
-      { error: 'Failed to save result', details: error.message },
-      { status: 500 }
-    )
+      { error: err.response?.data?.error || err.message || 'Failed to save result' },
+      { status: err.response?.status || 500 }
+    );
   }
 }
+export const dynamic = 'force-dynamic';

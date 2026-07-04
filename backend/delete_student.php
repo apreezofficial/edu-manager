@@ -1,4 +1,5 @@
 <?php
+// backend/delete_student.php – Delete a student record
 header('Content-Type: application/json');
 header('Access-Control-Allow-Origin: *');
 header('Access-Control-Allow-Methods: POST, OPTIONS');
@@ -11,6 +12,7 @@ require_once __DIR__ . '/config.php';
 require_once __DIR__ . '/json_db.php';
 
 $body = json_decode(file_get_contents('php://input'), true);
+
 if (!isset($body['pin']) || $body['pin'] !== 'APWERB12') {
     http_response_code(401);
     echo json_encode(['error' => 'Invalid PIN']);
@@ -19,17 +21,22 @@ if (!isset($body['pin']) || $body['pin'] !== 'APWERB12') {
 
 if (!isset($body['id'])) {
     http_response_code(400);
-    echo json_encode(['error' => 'Missing staff ID']);
+    echo json_encode(['error' => 'Missing student ID']);
     exit;
 }
 
-$updates = [];
-if (isset($body['name'])) $updates['name'] = trim($body['name']);
-if (isset($body['role'])) $updates['role'] = trim($body['role']);
-if (isset($body['email'])) $updates['email'] = trim($body['email']);
-if (isset($body['staff_number'])) $updates['staff_number'] = trim($body['staff_number']);
-if (isset($body['subjects'])) $updates['subjects'] = is_array($body['subjects']) ? $body['subjects'] : [];
+try {
+    $id = (int)$body['id'];
+    
+    // Cascading or orphaned handling: optionally delete student's results or let it cascade.
+    // For safety, delete student's results too if needed, or simply delete the student.
+    // We will delete the student.
+    $deleted = json_delete('students', $id);
 
-json_update('staff', (int)$body['id'], $updates);
-echo json_encode(['success' => true, 'message' => 'Staff updated']);
+    echo json_encode(['success' => true, 'message' => 'Student deleted successfully', 'deleted' => $deleted]);
+
+} catch (Exception $e) {
+    http_response_code(500);
+    echo json_encode(['error' => 'Failed to delete student: ' . $e->getMessage()]);
+}
 ?>

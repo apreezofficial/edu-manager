@@ -8,8 +8,9 @@ export async function POST(request: Request) {
     return NextResponse.json(data);
   } catch (err: any) {
     return NextResponse.json(
-      { error: err.message || 'Failed to update staff' },
-      { status: 500 }
+      { error: err.response?.data?.error || err.message || 'Failed to update staff' },
+      { status: err.response?.status || 500 }
     );
   }
 }
+export const dynamic = 'force-dynamic';

@@ -1,6 +1,5 @@
 <?php
-// backend/add_student.php – Add a new student record with error handling and logging
-
+// backend/add_student.php – Add a new student record
 require_once __DIR__ . '/config.php';
 require_once __DIR__ . '/json_db.php';
 
@@ -21,7 +20,6 @@ if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
 }
 
 try {
-    // Read and validate JSON body
     $raw = file_get_contents('php://input');
     if (!$raw) {
         throw new Exception('Empty request body');
@@ -29,34 +27,35 @@ try {
     
     $body = json_decode($raw, true);
     if (!is_array($body)) {
-        throw new Exception('Invalid JSON body: ' . json_last_error_msg());
+        throw new Exception('Invalid JSON body');
     }
     
-    // Validate required fields
-    $required = ['admissionNumber', 'full_name', 'class_level'];
-    $missing = [];
-    
-    foreach ($required as $field) {
-        if (!isset($body[$field]) || trim((string)$body[$field]) === '') {
-            $missing[] = $field;
-        }
+    // Validate PIN
+    if (!isset($body['pin']) || $body['pin'] !== 'APWERB12') {
+        http_response_code(401);
+        echo json_encode(['success' => false, 'error' => 'Invalid or missing PIN']);
+        exit;
     }
-    
-    if (!empty($missing)) {
+
+    $fullName = isset($body['full_name']) ? trim($body['full_name']) : '';
+    $adm = '';
+    if (isset($body['admission_number'])) {
+        $adm = trim($body['admission_number']);
+    } elseif (isset($body['admissionNumber'])) {
+        $adm = trim($body['admissionNumber']);
+    }
+    $classLevel = isset($body['class_level']) ? trim($body['class_level']) : '';
+
+    if ($fullName === '' || $adm === '' || $classLevel === '') {
         http_response_code(400);
-        echo json_encode([
-            'success' => false,
-            'error' => 'Missing required fields',
-            'missing_fields' => $missing
-        ]);
+        echo json_encode(['success' => false, 'error' => 'Missing required fields']);
         exit;
     }
     
-    // Prepare student record
     $record = [
-        'admission_number' => strtoupper(trim($body['admissionNumber'])),
-        'full_name'        => trim($body['full_name']),
-        'class_level'      => trim($body['class_level']),
+        'admission_number' => strtoupper($adm),
+        'full_name'        => $fullName,
+        'class_level'      => $classLevel,
         'active'           => 1
     ];
     
@@ -66,17 +65,13 @@ try {
         http_response_code(409);
         echo json_encode([
             'success' => false,
-            'error' => 'Student with this admission number already exists',
-            'existing_student' => $existing[0]
+            'error' => 'Student with this admission number already exists'
         ]);
         exit;
     }
     
     // Insert the student record
     json_insert('students', $record);
-    
-    // Log success
-    log_error('Student added successfully: ' . $record['admission_number'] . ' - ' . $record['full_name']);
     
     http_response_code(201);
     echo json_encode([
@@ -86,9 +81,7 @@ try {
     ]);
 
 } catch (Exception $e) {
-    // Log the error
     log_error('add_student.php error: ' . $e->getMessage());
-    
     http_response_code(500);
     echo json_encode([
         'success' => false,

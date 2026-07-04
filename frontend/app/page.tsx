@@ -56,12 +56,12 @@ function Reveal({ children, delay = 0, className = "" }: { children: React.React
 }
 
 const WHY_CARDS = [
-  { emoji: "🎓", title: "Qualified Teachers", body: "Experienced, caring educators who give every child personal attention and guide them to academic excellence." },
-  { emoji: "💻", title: "Modern Learning", body: "Interactive classes, updated curriculum, digital tools, and real-world skills that prepare kids for tomorrow." },
-  { emoji: "🛡️", title: "Safe Environment", body: "Secure and friendly atmosphere where every student feels supported, seen, and confident every single day." },
-  { emoji: "🎨", title: "Creative Arts", body: "Music, drama, drawing and crafts woven into the school day to grow the whole child — not just the mind." },
-  { emoji: "⚽", title: "Sports & Fitness", body: "Regular sporting activities that build teamwork, discipline, and a healthy body alongside a healthy mind." },
-  { emoji: "🙏", title: "Moral Values", body: "Character development, respect, and integrity form the backbone of everything we teach at Delightsome Kids." },
+  { title: "Qualified Teachers", body: "Experienced, caring educators who give every child personal attention and guide them to academic excellence." },
+  { title: "Modern Learning", body: "Interactive classes, updated curriculum, digital tools, and real-world skills that prepare kids for tomorrow." },
+  { title: "Safe Environment", body: "Secure and friendly atmosphere where every student feels supported, seen, and confident every single day." },
+  { title: "Creative Arts", body: "Music, drama, drawing and crafts woven into the school day to grow the whole child — not just the mind." },
+  { title: "Sports & Fitness", body: "Regular sporting activities that build teamwork, discipline, and a healthy body alongside a healthy mind." },
+  { title: "Moral Values", body: "Character development, respect, and integrity form the backbone of everything we teach at Delightsome Kids." },
 ]
 
 const TESTIMONIALS = [
@@ -78,12 +78,12 @@ const PROGRAMMES = [
 ]
 
 const GALLERY_ITEMS = [
-  { emoji: "🎉", label: "Prize Giving Day 2024" },
-  { emoji: "⚽", label: "Inter-House Sports" },
-  { emoji: "🎭", label: "Cultural Day" },
-  { emoji: "📚", label: "Reading Week" },
-  { emoji: "🎨", label: "Art Exhibition" },
-  { emoji: "🏆", label: "Quiz Competition" },
+  { label: "Prize Giving Day 2024" },
+  { label: "Inter-House Sports" },
+  { label: "Cultural Day" },
+  { label: "Reading Week" },
+  { label: "Art Exhibition" },
+  { label: "Quiz Competition" },
 ]
 
 export default function HomePage() {
@@ -96,7 +96,7 @@ export default function HomePage() {
   }, [])
 
   /* Ticker */
-  const ticker = "🌟 Excellence · Discipline · Fun · Innovation · Character · Creativity · Leadership · Joy ·"
+  const ticker = "Excellence · Discipline · Fun · Innovation · Character · Creativity · Leadership · Joy ·"
 
   return (
     <>
@@ -246,7 +246,7 @@ export default function HomePage() {
           animation: bounce 2s ease-in-out infinite;
         }
         @keyframes bounce { 0%,100%{transform:translateY(0)} 50%{transform:translateY(6px)} }
-        .dk-hero-scroll svg { width: 24px; height: 24px; stroke: rgba(255,255,255,0.4); fill: none; stroke-width: 2; }
+        .dk-hero-scroll-arrow { font-size: 16px; color: rgba(255,255,255,0.6); }
 
         @keyframes fadeDown {
           from { opacity: 0; transform: translateY(-24px); }
@@ -290,17 +290,6 @@ export default function HomePage() {
           text-align: center;
           position: relative;
           overflow: hidden;
-        }
-        .dk-motto::before {
-          content: '"';
-          position: absolute;
-          font-family: 'Fredoka One', cursive;
-          font-size: 400px;
-          color: rgba(0,0,0,0.04);
-          top: -80px; left: 20px;
-          line-height: 1;
-          pointer-events: none;
-          user-select: none;
         }
         .dk-motto-tag {
           font-size: 12px; font-weight: 800;
@@ -369,16 +358,12 @@ export default function HomePage() {
           box-shadow: 0 16px 40px rgba(29,158,117,0.12);
           border-color: #1D9E75;
         }
-        .dk-card-emoji {
-          font-size: 2.5rem;
-          display: block;
-          margin-bottom: 1rem;
-        }
         .dk-card h3 {
           font-family: 'Fredoka One', cursive;
           font-size: 1.3rem;
           color: #2C2C2A;
           margin-bottom: 0.5rem;
+          margin-top: 0.5rem;
         }
         .dk-card p {
           font-size: 15px;
@@ -421,14 +406,6 @@ export default function HomePage() {
           color: #444441;
           line-height: 1.7;
         }
-        .dk-prog-deco {
-          position: absolute;
-          bottom: -20px; right: -20px;
-          font-size: 5rem;
-          opacity: 0.15;
-          pointer-events: none;
-          user-select: none;
-        }
 
         /* ── TESTIMONIALS ── */
         .dk-testimonials-grid {
@@ -442,16 +419,6 @@ export default function HomePage() {
           padding: 2rem;
           border: 1.5px solid #E8E6DE;
           position: relative;
-        }
-        .dk-testi::before {
-          content: '"';
-          font-family: 'Fredoka One', cursive;
-          font-size: 5rem;
-          color: #E1F5EE;
-          position: absolute;
-          top: -10px; left: 16px;
-          line-height: 1;
-          pointer-events: none;
         }
         .dk-testi p {
           font-size: 15px;
@@ -468,7 +435,9 @@ export default function HomePage() {
           border-radius: 50%;
           background: #E1F5EE;
           display: flex; align-items: center; justify-content: center;
-          font-size: 1.3rem;
+          font-size: 1.1rem;
+          font-weight: 800;
+          color: #1D9E75;
           flex-shrink: 0;
         }
         .dk-testi-name {
@@ -482,7 +451,7 @@ export default function HomePage() {
           color: #888780;
           display: block;
         }
-        .dk-stars { color: #FAC775; font-size: 14px; margin-bottom: 0.75rem; }
+        .dk-rating { color: #FAC775; font-size: 12px; font-weight: 800; margin-bottom: 0.75rem; letter-spacing: 2px; }
 
         /* ── GALLERY ── */
         .dk-gallery-grid {
@@ -493,7 +462,7 @@ export default function HomePage() {
         .dk-gallery-item {
           background: #fff;
           border-radius: 16px;
-          aspect-ratio: 1;
+          aspect-ratio: 1.6;
           display: flex;
           flex-direction: column;
           align-items: center;
@@ -508,10 +477,9 @@ export default function HomePage() {
           transform: scale(1.04) rotate(1.5deg);
           box-shadow: 0 12px 30px rgba(0,0,0,0.1);
         }
-        .dk-gallery-emoji { font-size: 2.8rem; }
         .dk-gallery-label {
-          font-size: 12px; font-weight: 700;
-          color: #5F5E5A;
+          font-size: 14px; font-weight: 800;
+          color: #1D9E75;
           text-align: center;
           padding: 0 8px;
         }
@@ -523,15 +491,6 @@ export default function HomePage() {
           text-align: center;
           position: relative;
           overflow: hidden;
-        }
-        .dk-cta-band::before {
-          content: '🎓';
-          position: absolute;
-          font-size: 20rem;
-          opacity: 0.06;
-          top: -3rem; right: -3rem;
-          pointer-events: none;
-          user-select: none;
         }
         .dk-cta-band h2 {
           font-family: 'Fredoka One', cursive;
@@ -598,7 +557,7 @@ export default function HomePage() {
           <div className="dk-hero-blob2" />
 
           <div className="dk-hero-badge">
-            🌟 Itori, Ogun State &nbsp;·&nbsp; Est. 2018
+            Itori, Ogun State &nbsp;·&nbsp; Est. 2018
           </div>
 
           <h1>
@@ -611,16 +570,16 @@ export default function HomePage() {
 
           <div className="dk-hero-btns">
             <Link href="/admissions" className="dk-btn-primary">
-              🎒 Enroll Now
+              Enroll Now
             </Link>
             <Link href="/about" className="dk-btn-outline">
-              Learn More →
+              Learn More
             </Link>
           </div>
 
           <div className="dk-hero-scroll" aria-hidden="true">
             <span>SCROLL</span>
-            <svg viewBox="0 0 24 24"><path d="M12 5v14M5 12l7 7 7-7" strokeLinecap="round" strokeLinejoin="round"/></svg>
+            <div className="dk-hero-scroll-arrow">v</div>
           </div>
         </section>
 
@@ -650,7 +609,7 @@ export default function HomePage() {
             <blockquote>
               "Raising Future Leaders with Knowledge, Morals, and Creativity"
             </blockquote>
-            <p className="dk-motto-sub">— The Delightsome Kids Promise</p>
+            <p className="dk-motto-sub">The Delightsome Kids Promise</p>
           </Reveal>
         </section>
 
@@ -668,7 +627,6 @@ export default function HomePage() {
               {WHY_CARDS.map((card, i) => (
                 <Reveal key={card.title} delay={i * 80}>
                   <div className="dk-card">
-                    <span className="dk-card-emoji">{card.emoji}</span>
                     <h3>{card.title}</h3>
                     <p>{card.body}</p>
                   </div>
@@ -695,9 +653,6 @@ export default function HomePage() {
                     <span className="dk-prog-tag">{p.tag}</span>
                     <div className="dk-prog-name">{p.name}</div>
                     <p className="dk-prog-desc">{p.desc}</p>
-                    <span className="dk-prog-deco">
-                      {p.name === "Crèche" ? "👶" : p.name === "Nursery" ? "🌱" : p.name === "Primary School" ? "📚" : "⭐"}
-                    </span>
                   </div>
                 </Reveal>
               ))}
@@ -716,10 +671,10 @@ export default function HomePage() {
               {TESTIMONIALS.map((t, i) => (
                 <Reveal key={t.name} delay={i * 100}>
                   <div className="dk-testi">
-                    <div className="dk-stars">★★★★★</div>
+                    <div className="dk-rating">Rating: Excellent</div>
                     <p>"{t.text}"</p>
                     <div className="dk-testi-author">
-                      <div className="dk-testi-avatar">👩</div>
+                      <div className="dk-testi-avatar">{t.name ? t.name.replace(/^(Mr\.|Mrs\.)\s+/i, '').charAt(0) : 'P'}</div>
                       <div>
                         <span className="dk-testi-name">{t.name}</span>
                         <span className="dk-testi-role">{t.role}</span>
@@ -746,7 +701,6 @@ export default function HomePage() {
               {GALLERY_ITEMS.map((item, i) => (
                 <Reveal key={item.label} delay={i * 60}>
                   <Link href="/gallery" className="dk-gallery-item">
-                    <span className="dk-gallery-emoji">{item.emoji}</span>
                     <span className="dk-gallery-label">{item.label}</span>
                   </Link>
                 </Reveal>
@@ -761,7 +715,7 @@ export default function HomePage() {
             <h2>Ready to join the family?</h2>
             <p>Admission is open for the new school year. Spaces fill up fast — secure your child's spot today.</p>
             <Link href="/admissions" className="dk-btn-primary" style={{ fontSize: "18px", padding: "16px 40px" }}>
-              🎒 Apply for Admission
+              Apply for Admission
             </Link>
           </Reveal>
         </section>
@@ -771,25 +725,25 @@ export default function HomePage() {
           <div className="dk-contact-grid">
             <Reveal delay={0}>
               <div className="dk-contact-item">
-                <h4>📍 Find Us</h4>
+                <h4>Find Us</h4>
                 <p>Delightsome Kids School<br />Itori, Ewekoro LGA<br />Ogun State, Nigeria</p>
               </div>
             </Reveal>
             <Reveal delay={80}>
-                  <div className="dk-contact-item">
-                    <h4>📞 Call Us</h4>
-                    <p>08071690299<br />08071690959<br />Mon – Fri, 8am – 4pm</p>
-                  </div>
-                </Reveal>
-                <Reveal delay={160}>
-                  <div className="dk-contact-item">
-                    <h4>📧 Email Us</h4>
-                    <p>delightsomekidsschool@gmail.com</p>
-                  </div>
-                </Reveal>
+              <div className="dk-contact-item">
+                <h4>Call Us</h4>
+                <p>08071690299<br />08071690959<br />Mon – Fri, 8am – 4pm</p>
+              </div>
+            </Reveal>
+            <Reveal delay={160}>
+              <div className="dk-contact-item">
+                <h4>Email Us</h4>
+                <p>delightsomekidsschool@gmail.com</p>
+              </div>
+            </Reveal>
             <Reveal delay={240}>
               <div className="dk-contact-item">
-                <h4>🕐 School Hours</h4>
+                <h4>School Hours</h4>
                 <p>Mon – Fri: 8:00am – 3:00pm<br />After-school club till 5pm</p>
               </div>
             </Reveal>

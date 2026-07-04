@@ -111,11 +111,11 @@ export default function Footer() {
         .dk-footer-brand-body { font-size: 14px; line-height: 1.75; color: #888780; margin-bottom: 1.5rem; max-width: 300px; }
 
         /* social */
-        .dk-footer-socials { display: flex; gap: 0.6rem; flex-wrap: wrap; }
+        .dk-footer-socials { display: flex; gap: 0.5rem; flex-wrap: wrap; }
         .dk-footer-social {
-          width: 38px; height: 38px; border-radius: 10px;
+          border-radius: 8px;
           background: rgba(255,255,255,0.07); border: 1px solid rgba(255,255,255,0.1);
-          display: flex; align-items: center; justify-content: center; font-size: 16px;
+          padding: 6px 12px; font-size: 12px; font-weight: 800; color: #fff;
           text-decoration: none; transition: background 0.2s, transform 0.2s;
         }
         .dk-footer-social:hover { background: rgba(29,158,117,0.25); transform: translateY(-3px); }
@@ -133,7 +133,6 @@ export default function Footer() {
 
         /* contact items */
         .dk-footer-contact-item { display: flex; gap: 10px; align-items: flex-start; margin-bottom: 0.75rem; }
-        .dk-footer-contact-icon { font-size: 16px; flex-shrink: 0; margin-top: 2px; }
         .dk-footer-contact-text { font-size: 13px; color: #888780; line-height: 1.6; }
 
         /* divider */
@@ -166,7 +165,7 @@ export default function Footer() {
           position: fixed; bottom: 2rem; right: 2rem; z-index: 999;
           width: 44px; height: 44px; border-radius: 12px;
           background: #1D9E75; color: #fff; border: none;
-          font-size: 20px; cursor: pointer; display: flex; align-items: center; justify-content: center;
+          font-size: 16px; font-weight: 800; cursor: pointer; display: flex; align-items: center; justify-content: center;
           box-shadow: 0 4px 16px rgba(29,158,117,0.4);
           transition: transform 0.2s, box-shadow 0.2s;
         }
@@ -188,12 +187,12 @@ export default function Footer() {
         {/* Newsletter */}
         <div className="dk-footer-nl">
           <div className="dk-footer-nl-text">
-            <h4>📬 Stay Updated</h4>
+            <h4>Stay Updated</h4>
             <p>Get school news and announcements straight to your inbox.</p>
           </div>
           <div className="dk-footer-nl-form">
             <input className="dk-footer-nl-input" type="email" placeholder="Your email address" aria-label="Email for newsletter" />
-            <button className="dk-footer-nl-btn">Subscribe ✓</button>
+            <button className="dk-footer-nl-btn">Subscribe</button>
           </div>
         </div>
 
@@ -205,7 +204,7 @@ export default function Footer() {
             <Link href="/" className="dk-footer-logo">
               <div className="dk-footer-logo-icon">
                 <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
-                  <path d="M12 3L1 9l11 6 9-4.91V17h2V9L12 3zM5 13.18v4L12 21l7-3.82v-4L12 17l-7-3.82z"/>
+                  <path d="M12 3L1 9l11 6 9-4.91V17h2V9L12 3zM5 13.18v4L12 21l7-3.82v-4L12 17l-7-3.82z" />
                 </svg>
               </div>
               <div>
@@ -217,50 +216,44 @@ export default function Footer() {
               A forward-thinking school in Itori, Ogun State, dedicated to raising confident, creative, and responsible children since 2018.
             </p>
             <div className="dk-footer-socials" aria-label="Social media links">
-              {[["📘","https://","Facebook"],["📸","https://","Instagram"],["🐦","https://","Twitter"],["▶️","https://","YouTube"]].map(([e, h, n]) => (
-                <a key={n as string} href={h as string} className="dk-footer-social" aria-label={n as string} title={n as string}>{e}</a>
+              {[["Facebook", "https://"], ["Instagram", "https://"], ["Twitter", "https://"], ["YouTube", "https://"]].map(([name, url]) => (
+                <a key={name} href={url} className="dk-footer-social" aria-label={name} title={name}>{name}</a>
               ))}
             </div>
           </div>
 
           {/* Quick links */}
           <nav className="dk-footer-col" aria-label="Quick links">
-            <h5>🔗 Quick Links</h5>
+            <h5>Quick Links</h5>
             {QUICK_LINKS.map(l => <Link key={l.href} href={l.href}>{l.label}</Link>)}
           </nav>
 
           {/* Programmes */}
           <div className="dk-footer-col">
-            <h5>🎓 Programmes</h5>
+            <h5>Programmes</h5>
             {PROGRAMMES.map(p => <p key={p.label}>{p.label}</p>)}
           </div>
 
           {/* Contact */}
           <div className="dk-footer-col">
-            <h5>📞 Contact</h5>
+            <h5>Contact</h5>
             <div className="dk-footer-contact-item">
-              <span className="dk-footer-contact-icon">📍</span>
-              <span className="dk-footer-contact-text">Itori, Ewekoro LGA, Ogun State, Nigeria</span>
+              <span className="dk-footer-contact-text">Address: Itori, Ewekoro LGA, Ogun State, Nigeria</span>
             </div>
             <div className="dk-footer-contact-item">
-              <span className="dk-footer-contact-icon">📞</span>
-              <span className="dk-footer-contact-text">08071690299</span>
+              <span className="dk-footer-contact-text">Phone: 08071690299</span>
             </div>
             <div className="dk-footer-contact-item">
-              <span className="dk-footer-contact-icon">📞</span>
-              <span className="dk-footer-contact-text">08071690959</span>
+              <span className="dk-footer-contact-text">Phone: 08071690959</span>
             </div>
             <div className="dk-footer-contact-item">
-              <span className="dk-footer-contact-icon">💬</span>
-              <span className="dk-footer-contact-text">08134526190 (WhatsApp)</span>
+              <span className="dk-footer-contact-text">WhatsApp: 08134526190</span>
             </div>
             <div className="dk-footer-contact-item">
-              <span className="dk-footer-contact-icon">📧</span>
-              <span className="dk-footer-contact-text">delightsomekidsschool@gmail.com</span>
+              <span className="dk-footer-contact-text">Email: delightsomekidsschool@gmail.com</span>
             </div>
             <div className="dk-footer-contact-item">
-              <span className="dk-footer-contact-icon">🕐</span>
-              <span className="dk-footer-contact-text">Mon–Fri: 8:00am – 3:00pm</span>
+              <span className="dk-footer-contact-text">Hours: Mon-Fri: 8:00am - 3:00pm</span>
             </div>
           </div>
         </div>
@@ -270,7 +263,7 @@ export default function Footer() {
         {/* Bottom bar */}
         <div className="dk-footer-bottom">
           <p className="dk-footer-copy">
-            © {year} <strong>Delightsome Kids School</strong>. All rights reserved. Made with 💚 in Itori.
+            © {year} <strong>Delightsome Kids School</strong>. All rights reserved. Made in Itori.
           </p>
           <nav className="dk-footer-legal" aria-label="Legal links">
             {LEGAL_LINKS.map(l => <Link key={l.href} href={l.href}>{l.label}</Link>)}
@@ -285,7 +278,7 @@ export default function Footer() {
         aria-label="Back to top"
         title="Back to top"
       >
-        ↑
+        Top
       </button>
     </>
   )

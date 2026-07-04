@@ -4,14 +4,14 @@ import { useState } from "react"
 import Link from "next/link"
 
 const NAV_LINKS = [
-  { href: "/", label: "Home", icon: "🏠" },
-  { href: "/about", label: "About Us", icon: "ℹ️" },
-  { href: "/blog", label: "Blog", icon: "📝" },
-  { href: "/gallery", label: "Gallery", icon: "🖼️" },
-  { href: "/admissions", label: "Admissions", icon: "📋" },
-  { href: "/portal", label: "Results", icon: "📊" },
-  { href: "/dashboard", label: "Admin", icon: "⚙️" },
-  { href: "/legal/contact", label: "Contact", icon: "✉️" },
+  { href: "/", label: "Home" },
+  { href: "/about", label: "About Us" },
+  { href: "/blog", label: "Blog" },
+  { href: "/gallery", label: "Gallery" },
+  { href: "/admissions", label: "Admissions" },
+  { href: "/portal", label: "Results" },
+  { href: "/dashboard", label: "Admin" },
+  { href: "/legal/contact", label: "Contact" },
 ]
 
 const LEGAL_LINKS = [
@@ -28,7 +28,8 @@ export default function Header() {
       <style>{`
         @import url('https://fonts.googleapis.com/css2?family=Fredoka+One&family=Nunito:wght@400;600;700&display=swap');
 
-        .dk-header * { box-sizing: border-box; margin: 0; padding: 0; }
+        .dk-header { box-sizing: border-box; margin: 0; padding: 0; }
+        .dk-header * { box-sizing: border-box; }
 
         .dk-header {
           font-family: 'Nunito', sans-serif;
@@ -122,7 +123,7 @@ export default function Header() {
           background: #F1EFE8;
           border: 2px solid transparent;
           border-radius: 999px;
-          padding: 9px 16px 9px 40px;
+          padding: 9px 16px 9px 16px;
           font-size: 14px;
           color: #2C2C2A;
           width: 200px;
@@ -134,15 +135,6 @@ export default function Header() {
           border-color: #1D9E75;
           background: #fff;
           width: 240px;
-        }
-        .dk-search-icon {
-          position: absolute;
-          left: 13px;
-          top: 50%;
-          transform: translateY(-50%);
-          color: #888780;
-          font-size: 16px;
-          pointer-events: none;
         }
 
         /* ── CTA button ── */
@@ -301,11 +293,11 @@ export default function Header() {
 
         {/* Top bar */}
         <div className="dk-topbar">
-          <a href="tel:08071690299">📞 08071690299</a>
+          <a href="tel:08071690299">Phone: 08071690299</a>
           <span className="dk-topbar-divider">|</span>
-          <a href="https://wa.me/2348134526190" target="_blank" rel="noopener noreferrer">💬 WhatsApp: 08134526190</a>
+          <a href="https://wa.me/2348134526190" target="_blank" rel="noopener noreferrer">WhatsApp: 08134526190</a>
           <span className="dk-topbar-divider">|</span>
-          <a href="mailto:delightsomekidsschool@gmail.com">📧 delightsomekidsschool@gmail.com</a>
+          <a href="mailto:delightsomekidsschool@gmail.com">Email: delightsomekidsschool@gmail.com</a>
           <span className="dk-topbar-divider">|</span>
           <Link href="/portal">Portal Login</Link>
           {LEGAL_LINKS.map((l) => (
@@ -334,7 +326,6 @@ export default function Header() {
 
           {/* Search */}
           <div className="dk-search">
-            <span className="dk-search-icon" aria-hidden="true">🔍</span>
             <input
               type="search"
               placeholder="Search the site…"
@@ -346,7 +337,7 @@ export default function Header() {
 
           {/* CTA */}
           <Link href="/admissions" className="dk-cta">
-            ➜ Enroll Now
+            Enroll Now
           </Link>
 
           {/* Hamburger */}
@@ -379,7 +370,6 @@ export default function Header() {
         >
           {NAV_LINKS.map((link) => (
             <Link key={link.href} href={link.href} onClick={() => setMenuOpen(false)}>
-              <span>{link.icon}</span>
               {link.label}
             </Link>
           ))}
@@ -388,7 +378,7 @@ export default function Header() {
             className="dk-mobile-enroll"
             onClick={() => setMenuOpen(false)}
           >
-            ➜ Enroll Now
+            Enroll Now
           </Link>
         </nav>
 

@@ -15,6 +15,12 @@ type ResultRecord = {
   date: string
 }
 
+interface LoggedInStaff {
+  name: string
+  role: string
+  subjects: string[]
+}
+
 const CLASS_LEVELS = ["Nursery 1", "Nursery 2", "Primary 1", "Primary 2", "Primary 3", "Primary 4", "Primary 5", "Primary 6"]
 const TERMS = ["First Term", "Second Term", "Third Term"]
 const SUBJECTS = ["Mathematics", "English Language", "Basic Science", "Social Studies", "Yoruba", "CRS", "Physical Education", "Creative Arts", "Computer Studies"]
@@ -65,9 +71,9 @@ function printResults(results: ResultRecord[], title: string) {
     .footer{margin-top:2rem;font-size:12px;color:#aaa;border-top:1px solid #eee;padding-top:1rem}
   </style></head><body>
   <h1>Delightsome Kids School</h1>
-  <p class="sub">${title} - Generated ${new Date().toLocaleDateString("en-NG", { weekday:"long", year:"numeric", month:"long", day:"numeric" })}</p>
+  <p class="sub">${title} - Generated ${new Date().toLocaleDateString("en-NG", { weekday: "long", year: "numeric", month: "long", day: "numeric" })}</p>
   <table><thead><tr><th>#</th><th>Student</th><th>Adm. No.</th><th>Class</th><th>Term</th><th>Subject</th><th>Score</th><th>Grade</th><th>Remarks</th></tr></thead>
-  <tbody>${results.map((r, i) => `<tr><td>${i+1}</td><td><b>${r.student}</b></td><td>${r.admissionNumber}</td><td>${r.classLevel}</td><td>${r.term}</td><td>${r.subject}</td><td>${r.score}</td><td class="${r.grade}">${r.grade}</td><td>${r.remarks}</td></tr>`).join("")}</tbody></table>
+  <tbody>${results.map((r, i) => `<tr><td>${i + 1}</td><td><b>${r.student}</b></td><td>${r.admissionNumber}</td><td>${r.classLevel}</td><td>${r.term}</td><td>${r.subject}</td><td>${r.score}</td><td class="${r.grade}">${r.grade}</td><td>${r.remarks}</td></tr>`).join("")}</tbody></table>
   <div class="footer">Delightsome Kids School - Itori, Ogun State</div>
   </body></html>`)
   w.document.close(); w.print()
@@ -106,7 +112,7 @@ export default function PortalPage() {
       <section className="pk-hero">
         <div className="pk-hero-dots" />
         <div className="pk-hero-inner">
-          <div className="pk-badge">🏫 Delightsome Kids School</div>
+          <div className="pk-badge">Delightsome Kids School</div>
           <h1>School <em>Portal</em></h1>
           <p>Students check results. Staff log and manage records.</p>
         </div>
@@ -132,18 +138,18 @@ function HomeScreen({ onSelect }: { onSelect: (s: Screen) => void }) {
       <div className="pk-role-grid">
         <Reveal delay={80}>
           <button className="pk-role-card pk-role-student" onClick={() => onSelect("student")}>
-            <div className="pk-role-icon">🎒</div>
+            <div className="pk-role-icon">Student Portal</div>
             <h3>Student</h3>
             <p>Check your results using your admission number.</p>
-            <div className="pk-role-arrow pk-arrow-teal">Enter portal →</div>
+            <div className="pk-role-arrow pk-arrow-teal">Enter portal -{">"}</div>
           </button>
         </Reveal>
         <Reveal delay={140}>
           <button className="pk-role-card pk-role-staff" onClick={() => onSelect("staff")}>
-            <div className="pk-role-icon">👩‍🏫</div>
+            <div className="pk-role-icon">Staff Portal</div>
             <h3>Staff</h3>
             <p>Log student results, manage records, and export reports.</p>
-            <div className="pk-role-arrow pk-arrow-coral">Enter portal →</div>
+            <div className="pk-role-arrow pk-arrow-coral">Enter portal -{">"}</div>
           </button>
         </Reveal>
       </div>
@@ -163,35 +169,34 @@ function StudentPortal({ results, loading, onBack }: { results: ResultRecord[]; 
   function login(e: React.FormEvent) {
     e.preventDefault()
     if (!admNo.trim()) { setError("Please enter your admission number"); return }
-    
+
     setStudentLoading(true)
     setError("")
-    
-    // Fetch results for this specific admission number via local API proxy
+
     fetch(`/api/get_results?adm=${encodeURIComponent(admNo.trim())}`)
-        .then(r => r.json())
-        .then(data => {
-          const fetched = Array.isArray(data) ? data : []
-          if (fetched.length === 0) {
-            setError("No results found for this admission number. Please check and try again, or contact your class teacher.")
-            setStudentLoading(false)
-            return
-          }
-          setStudentResults(fetched);
-          setLoggedIn(true);
-          setStudentLoading(false);
-        })
-        .catch(err => {
-          console.error(err)
-          setError("Error fetching results. Please try again.")
+      .then(r => r.json())
+      .then(data => {
+        const fetched = Array.isArray(data) ? data : []
+        if (fetched.length === 0) {
+          setError("No results found for this admission number. Please check and try again, or contact your class teacher.")
           setStudentLoading(false)
-        })
+          return
+        }
+        setStudentResults(fetched);
+        setLoggedIn(true);
+        setStudentLoading(false);
+      })
+      .catch(err => {
+        console.error(err)
+        setError("Error fetching results. Please try again.")
+        setStudentLoading(false)
+      })
   }
 
   const myResults = useMemo(() =>
-      (Array.isArray(studentResults) ? studentResults : []).filter(r =>
-        (!filterTerm || r.term === filterTerm)
-      ), [studentResults, filterTerm])
+    (Array.isArray(studentResults) ? studentResults : []).filter(r =>
+      (!filterTerm || r.term === filterTerm)
+    ), [studentResults, filterTerm])
 
   const myInfo = (Array.isArray(studentResults) ? studentResults : []).find(r => r.admissionNumber.toLowerCase() === admNo.trim().toLowerCase())
   const avgScore = myResults.length ? (myResults.reduce((s, r) => s + (parseFloat(r.score) || 0), 0) / myResults.length).toFixed(1) : "—"
@@ -201,9 +206,8 @@ function StudentPortal({ results, loading, onBack }: { results: ResultRecord[]; 
     <div className="pk-portal-wrap">
       {!loggedIn ? (
         <Reveal>
-          <button className="pk-back-btn" onClick={onBack}>← Back to Home</button>
+          <button className="pk-back-btn" onClick={onBack}>Back to Home</button>
           <div className="pk-login-card">
-            <div className="pk-login-icon">🎒</div>
             <h2>Student Result Check</h2>
             <p className="pk-login-sub">Enter your admission number to view your results</p>
             <form onSubmit={login}>
@@ -211,7 +215,7 @@ function StudentPortal({ results, loading, onBack }: { results: ResultRecord[]; 
                 value={admNo} onChange={e => { setAdmNo(e.target.value); setError("") }} autoFocus disabled={studentLoading} />
               {error && <p className="pk-login-error">{error}</p>}
               <button className="pk-login-btn pk-btn-teal" type="submit" disabled={studentLoading || !admNo.trim()}>
-                {studentLoading ? "Checking..." : "Check My Results →"}
+                {studentLoading ? "Checking..." : "Check My Results"}
               </button>
             </form>
             <p className="pk-login-hint">Your admission number is on your school ID card or report card.</p>
@@ -222,13 +226,13 @@ function StudentPortal({ results, loading, onBack }: { results: ResultRecord[]; 
           <Reveal>
             <div className="pk-topbar">
               <div>
-                <p className="pk-welcome-name">👋 {myInfo?.student}</p>
+                <p className="pk-welcome-name">{myInfo?.student}</p>
                 <p className="pk-welcome-meta">{myInfo?.classLevel} · {admNo.toUpperCase()}</p>
               </div>
-              <div style={{ display:"flex", gap:".6rem", flexWrap:"wrap" }}>
-                <button className="pk-btn pk-btn-outline" onClick={() => printResults(myResults, `${myInfo?.student} Results`)}>🖨️ Print</button>
-                <button className="pk-btn pk-btn-outline" onClick={() => { setLoggedIn(false); setAdmNo(""); setError("") }}>🔄 Switch</button>
-                <button className="pk-btn pk-btn-outline" onClick={onBack}>← Home</button>
+              <div style={{ display: "flex", gap: ".6rem", flexWrap: "wrap" }}>
+                <button className="pk-btn pk-btn-outline" onClick={() => printResults(myResults, `${myInfo?.student} Results`)}>Print</button>
+                <button className="pk-btn pk-btn-outline" onClick={() => { setLoggedIn(false); setAdmNo(""); setError("") }}>Switch</button>
+                <button className="pk-btn pk-btn-outline" onClick={onBack}>Home</button>
               </div>
             </div>
           </Reveal>
@@ -246,15 +250,15 @@ function StudentPortal({ results, loading, onBack }: { results: ResultRecord[]; 
           <Reveal delay={80}>
             <div className="pk-student-stats">
               <div className="pk-sstat">
-                <span className="pk-sstat-num" style={{ color:"#1D9E75" }}>{myResults.length}</span>
+                <span className="pk-sstat-num" style={{ color: "#1D9E75" }}>{myResults.length}</span>
                 <span className="pk-sstat-label">Subjects</span>
               </div>
               <div className="pk-sstat">
-                <span className="pk-sstat-num" style={{ color:"#7F77DD" }}>{avgScore}</span>
+                <span className="pk-sstat-num" style={{ color: "#7F77DD" }}>{avgScore}</span>
                 <span className="pk-sstat-label">Average Score</span>
               </div>
               <div className="pk-sstat">
-                <span className="pk-sstat-num" style={{ color:"#D85A30", fontSize:"1.4rem" }}>{bestSubject?.subject?.split(" ")[0] ?? "—"}</span>
+                <span className="pk-sstat-num" style={{ color: "#D85A30", fontSize: "1.4rem" }}>{bestSubject?.subject?.split(" ")[0] ?? "—"}</span>
                 <span className="pk-sstat-label">Best Subject</span>
               </div>
               <div className="pk-sstat">
@@ -266,9 +270,9 @@ function StudentPortal({ results, loading, onBack }: { results: ResultRecord[]; 
             </div>
           </Reveal>
 
-          {loading ? <div className="pk-loading">⏳ Loading results…</div> :
+          {loading ? <div className="pk-loading">Loading results...</div> :
             myResults.length === 0 ? (
-              <div className="pk-empty"><span>📭</span><p>No results for {filterTerm || "this period"} yet.</p></div>
+              <div className="pk-empty"><p>No results for {filterTerm || "this period"} yet.</p></div>
             ) : (
               <div className="pk-student-results">
                 {myResults.map((r, i) => (
@@ -281,8 +285,8 @@ function StudentPortal({ results, loading, onBack }: { results: ResultRecord[]; 
                       </div>
                       <div className="pk-sc-right">
                         <span className="pk-sc-score" style={{ color: gradeColor(r.grade) }}>{r.score}<small>/100</small></span>
-                        <div className="pk-sc-bar"><div style={{ width:`${scorePct(r.score)}%`, background: gradeColor(r.grade) }} /></div>
-                        <span className="pk-sc-grade" style={{ background: gradeColor(r.grade)+"22", color: gradeColor(r.grade) }}>
+                        <div className="pk-sc-bar"><div style={{ width: `${scorePct(r.score)}%`, background: gradeColor(r.grade) }} /></div>
+                        <span className="pk-sc-grade" style={{ background: gradeColor(r.grade) + "22", color: gradeColor(r.grade) }}>
                           {r.grade} — {gradeLabel(r.grade)}
                         </span>
                       </div>
@@ -304,15 +308,16 @@ function StaffPortal({ results, loading, onRefresh, onBack }: { results: ResultR
   const [error, setError] = useState("")
   const [loggedIn, setLoggedIn] = useState(false)
   const [validating, setValidating] = useState(false)
+  const [currentStaff, setCurrentStaff] = useState<LoggedInStaff | null>(null)
   const [tab, setTab] = useState<"view" | "log">("view")
-  const [filter, setFilter] = useState({ search:"", classLevel:"", term:"", subject:"", grade:"" })
-  const [form, setForm] = useState({ student:"", admissionNumber:"", classLevel:"Primary 1", term:"First Term", subject:"", score:"", remarks:"" })
+  const [filter, setFilter] = useState({ search: "", classLevel: "", term: "", subject: "", grade: "" })
+  const [form, setForm] = useState({ student: "", admissionNumber: "", classLevel: "Primary 1", term: "First Term", subject: "", score: "", remarks: "" })
   const [formErrors, setFormErrors] = useState<Partial<typeof form>>({})
   const [saving, setSaving] = useState(false)
   const [saveMsg, setSaveMsg] = useState("")
   const [deleteId, setDeleteId] = useState<string | null>(null)
-  const [sortBy, setSortBy] = useState<"date"|"name"|"score">("date")
-  const [sortDir, setSortDir] = useState<"asc"|"desc">("desc")
+  const [sortBy, setSortBy] = useState<"date" | "name" | "score">("date")
+  const [sortDir, setSortDir] = useState<"asc" | "desc">("desc")
 
   async function login(e: React.FormEvent) {
     e.preventDefault()
@@ -326,6 +331,15 @@ function StaffPortal({ results, loading, onRefresh, onBack }: { results: ResultR
       })
       const data = await res.json()
       if (data.valid) {
+        setCurrentStaff({
+          name: data.name,
+          role: data.role,
+          subjects: data.subjects || []
+        });
+        // Auto-select the first subject they teach as default when logging result
+        if (data.subjects && data.subjects.length > 0) {
+          setForm(prev => ({ ...prev, subject: data.subjects[0] }));
+        }
         setLoggedIn(true)
       } else {
         setError("Invalid staff number. Contact admin if you need access.")
@@ -338,8 +352,15 @@ function StaffPortal({ results, loading, onRefresh, onBack }: { results: ResultR
     }
   }
 
+  // Filter records to ONLY show subjects taught by the staff member
+  const staffResults = useMemo(() => {
+    return (Array.isArray(results) ? results : []).filter(r =>
+      currentStaff ? currentStaff.subjects.some(sub => sub.toLowerCase() === r.subject.toLowerCase()) : true
+    );
+  }, [results, currentStaff]);
+
   const filtered = useMemo(() => {
-    const list = (Array.isArray(results) ? results : []).filter(r =>
+    const list = staffResults.filter(r =>
       (!filter.search || r.student.toLowerCase().includes(filter.search.toLowerCase()) || r.admissionNumber.toLowerCase().includes(filter.search.toLowerCase())) &&
       (!filter.classLevel || r.classLevel === filter.classLevel) &&
       (!filter.term || r.term === filter.term) &&
@@ -349,30 +370,34 @@ function StaffPortal({ results, loading, onRefresh, onBack }: { results: ResultR
     return [...list].sort((a, b) => {
       const cmp = sortBy === "name" ? a.student.localeCompare(b.student) :
         sortBy === "score" ? parseFloat(a.score) - parseFloat(b.score) :
-        new Date(a.date).getTime() - new Date(b.date).getTime();
+          new Date(a.date).getTime() - new Date(b.date).getTime();
       return sortDir === "asc" ? cmp : -cmp;
     });
-  }, [results, filter, sortBy, sortDir]);
+  }, [staffResults, filter, sortBy, sortDir]);
 
   const summary = useMemo(() => {
-    const total = results.length
-    const avg = total ? (results.reduce((s, r) => s + (parseFloat(r.score)||0), 0) / total).toFixed(1) : "—"
-    const grades = results.reduce<Record<string, number>>((a, r) => { a[r.grade]=(a[r.grade]||0)+1; return a }, {})
+    const total = staffResults.length
+    const avg = total ? (staffResults.reduce((s, r) => s + (parseFloat(r.score) || 0), 0) / total).toFixed(1) : "—"
+    const grades = staffResults.reduce<Record<string, number>>((a, r) => { a[r.grade] = (a[r.grade] || 0) + 1; return a }, {})
     const topStudents = Object.entries(
-      results.reduce<Record<string, { scores: number[]; adm: string }>>((a, r) => {
-        if (!a[r.student]) a[r.student] = { scores:[], adm: r.admissionNumber }
-        a[r.student].scores.push(parseFloat(r.score)||0); return a
+      staffResults.reduce<Record<string, { scores: number[]; adm: string }>>((a, r) => {
+        if (!a[r.student]) a[r.student] = { scores: [], adm: r.admissionNumber }
+        a[r.student].scores.push(parseFloat(r.score) || 0); return a
       }, {})
-    ).map(([name, d]) => ({ name, adm: d.adm, avg: d.scores.reduce((s,n)=>s+n,0)/d.scores.length }))
-      .sort((a,b) => b.avg-a.avg).slice(0,5)
+    ).map(([name, d]) => ({ name, adm: d.adm, avg: d.scores.reduce((s, n) => s + n, 0) / d.scores.length }))
+      .sort((a, b) => b.avg - a.avg).slice(0, 5)
     return { total, avg, grades, topStudents }
-  }, [results])
+  }, [staffResults])
 
   function validateForm() {
     const e: Partial<typeof form> = {}
     if (!form.student.trim()) e.student = "Required"
     if (!form.admissionNumber.trim()) e.admissionNumber = "Required"
-    if (!form.subject.trim()) e.subject = "Required"
+    if (!form.subject.trim()) {
+      e.subject = "Required"
+    } else if (currentStaff && !currentStaff.subjects.some(sub => sub.toLowerCase() === form.subject.trim().toLowerCase())) {
+      e.subject = "You are not linked to this subject"
+    }
     const s = parseFloat(form.score)
     if (!form.score.trim() || isNaN(s) || s < 0 || s > 100) e.score = "0–100 only"
     return e
@@ -384,7 +409,7 @@ function StaffPortal({ results, loading, onRefresh, onBack }: { results: ResultR
     if (Object.keys(errs).length) { setFormErrors(errs); return }
     setFormErrors({}); setSaving(true)
     const rec: ResultRecord = {
-      id: `${Date.now()}-${Math.random().toString(36).slice(2,8)}`,
+      id: `${Date.now()}-${Math.random().toString(36).slice(2, 8)}`,
       student: form.student.trim(),
       admissionNumber: form.admissionNumber.trim().toUpperCase(),
       classLevel: form.classLevel, term: form.term,
@@ -402,9 +427,17 @@ function StaffPortal({ results, loading, onRefresh, onBack }: { results: ResultR
       if (!res.ok) throw new Error(res.statusText)
       onRefresh()
       setSaveMsg("Result saved successfully!")
-      setForm({ student:"", admissionNumber:"", classLevel:"Primary 1", term:"First Term", subject:"", score:"", remarks:"" })
+      setForm({
+        student: "",
+        admissionNumber: "",
+        classLevel: "Primary 1",
+        term: "First Term",
+        subject: currentStaff && currentStaff.subjects.length > 0 ? currentStaff.subjects[0] : "",
+        score: "",
+        remarks: ""
+      })
       setTab("view")
-    } catch { setSaveMsg("Save failed — check backend connection") }
+    } catch { setSaveMsg("Save failed — check database connection") }
     setSaving(false)
     setTimeout(() => setSaveMsg(""), 3500)
   }
@@ -418,11 +451,11 @@ function StaffPortal({ results, loading, onRefresh, onBack }: { results: ResultR
       })
       if (!res.ok) throw new Error(res.statusText)
       onRefresh()
-    } catch {}
+    } catch { }
     setDeleteId(null)
   }
 
-  const inp: React.CSSProperties = { fontFamily:"inherit", width:"100%", border:"2px solid #E8E6DE", borderRadius:12, padding:"11px 14px", fontSize:14, background:"#FAFAF7", color:"#2C2C2A", outline:"none" }
+  const inp: React.CSSProperties = { fontFamily: "inherit", width: "100%", border: "2px solid #E8E6DE", borderRadius: 12, padding: "11px 14px", fontSize: 14, background: "#FAFAF7", color: "#2C2C2A", outline: "none" }
 
   return (
     <div className="pk-portal-wrap">
@@ -430,10 +463,9 @@ function StaffPortal({ results, loading, onRefresh, onBack }: { results: ResultR
       {deleteId && (
         <div className="pk-overlay">
           <div className="pk-confirm">
-            <div style={{ fontSize:"2.5rem", marginBottom:".75rem" }}>️</div>
             <h3>Delete this result?</h3>
             <p>This cannot be undone.</p>
-            <div style={{ display:"flex", gap:".75rem", justifyContent:"center", marginTop:"1.5rem" }}>
+            <div style={{ display: "flex", gap: ".75rem", justifyContent: "center", marginTop: "1.5rem" }}>
               <button className="pk-btn pk-btn-outline" onClick={() => setDeleteId(null)}>Cancel</button>
               <button className="pk-btn pk-btn-coral" onClick={() => handleDelete(deleteId)}>Yes, Delete</button>
             </div>
@@ -443,16 +475,15 @@ function StaffPortal({ results, loading, onRefresh, onBack }: { results: ResultR
 
       {!loggedIn ? (
         <Reveal>
-          <button className="pk-back-btn" onClick={onBack}>← Back to Home</button>
+          <button className="pk-back-btn" onClick={onBack}>Back to Home</button>
           <div className="pk-login-card">
-            <div className="pk-login-icon">👩‍🏫</div>
             <h2>Staff Login</h2>
             <p className="pk-login-sub">Enter your staff number to access the management portal</p>
             <form onSubmit={login}>
               <input className="pk-login-input" type="text" placeholder="e.g. STF0001"
                 value={staffNo} onChange={e => { setStaffNo(e.target.value); setError("") }} autoFocus disabled={validating} />
               {error && <p className="pk-login-error">{error}</p>}
-              <button className="pk-login-btn pk-btn-coral" type="submit" disabled={validating}>{validating ? "Validating…" : "Enter Staff Portal →"}</button>
+              <button className="pk-login-btn pk-btn-coral" type="submit" disabled={validating}>{validating ? "Validating…" : "Enter Staff Portal"}</button>
             </form>
             <p className="pk-login-hint">Staff numbers are assigned by the school admin.</p>
           </div>
@@ -462,13 +493,13 @@ function StaffPortal({ results, loading, onRefresh, onBack }: { results: ResultR
           <Reveal>
             <div className="pk-topbar">
               <div>
-                <p className="pk-welcome-name">Staff: {staffNo.toUpperCase()}</p>
-                <p className="pk-welcome-meta">Management Portal · {results.length} total records</p>
+                <p className="pk-welcome-name">Staff: {currentStaff?.name || staffNo.toUpperCase()}</p>
+                <p className="pk-welcome-meta">Taught Subjects: {currentStaff?.subjects.join(", ") || "None"}</p>
               </div>
-              <div style={{ display:"flex", gap:".6rem", flexWrap:"wrap" }}>
+              <div style={{ display: "flex", gap: ".6rem", flexWrap: "wrap" }}>
                 <button className="pk-btn pk-btn-yellow" onClick={() => exportCSV(filtered)}>Export CSV</button>
-                <button className="pk-btn pk-btn-teal" onClick={() => printResults(filtered, "All Results")}>Print Report</button>
-                <button className="pk-btn pk-btn-outline" onClick={() => { setLoggedIn(false); setStaffNo("") }}>Logout</button>
+                <button className="pk-btn pk-btn-teal" onClick={() => printResults(filtered, "My Student Results")}>Print Report</button>
+                <button className="pk-btn pk-btn-outline" onClick={() => { setLoggedIn(false); setStaffNo(""); setCurrentStaff(null); }}>Logout</button>
                 <button className="pk-btn pk-btn-outline" onClick={onBack}>Home</button>
               </div>
             </div>
@@ -477,14 +508,14 @@ function StaffPortal({ results, loading, onRefresh, onBack }: { results: ResultR
           <Reveal delay={60}>
             <div className="pk-staff-stats">
               {[
-                { n: summary.total, l:"Total Records", c:"#1D9E75" },
-                { n: summary.avg, l:"Avg Score", c:"#7F77DD" },
-                { n: summary.grades["A"]||0, l:"Grade A's", c:"#1D9E75" },
-                { n: summary.grades["F"]||0, l:"Failing", c:"#D85A30" },
-                { n: new Set(results.map(r=>r.admissionNumber)).size, l:"Students", c:"#FAC775" },
+                { n: summary.total, l: "Total Records", c: "#1D9E75" },
+                { n: summary.avg, l: "Avg Score", c: "#7F77DD" },
+                { n: summary.grades["A"] || 0, l: "Grade A's", c: "#1D9E75" },
+                { n: summary.grades["F"] || 0, l: "Failing", c: "#D85A30" },
+                { n: new Set(staffResults.map(r => r.admissionNumber)).size, l: "Students", c: "#FAC775" },
               ].map(s => (
                 <div key={s.l} className="pk-sstat">
-                  <span className="pk-sstat-num" style={{ color:s.c }}>{s.n}</span>
+                  <span className="pk-sstat-num" style={{ color: s.c }}>{s.n}</span>
                   <span className="pk-sstat-label">{s.l}</span>
                 </div>
               ))}
@@ -493,8 +524,8 @@ function StaffPortal({ results, loading, onRefresh, onBack }: { results: ResultR
 
           <Reveal delay={80}>
             <div className="pk-tabs">
-              <button className={`pk-tab${tab==="view"?" active":""}`} onClick={() => setTab("view")}>View Records</button>
-              <button className={`pk-tab${tab==="log"?" active":""}`} onClick={() => setTab("log")}>Log New Result</button>
+              <button className={`pk-tab${tab === "view" ? " active" : ""}`} onClick={() => setTab("view")}>View Records</button>
+              <button className={`pk-tab${tab === "log" ? " active" : ""}`} onClick={() => setTab("log")}>Log New Result</button>
             </div>
           </Reveal>
 
@@ -508,53 +539,60 @@ function StaffPortal({ results, loading, onRefresh, onBack }: { results: ResultR
                       <label>Student Full Name *</label>
                       <input style={{ ...inp, borderColor: formErrors.student ? "#D85A30" : "#E8E6DE" }}
                         placeholder="e.g. Mary Johnson" value={form.student}
-                        onChange={e => setForm(p=>({...p,student:e.target.value}))} />
+                        onChange={e => setForm(p => ({ ...p, student: e.target.value }))} />
                       {formErrors.student && <span className="pk-field-err">{formErrors.student}</span>}
                     </div>
                     <div className="pk-field">
                       <label>Admission Number *</label>
                       <input style={{ ...inp, borderColor: formErrors.admissionNumber ? "#D85A30" : "#E8E6DE" }}
                         placeholder="e.g. DKS/2024/001" value={form.admissionNumber}
-                        onChange={e => setForm(p=>({...p,admissionNumber:e.target.value}))} />
+                        onChange={e => setForm(p => ({ ...p, admissionNumber: e.target.value }))} />
                       {formErrors.admissionNumber && <span className="pk-field-err">{formErrors.admissionNumber}</span>}
                     </div>
                     <div className="pk-field">
                       <label>Class Level</label>
-                      <select style={inp} value={form.classLevel} onChange={e => setForm(p=>({...p,classLevel:e.target.value}))}>
-                        {CLASS_LEVELS.map(l=><option key={l}>{l}</option>)}
+                      <select style={inp} value={form.classLevel} onChange={e => setForm(p => ({ ...p, classLevel: e.target.value }))}>
+                        {CLASS_LEVELS.map(l => <option key={l}>{l}</option>)}
                       </select>
                     </div>
                     <div className="pk-field">
                       <label>Term</label>
-                      <select style={inp} value={form.term} onChange={e => setForm(p=>({...p,term:e.target.value}))}>
-                        {TERMS.map(t=><option key={t}>{t}</option>)}
+                      <select style={inp} value={form.term} onChange={e => setForm(p => ({ ...p, term: e.target.value }))}>
+                        {TERMS.map(t => <option key={t}>{t}</option>)}
                       </select>
                     </div>
                     <div className="pk-field">
                       <label>Subject *</label>
-                      <input style={{ ...inp, borderColor: formErrors.subject ? "#D85A30" : "#E8E6DE" }}
-                        list="dk-subj" placeholder="e.g. Mathematics" value={form.subject}
-                        onChange={e => setForm(p=>({...p,subject:e.target.value}))} />
-                      <datalist id="dk-subj">{SUBJECTS.map(s=><option key={s} value={s}/>)}</datalist>
+                      {currentStaff && currentStaff.subjects.length > 0 ? (
+                        <select style={{ ...inp, borderColor: formErrors.subject ? "#D85A30" : "#E8E6DE" }}
+                          value={form.subject} onChange={e => setForm(p => ({ ...p, subject: e.target.value }))}>
+                          {currentStaff.subjects.map(s => <option key={s} value={s}>{s}</option>)}
+                        </select>
+                      ) : (
+                        <input style={{ ...inp, borderColor: formErrors.subject ? "#D85A30" : "#E8E6DE" }}
+                          list="dk-subj" placeholder="e.g. Mathematics" value={form.subject}
+                          onChange={e => setForm(p => ({ ...p, subject: e.target.value }))} />
+                      )}
+                      <datalist id="dk-subj">{SUBJECTS.map(s => <option key={s} value={s} />)}</datalist>
                       {formErrors.subject && <span className="pk-field-err">{formErrors.subject}</span>}
                     </div>
                     <div className="pk-field">
                       <label>Score (0–100) *</label>
                       <input style={{ ...inp, borderColor: formErrors.score ? "#D85A30" : "#E8E6DE" }}
                         type="number" min="0" max="100" placeholder="e.g. 85" value={form.score}
-                        onChange={e => setForm(p=>({...p,score:e.target.value}))} />
+                        onChange={e => setForm(p => ({ ...p, score: e.target.value }))} />
                       {form.score && !formErrors.score && (
-                        <span style={{ fontSize:12, fontWeight:800, color: gradeColor(getGrade(form.score)) }}>Grade: {getGrade(form.score)}</span>
+                        <span style={{ fontSize: 12, fontWeight: 800, color: gradeColor(getGrade(form.score)) }}>Grade: {getGrade(form.score)}</span>
                       )}
                       {formErrors.score && <span className="pk-field-err">{formErrors.score}</span>}
                     </div>
-                    <div className="pk-field" style={{ gridColumn:"1/-1" }}>
+                    <div className="pk-field" style={{ gridColumn: "1/-1" }}>
                       <label>Remarks</label>
                       <input style={inp} placeholder="e.g. Excellent effort" value={form.remarks}
-                        onChange={e => setForm(p=>({...p,remarks:e.target.value}))} />
+                        onChange={e => setForm(p => ({ ...p, remarks: e.target.value }))} />
                     </div>
                   </div>
-                  <div style={{ display:"flex", gap:".75rem", marginTop:"1.5rem", flexWrap:"wrap" }}>
+                  <div style={{ display: "flex", gap: ".75rem", marginTop: "1.5rem", flexWrap: "wrap" }}>
                     <button className="pk-btn pk-btn-teal" type="submit" disabled={saving}>{saving ? "Saving..." : "Save Result"}</button>
                     <button className="pk-btn pk-btn-outline" type="button" onClick={() => setTab("view")}>Cancel</button>
                   </div>
@@ -569,26 +607,26 @@ function StaffPortal({ results, loading, onRefresh, onBack }: { results: ResultR
                 <div className="pk-card">
                   <p className="pk-card-title">Filter Records</p>
                   <div className="pk-filters">
-                    <div style={{ position:"relative" }}>
-                      <input style={{ border:"2px solid #E8E6DE", borderRadius:999, padding:"8px 16px 8px 16px", fontFamily:"inherit", fontSize:13, fontWeight:700, outline:"none", width:200 }}
+                    <div style={{ position: "relative" }}>
+                      <input style={{ border: "2px solid #E8E6DE", borderRadius: 999, padding: "8px 16px 8px 16px", fontFamily: "inherit", fontSize: 13, fontWeight: 700, outline: "none", width: 200 }}
                         placeholder="Search name or adm. no."
-                        value={filter.search} onChange={e => setFilter(p=>({...p,search:e.target.value}))} />
+                        value={filter.search} onChange={e => setFilter(p => ({ ...p, search: e.target.value }))} />
                     </div>
                     {[
-                      { key:"classLevel", opts:["All Classes",...CLASS_LEVELS] },
-                      { key:"term", opts:["All Terms",...TERMS] },
-                      { key:"subject", opts:["All Subjects",...SUBJECTS] },
-                      { key:"grade", opts:["All Grades","A","B","C","D","F"] },
+                      { key: "classLevel", opts: ["All Classes", ...CLASS_LEVELS] },
+                      { key: "term", opts: ["All Terms", ...TERMS] },
+                      { key: "subject", opts: ["All Subjects", ...(currentStaff ? currentStaff.subjects : SUBJECTS)] },
+                      { key: "grade", opts: ["All Grades", "A", "B", "C", "D", "F"] },
                     ].map(f => (
-                      <select key={f.key} style={{ border:"2px solid #E8E6DE", borderRadius:999, padding:"8px 14px", fontFamily:"inherit", fontSize:13, fontWeight:700, background:"#fff", color:"#2C2C2A", outline:"none", cursor:"pointer" }}
+                      <select key={f.key} style={{ border: "2px solid #E8E6DE", borderRadius: 999, padding: "8px 14px", fontFamily: "inherit", fontSize: 13, fontWeight: 700, background: "#fff", color: "#2C2C2A", outline: "none", cursor: "pointer" }}
                         value={filter[f.key as keyof typeof filter]}
                         onChange={e => setFilter(p => ({ ...p, [f.key]: e.target.value.startsWith("All") ? "" : e.target.value }))}>
-                        {f.opts.map(o=><option key={o}>{o}</option>)}
+                        {f.opts.map(o => <option key={o}>{o}</option>)}
                       </select>
                     ))}
                     {Object.values(filter).some(Boolean) && (
-                      <button style={{ fontFamily:"inherit", fontSize:12, fontWeight:800, color:"#D85A30", background:"none", border:"none", cursor:"pointer" }}
-                        onClick={() => setFilter({ search:"", classLevel:"", term:"", subject:"", grade:"" })}>Clear all</button>
+                      <button style={{ fontFamily: "inherit", fontSize: 12, fontWeight: 800, color: "#D85A30", background: "none", border: "none", cursor: "pointer" }}
+                        onClick={() => setFilter({ search: "", classLevel: "", term: "", subject: "", grade: "" })}>Clear all</button>
                     )}
                   </div>
                 </div>
@@ -596,56 +634,56 @@ function StaffPortal({ results, loading, onRefresh, onBack }: { results: ResultR
 
               <Reveal delay={60}>
                 <div className="pk-card">
-                  <div style={{ display:"flex", alignItems:"center", justifyContent:"space-between", flexWrap:"wrap", gap:"1rem", marginBottom:"1.25rem" }}>
-                    <span style={{ fontSize:13, fontWeight:700, color:"#888780" }}>{filtered.length} record{filtered.length!==1?"s":""}</span>
-                    <div style={{ display:"flex", gap:".4rem" }}>
-                      {(["date","name","score"] as const).map(s => (
-                        <button key={s} onClick={() => { if(sortBy===s) setSortDir(d=>d==="asc"?"desc":"asc"); else { setSortBy(s); setSortDir("desc") } }}
-                          style={{ fontFamily:"inherit", fontSize:12, fontWeight:800, border:"1.5px solid", borderRadius:999, padding:"5px 14px", cursor:"pointer", background: sortBy===s?"#2C2C2A":"#fff", color: sortBy===s?"#fff":"#888780", borderColor: sortBy===s?"#2C2C2A":"#E8E6DE" }}>
-                          {s} {sortBy===s?(sortDir==="asc"?"↑":"↓"):""}
+                  <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", flexWrap: "wrap", gap: "1rem", marginBottom: "1.25rem" }}>
+                    <span style={{ fontSize: 13, fontWeight: 700, color: "#888780" }}>{filtered.length} record{filtered.length !== 1 ? "s" : ""}</span>
+                    <div style={{ display: "flex", gap: ".4rem" }}>
+                      {(["date", "name", "score"] as const).map(s => (
+                        <button key={s} onClick={() => { if (sortBy === s) setSortDir(d => d === "asc" ? "desc" : "asc"); else { setSortBy(s); setSortDir("desc") } }}
+                          style={{ fontFamily: "inherit", fontSize: 12, fontWeight: 800, border: "1.5px solid", borderRadius: 999, padding: "5px 14px", cursor: "pointer", background: sortBy === s ? "#2C2C2A" : "#fff", color: sortBy === s ? "#fff" : "#888780", borderColor: sortBy === s ? "#2C2C2A" : "#E8E6DE" }}>
+                          {s} {sortBy === s ? (sortDir === "asc" ? "↑" : "↓") : ""}
                         </button>
                       ))}
                     </div>
                   </div>
                   {loading ? <div className="pk-loading">Loading...</div> :
-                    filtered.length === 0 ? <div className="pk-empty"><span>📭</span><p>No records found.</p></div> :
-                    <div style={{ display:"flex", flexDirection:"column", gap:".65rem" }}>
-                      {filtered.map((r, i) => (
-                        <Reveal key={r.id} delay={i*20}>
-                          <div className="pk-record-row">
-                            <div>
-                              <span className="pk-rr-name">{r.student}</span>
-                              <span className="pk-rr-meta">{r.admissionNumber} · {r.classLevel} · {r.term}</span>
+                    filtered.length === 0 ? <div className="pk-empty"><p>No records found.</p></div> :
+                      <div style={{ display: "flex", flexDirection: "column", gap: ".65rem" }}>
+                        {filtered.map((r, i) => (
+                          <Reveal key={r.id} delay={i * 20}>
+                            <div className="pk-record-row">
+                              <div>
+                                <span className="pk-rr-name">{r.student}</span>
+                                <span className="pk-rr-meta">{r.admissionNumber} · {r.classLevel} · {r.term}</span>
+                              </div>
+                              <div className="pk-rr-subject">{r.subject}</div>
+                              <div>
+                                <span className="pk-rr-score" style={{ color: gradeColor(r.grade) }}>{r.score}</span>
+                                <div className="pk-rr-bar"><div style={{ width: `${scorePct(r.score)}%`, background: gradeColor(r.grade) }} /></div>
+                              </div>
+                              <span className="pk-rr-grade" style={{ background: gradeColor(r.grade) + "22", color: gradeColor(r.grade) }}>{r.grade}</span>
+                              <button className="pk-del" onClick={() => setDeleteId(r.id)}>Delete</button>
                             </div>
-                            <div className="pk-rr-subject">{r.subject}</div>
-                            <div>
-                              <span className="pk-rr-score" style={{ color: gradeColor(r.grade) }}>{r.score}</span>
-                              <div className="pk-rr-bar"><div style={{ width:`${scorePct(r.score)}%`, background: gradeColor(r.grade) }}/></div>
-                            </div>
-                            <span className="pk-rr-grade" style={{ background: gradeColor(r.grade)+"22", color: gradeColor(r.grade) }}>{r.grade}</span>
-                            <button className="pk-del" onClick={() => setDeleteId(r.id)}>Delete</button>
-                          </div>
-                        </Reveal>
-                      ))}
-                    </div>
+                          </Reveal>
+                        ))}
+                      </div>
                   }
                 </div>
               </Reveal>
 
-              {results.length > 0 && (
-                <div style={{ display:"grid", gridTemplateColumns:"1fr 1fr", gap:"1.5rem" }}>
+              {staffResults.length > 0 && (
+                <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: "1.5rem" }}>
                   <Reveal delay={80}>
                     <div className="pk-card">
                       <p className="pk-card-title">Top 5 Students</p>
-                      <div style={{ display:"flex", flexDirection:"column", gap:".5rem" }}>
-                        {summary.topStudents.map((s,i) => (
-                          <div key={s.name} style={{ display:"flex", alignItems:"center", gap:"1rem", padding:".75rem 1rem", borderRadius:12, background:"#F1EFE8" }}>
-                            <span style={{ fontFamily:"'Fredoka One',cursive", fontSize:"1.1rem", width:28, textAlign:"center", flexShrink:0 }}>{["1st","2nd","3rd","4th","5th"][i]}</span>
-                            <div style={{ flex:1 }}>
-                              <span style={{ fontWeight:800, fontSize:14, display:"block" }}>{s.name}</span>
-                              <span style={{ fontSize:11, color:"#888780" }}>{s.adm}</span>
+                      <div style={{ display: "flex", flexDirection: "column", gap: ".5rem" }}>
+                        {summary.topStudents.map((s, i) => (
+                          <div key={s.name} style={{ display: "flex", alignItems: "center", gap: "1rem", padding: ".75rem 1rem", borderRadius: 12, background: "#F1EFE8" }}>
+                            <span style={{ fontFamily: "'Fredoka One',cursive", fontSize: "1.1rem", width: 28, textAlign: "center", flexShrink: 0 }}>{["1st", "2nd", "3rd", "4th", "5th"][i]}</span>
+                            <div style={{ flex: 1 }}>
+                              <span style={{ fontWeight: 800, fontSize: 14, display: "block" }}>{s.name}</span>
+                              <span style={{ fontSize: 11, color: "#888780" }}>{s.adm}</span>
                             </div>
-                            <span style={{ fontFamily:"'Fredoka One',cursive", fontSize:"1.1rem", color:"#1D9E75" }}>{s.avg.toFixed(1)}</span>
+                            <span style={{ fontFamily: "'Fredoka One',cursive", fontSize: "1.1rem", color: "#1D9E75" }}>{s.avg.toFixed(1)}</span>
                           </div>
                         ))}
                       </div>
@@ -654,11 +692,11 @@ function StaffPortal({ results, loading, onRefresh, onBack }: { results: ResultR
                   <Reveal delay={120}>
                     <div className="pk-card">
                       <p className="pk-card-title">Grade Breakdown</p>
-                      <div style={{ display:"flex", gap:".75rem", flexWrap:"wrap" }}>
-                        {["A","B","C","D","F"].map(g => (
-                          <div key={g} style={{ flex:1, minWidth:55, background:"#F1EFE8", borderRadius:12, padding:".9rem .5rem", textAlign:"center" }}>
-                            <span style={{ fontFamily:"'Fredoka One',cursive", fontSize:"1.6rem", color: gradeColor(g), display:"block" }}>{g}</span>
-                            <span style={{ fontSize:11, fontWeight:700, color:"#888780" }}>{summary.grades[g]||0}</span>
+                      <div style={{ display: "flex", gap: ".75rem", flexWrap: "wrap" }}>
+                        {["A", "B", "C", "D", "F"].map(g => (
+                          <div key={g} style={{ flex: 1, minWidth: 55, background: "#F1EFE8", borderRadius: 12, padding: ".9rem .5rem", textAlign: "center" }}>
+                            <span style={{ fontFamily: "'Fredoka One',cursive", fontSize: "1.6rem", color: gradeColor(g), display: "block" }}>{g}</span>
+                            <span style={{ fontSize: 11, fontWeight: 700, color: "#888780" }}>{summary.grades[g] || 0}</span>
                           </div>
                         ))}
                       </div>
@@ -699,7 +737,7 @@ const CSS = `
   .pk-role-card:hover { transform:translateY(-6px);box-shadow:0 20px 50px rgba(0,0,0,.1); }
   .pk-role-student:hover { border-color:#1D9E75; }
   .pk-role-staff:hover { border-color:#D85A30; }
-  .pk-role-icon { font-size:2.8rem;margin-bottom:1rem; }
+  .pk-role-icon { font-size:1.5rem;font-weight:800;color:#1D9E75;margin-bottom:1rem; }
   .pk-role-card h3 { font-family:'Fredoka One',cursive;font-size:1.4rem;color:#2C2C2A;margin-bottom:.5rem; }
   .pk-role-card p { font-size:14px;color:#888780;line-height:1.65;margin-bottom:1.25rem; }
   .pk-role-arrow { font-size:13px;font-weight:800; }
@@ -707,7 +745,6 @@ const CSS = `
   .pk-arrow-coral { color:#D85A30; }
 
   .pk-login-card { background:#fff;border-radius:24px;padding:3rem 2.5rem;border:1.5px solid #E8E6DE;box-shadow:0 16px 60px rgba(0,0,0,.08);max-width:420px;margin:1.5rem auto 0;text-align:center; }
-  .pk-login-icon { font-size:3.2rem;margin-bottom:1rem; }
   .pk-login-card h2 { font-family:'Fredoka One',cursive;font-size:1.8rem;color:#2C2C2A;margin-bottom:.4rem; }
   .pk-login-sub { font-size:14px;color:#888780;margin-bottom:1.75rem; }
   .pk-login-input { font-family:inherit;width:100%;border:2px solid #E8E6DE;border-radius:12px;padding:13px 16px;font-size:15px;background:#FAFAF7;color:#2C2C2A;outline:none;text-align:center;display:block;transition:border-color .2s;margin-bottom:4px; }
@@ -782,7 +819,6 @@ const CSS = `
   .pk-filters { display:flex;flex-wrap:wrap;gap:.75rem;align-items:center; }
 
   .pk-empty { text-align:center;padding:3rem 1rem; }
-  .pk-empty span { font-size:3.5rem;display:block;margin-bottom:1rem; }
   .pk-empty p { color:#888780;font-weight:700;font-size:15px; }
   .pk-loading { text-align:center;padding:2.5rem;color:#1D9E75;font-weight:700;font-size:15px; }
   .pk-toast { position:fixed;top:1.5rem;right:1.5rem;background:#1D9E75;color:#fff;font-weight:800;font-size:14px;padding:12px 24px;border-radius:999px;box-shadow:0 8px 24px rgba(29,158,117,.35);z-index:9998;animation:toastIn .3s ease; }

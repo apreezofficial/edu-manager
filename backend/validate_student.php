@@ -1,7 +1,5 @@
 <?php
-// backend/validate_student.php
-// POST { "admissionNumber": "DKS/2024/001" } → { "valid": true, "name": "Amina Okonkwo", "classLevel": "Primary 3" }
-
+// backend/validate_student.php – Validate student admission number
 header("Content-Type: application/json");
 header("Access-Control-Allow-Origin: *");
 header("Access-Control-Allow-Methods: POST, OPTIONS");
@@ -14,7 +12,7 @@ require_once __DIR__ . '/config.php';
 require_once __DIR__ . '/json_db.php';
 
 $body = json_decode(file_get_contents("php://input"), true);
-$adm  = strtoupper(trim($body["admissionNumber"] ?? ""));
+$adm  = strtoupper(trim($body["admissionNumber"] ?? $body["admission_number"] ?? ""));
 
 if (!$adm) {
     http_response_code(400);
@@ -27,12 +25,17 @@ try {
     $row = $rows[0] ?? null;
 
     if ($row) {
-        echo json_encode(["valid" => true, "name" => $row["full_name"], "classLevel" => $row["class_level"]]);
+        echo json_encode([
+            "valid" => true, 
+            "name" => $row["full_name"] ?? "", 
+            "classLevel" => $row["class_level"] ?? ""
+        ]);
     } else {
         echo json_encode(["valid" => false, "error" => "Admission number not found"]);
     }
 
-} catch (PDOException $e) {
+} catch (Exception $e) {
     http_response_code(500);
     echo json_encode(["valid" => false, "error" => $e->getMessage()]);
 }
+?>
