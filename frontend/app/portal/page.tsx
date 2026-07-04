@@ -23,7 +23,6 @@ interface LoggedInStaff {
 
 const CLASS_LEVELS = ["Nursery 1", "Nursery 2", "Primary 1", "Primary 2", "Primary 3", "Primary 4", "Primary 5", "Primary 6"]
 const TERMS = ["First Term", "Second Term", "Third Term"]
-const SUBJECTS = ["Mathematics", "English Language", "Basic Science", "Social Studies", "Yoruba", "CRS", "Physical Education", "Creative Arts", "Computer Studies"]
 
 function getGrade(score: string): string {
   const n = parseFloat(score)
@@ -95,6 +94,7 @@ type Screen = "home" | "staff" | "student"
 export default function PortalPage() {
   const [screen, setScreen] = useState<Screen>("home")
   const [allResults, setAllResults] = useState<ResultRecord[]>([])
+  const [subjects, setSubjects] = useState<string[]>([])
   const [loading, setLoading] = useState(false)
 
   function fetchResults() {
@@ -105,6 +105,15 @@ export default function PortalPage() {
       .catch(() => setAllResults([]))
       .finally(() => setLoading(false))
   }
+
+  useEffect(() => {
+    fetch("/api/get_subjects")
+      .then(r => r.json())
+      .then(data => {
+        if (Array.isArray(data)) setSubjects(data)
+      })
+      .catch(err => console.error("Error fetching subjects:", err))
+  }, [])
 
   return (
     <>
@@ -119,7 +128,7 @@ export default function PortalPage() {
       </section>
       <div className="pk-shell">
         {screen === "home" && <HomeScreen onSelect={s => { setScreen(s); fetchResults() }} />}
-        {screen === "staff" && <StaffPortal results={allResults} loading={loading} onRefresh={fetchResults} onBack={() => setScreen("home")} />}
+        {screen === "staff" && <StaffPortal results={allResults} loading={loading} subjects={subjects} onRefresh={fetchResults} onBack={() => setScreen("home")} />}
         {screen === "student" && <StudentPortal results={allResults} loading={loading} onBack={() => setScreen("home")} />}
       </div>
     </>
@@ -303,7 +312,7 @@ function StudentPortal({ results, loading, onBack }: { results: ResultRecord[]; 
 }
 
 // STAFF PORTAL
-function StaffPortal({ results, loading, onRefresh, onBack }: { results: ResultRecord[]; loading: boolean; onRefresh: () => void; onBack: () => void }) {
+function StaffPortal({ results, loading, subjects, onRefresh, onBack }: { results: ResultRecord[]; loading: boolean; subjects: string[]; onRefresh: () => void; onBack: () => void }) {
   const [staffNo, setStaffNo] = useState("")
   const [error, setError] = useState("")
   const [loggedIn, setLoggedIn] = useState(false)
@@ -573,7 +582,7 @@ function StaffPortal({ results, loading, onRefresh, onBack }: { results: ResultR
                           list="dk-subj" placeholder="e.g. Mathematics" value={form.subject}
                           onChange={e => setForm(p => ({ ...p, subject: e.target.value }))} />
                       )}
-                      <datalist id="dk-subj">{SUBJECTS.map(s => <option key={s} value={s} />)}</datalist>
+                      <datalist id="dk-subj">{subjects.map(s => <option key={s} value={s} />)}</datalist>
                       {formErrors.subject && <span className="pk-field-err">{formErrors.subject}</span>}
                     </div>
                     <div className="pk-field">
@@ -615,7 +624,7 @@ function StaffPortal({ results, loading, onRefresh, onBack }: { results: ResultR
                     {[
                       { key: "classLevel", opts: ["All Classes", ...CLASS_LEVELS] },
                       { key: "term", opts: ["All Terms", ...TERMS] },
-                      { key: "subject", opts: ["All Subjects", ...(currentStaff ? currentStaff.subjects : SUBJECTS)] },
+                      { key: "subject", opts: ["All Subjects", ...(currentStaff ? currentStaff.subjects : subjects)] },
                       { key: "grade", opts: ["All Grades", "A", "B", "C", "D", "F"] },
                     ].map(f => (
                       <select key={f.key} style={{ border: "2px solid #E8E6DE", borderRadius: 999, padding: "8px 14px", fontFamily: "inherit", fontSize: 13, fontWeight: 700, background: "#fff", color: "#2C2C2A", outline: "none", cursor: "pointer" }}

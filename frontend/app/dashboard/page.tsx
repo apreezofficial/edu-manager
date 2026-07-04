@@ -20,16 +20,15 @@ type Student = {
     active?: number;
 };
 
-const PREDEFINED_SUBJECTS = ["Mathematics", "English Language", "Basic Science", "Social Studies", "Yoruba", "CRS", "Physical Education", "Creative Arts", "Computer Studies"];
-
 export default function DashboardPage() {
     const [pin, setPin] = useState("");
     const [loggedIn, setLoggedIn] = useState(false);
     const [staff, setStaff] = useState<Staff[]>([]);
     const [students, setStudents] = useState<Student[]>([]);
+    const [subjects, setSubjects] = useState<string[]>([]);
     const [loading, setLoading] = useState(false);
     const [msg, setMsg] = useState("");
-    const [tab, setTab] = useState<"staff" | "students">("staff");
+    const [tab, setTab] = useState<"staff" | "students" | "subjects">("staff");
 
     // Staff form
     const [editingStaff, setEditingStaff] = useState<Staff | null>(null);
@@ -41,10 +40,15 @@ export default function DashboardPage() {
     const [studentForm, setStudentForm] = useState({ full_name: "", admission_number: "", class_level: "" });
     const [deleteStudentId, setDeleteStudentId] = useState<number | null>(null);
 
+    // Subject form
+    const [newSubject, setNewSubject] = useState("");
+    const [deleteSubjectName, setDeleteSubjectName] = useState<string | null>(null);
+
     useEffect(() => {
         if (loggedIn) {
             loadStaff();
             loadStudents();
+            loadSubjects();
         }
     }, [loggedIn]);
 
@@ -68,6 +72,19 @@ export default function DashboardPage() {
             const data = await res.json();
             const studentsArray = data.students || (Array.isArray(data) ? data : []);
             setStudents(Array.isArray(studentsArray) ? studentsArray : []);
+        } catch (e) {
+            console.error(e);
+        } finally {
+            setLoading(false);
+        }
+    };
+
+    const loadSubjects = async () => {
+        setLoading(true);
+        try {
+            const res = await fetch("/api/get_subjects");
+            const data = await res.json();
+            setSubjects(Array.isArray(data) ? data : []);
         } catch (e) {
             console.error(e);
         } finally {
@@ -255,6 +272,56 @@ export default function DashboardPage() {
         });
     };
 
+    // SUBJECT OPERATIONS
+    const handleAddSubject = async (e: React.FormEvent) => {
+        e.preventDefault();
+        if (!newSubject.trim()) return;
+        try {
+            const res = await fetch("/api/add_subject", {
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify({ subject: newSubject.trim(), pin: "APWERB12" })
+            });
+            const data = await res.json();
+            if (data.success) {
+                setMsg(data.message);
+                setNewSubject("");
+                loadSubjects();
+            } else {
+                setMsg(data.error || "Error adding subject");
+            }
+            setTimeout(() => setMsg(""), 3000);
+        } catch (e) {
+            console.error(e);
+            setMsg("Error adding subject");
+            setTimeout(() => setMsg(""), 3000);
+        }
+    };
+
+    const handleDeleteSubject = async () => {
+        if (!deleteSubjectName) return;
+        try {
+            const res = await fetch("/api/delete_subject", {
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify({ subject: deleteSubjectName, pin: "APWERB12" })
+            });
+            const data = await res.json();
+            if (data.success) {
+                setMsg(data.message);
+                setDeleteSubjectName(null);
+                loadSubjects();
+            } else {
+                setMsg(data.error || "Error deleting subject");
+            }
+            setTimeout(() => setMsg(""), 3000);
+        } catch (e) {
+            console.error(e);
+            setMsg("Error deleting subject");
+            setTimeout(() => setMsg(""), 3000);
+        }
+    };
+
     return (
         <>
             <style>{`
@@ -276,22 +343,17 @@ export default function DashboardPage() {
                 .btn-danger:hover { transform:translateY(-2px); }
                 .btn-outline { background:#fff; color:#888780; border:2px solid #E8E6DE; border-radius:999px; padding:10px 20px; cursor:pointer; font-weight:700; transition: all .2s; }
                 .btn-outline:hover { border-color:#7F77DD; color:#7F77DD; }
-                .btn-tab { background:#E8E6DE; color:#2C2C2A; font-family:'Nunito',sans-serif; font-weight:800; border:none; border-radius:12px; padding:12px 24px; cursor:pointer; transition: all .2s; margin-right: 0.5rem; }
+                .btn-tab { background:#E8E6DE; color:#2C2C2A; font-family:'Nunito',sans-serif; font-weight:800; border:none; border-radius:12px; padding:12px 24px; cursor:pointer; transition: all .2s; }
                 .btn-tab.active { background:#7F77DD; color:#fff; }
                 .card { background:#fff; border-radius:20px; padding:2rem; border:1.5px solid #E8E6DE; margin-bottom:1.5rem; }
                 .card-title { font-family:'Fredoka One', cursive; font-size:1.3rem; color:#2C2C2A; margin-bottom:1.25rem; }
-                .staff-grid { display:grid; grid-template-columns:repeat(auto-fit,minmax(280px,1fr)); gap:1.25rem; }
-                .student-grid { display:grid; grid-template-columns:repeat(auto-fit,minmax(280px,1fr)); gap:1.25rem; }
-                .staff-card { background:#fff; border-radius:18px; padding:1.5rem; border:1.5px solid #E8E6DE; transition:transform .2s,box-shadow .2s; }
-                .staff-card:hover { transform:translateY(-4px); box-shadow:0 12px 32px rgba(0,0,0,.07); }
-                .student-card { background:#fff; border-radius:18px; padding:1.5rem; border:1.5px solid #E8E6DE; transition:transform .2s,box-shadow .2s; }
-                .student-card:hover { transform:translateY(-4px); box-shadow:0 12px 32px rgba(0,0,0,.07); }
-                .staff-name { font-family:'Fredoka One', cursive; font-size:1.25rem; color:#2C2C2A; margin-bottom:.35rem; }
+                .staff-grid, .student-grid, .subject-grid { display:grid; grid-template-columns:repeat(auto-fit,minmax(280px,1fr)); gap:1.25rem; }
+                .staff-card, .student-card, .subject-card { background:#fff; border-radius:18px; padding:1.5rem; border:1.5px solid #E8E6DE; transition:transform .2s,box-shadow .2s; display:flex; flex-direction:column; }
+                .staff-card:hover, .student-card:hover, .subject-card:hover { transform:translateY(-4px); box-shadow:0 12px 32px rgba(0,0,0,.07); }
+                .staff-name, .student-name, .subject-name { font-family:'Fredoka One', cursive; font-size:1.25rem; color:#2C2C2A; margin-bottom:.35rem; }
                 .staff-role { font-size:14px; color:#888780; font-weight:700; margin-bottom:.5rem; }
-                .staff-number { font-size:13px; color:#7F77DD; font-weight:700; }
-                .student-name { font-family:'Fredoka One', cursive; font-size:1.25rem; color:#2C2C2A; margin-bottom:.35rem; }
+                .staff-number, .student-number { font-size:13px; color:#7F77DD; font-weight:700; }
                 .student-class { font-size:14px; color:#888780; font-weight:700; margin-bottom:.75rem; }
-                .student-number { font-size:13px; color:#7F77DD; font-weight:700; }
                 .form-grid { display:grid; grid-template-columns:1fr 1fr; gap:1rem; }
                 .form-input { width:100%; border:2px solid #E8E6DE; border-radius:12px; padding:12px 15px; font-size:14px; background:#FAFAF7; outline:none; transition:border-color .2s; }
                 .form-input:focus { border-color:#7F77DD; }
@@ -342,18 +404,18 @@ export default function DashboardPage() {
                             <div className="topbar">
                                 <div>
                                     <h2 style={{ fontFamily: '"Fredoka One", cursive', fontSize: '1.5rem' }}>Management Panel</h2>
-                                    <p style={{ color: '#888780', fontSize: '13px', fontWeight: '700', marginTop: '.25rem' }}>Staff: {staff.length} | Students: {students.length}</p>
+                                    <p style={{ color: '#888780', fontSize: '13px', fontWeight: '700', marginTop: '.25rem' }}>Staff: {staff.length} | Students: {students.length} | Subjects: {subjects.length}</p>
                                 </div>
                                 <div style={{ display: 'flex', gap: '.6rem', flexWrap: 'wrap' }}>
                                     <Link href="/portal" className="btn-outline" style={{ textDecoration: 'none', display: 'inline-flex', alignItems: 'center' }}>Portal</Link>
-                                    <button onClick={() => { setLoggedIn(false); setStaff([]); setStudents([]); }} className="btn-outline">Logout</button>
+                                    <button onClick={() => { setLoggedIn(false); setStaff([]); setStudents([]); setSubjects([]); }} className="btn-outline">Logout</button>
                                 </div>
                             </div>
 
-                            {msg && <div className={`msg ${msg.includes('Error') ? 'msg-error' : 'msg-success'}`}>{msg}</div>}
+                            {msg && <div className={`msg ${msg.includes('Error') || msg.includes('exists') || msg.includes('Invalid') ? 'msg-error' : 'msg-success'}`}>{msg}</div>}
 
                             {/* TAB NAVIGATION */}
-                            <div style={{ marginBottom: '2rem', display: 'flex', gap: '0.5rem' }}>
+                            <div style={{ marginBottom: '2rem', display: 'flex', gap: '0.5rem', flexWrap: 'wrap' }}>
                                 <button
                                     className={`btn-tab ${tab === 'staff' ? 'active' : ''}`}
                                     onClick={() => setTab('staff')}
@@ -365,6 +427,12 @@ export default function DashboardPage() {
                                     onClick={() => setTab('students')}
                                 >
                                     Students ({students.length})
+                                </button>
+                                <button
+                                    className={`btn-tab ${tab === 'subjects' ? 'active' : ''}`}
+                                    onClick={() => setTab('subjects')}
+                                >
+                                    Subjects ({subjects.length})
                                 </button>
                             </div>
 
@@ -379,7 +447,7 @@ export default function DashboardPage() {
                                                     <label style={{ fontSize: '13px', fontWeight: '800', marginBottom: '6px', display: 'block' }}>Full Name *</label>
                                                     <input
                                                         className="form-input"
-                                                        placeholder="e.g., Mrs. Ajayi Tosin"
+                                                        placeholder="e.g., Mr. John Doe"
                                                         value={staffForm.name}
                                                         onChange={(e) => setStaffForm({ ...staffForm, name: e.target.value })}
                                                         required
@@ -389,7 +457,7 @@ export default function DashboardPage() {
                                                     <label style={{ fontSize: '13px', fontWeight: '800', marginBottom: '6px', display: 'block' }}>Role *</label>
                                                     <input
                                                         className="form-input"
-                                                        placeholder="e.g., Head of Administration"
+                                                        placeholder="e.g., Mathematics Teacher"
                                                         value={staffForm.role}
                                                         onChange={(e) => setStaffForm({ ...staffForm, role: e.target.value })}
                                                         required
@@ -400,26 +468,32 @@ export default function DashboardPage() {
                                                     <input
                                                         className="form-input"
                                                         type="email"
-                                                        placeholder="e.g., staff@delightsome.edu.ng"
+                                                        placeholder="e.g., teacher@delightsome.edu.ng"
                                                         value={staffForm.email}
                                                         onChange={(e) => setStaffForm({ ...staffForm, email: e.target.value })}
                                                     />
                                                 </div>
                                                 <div style={{ gridColumn: '1 / -1', marginTop: '0.5rem' }}>
                                                     <label style={{ fontSize: '13px', fontWeight: '800', marginBottom: '8px', display: 'block' }}>Assigned Subjects (Link to Teaching Load) *</label>
-                                                    <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(200px, 1fr))', gap: '0.65rem', background: '#FAFAF7', padding: '15px', borderRadius: '12px', border: '2px solid #E8E6DE' }}>
-                                                        {PREDEFINED_SUBJECTS.map(sub => (
-                                                            <label key={sub} style={{ display: 'flex', alignItems: 'center', gap: '8px', fontSize: '13px', fontWeight: '700', cursor: 'pointer' }}>
-                                                                <input
-                                                                    type="checkbox"
-                                                                    checked={staffForm.subjects.includes(sub)}
-                                                                    onChange={() => toggleSubject(sub)}
-                                                                    style={{ cursor: 'pointer', width: '15px', height: '15px' }}
-                                                                />
-                                                                {sub}
-                                                            </label>
-                                                        ))}
-                                                    </div>
+                                                    {subjects.length === 0 ? (
+                                                        <div style={{ color: '#D85A30', fontSize: '13px', fontWeight: '700', padding: '10px' }}>
+                                                            No subjects created yet. Please create subjects in the "Subjects" tab first to assign them.
+                                                        </div>
+                                                    ) : (
+                                                        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(200px, 1fr))', gap: '0.65rem', background: '#FAFAF7', padding: '15px', borderRadius: '12px', border: '2px solid #E8E6DE' }}>
+                                                            {subjects.map(sub => (
+                                                                <label key={sub} style={{ display: 'flex', alignItems: 'center', gap: '8px', fontSize: '13px', fontWeight: '700', cursor: 'pointer' }}>
+                                                                    <input
+                                                                        type="checkbox"
+                                                                        checked={staffForm.subjects.includes(sub)}
+                                                                        onChange={() => toggleSubject(sub)}
+                                                                        style={{ cursor: 'pointer', width: '15px', height: '15px' }}
+                                                                    />
+                                                                    {sub}
+                                                                </label>
+                                                            ))}
+                                                        </div>
+                                                    )}
                                                 </div>
                                             </div>
                                             <div style={{ display: 'flex', gap: '.75rem', marginTop: '1.5rem', flexWrap: 'wrap' }}>
@@ -588,6 +662,68 @@ export default function DashboardPage() {
                                                 <div style={{ display: 'flex', gap: '.75rem', justifyContent: 'flex-end' }}>
                                                     <button className="btn-outline" onClick={() => setDeleteStudentId(null)}>Cancel</button>
                                                     <button className="btn-danger" onClick={handleDeleteStudent}>Delete</button>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    )}
+                                </>
+                            )}
+
+                            {/* ===== SUBJECTS TAB ===== */}
+                            {tab === 'subjects' && (
+                                <>
+                                    <div className="card">
+                                        <h3 className="card-title">Add New Subject</h3>
+                                        <form onSubmit={handleAddSubject}>
+                                            <div style={{ display: 'flex', gap: '1rem', flexWrap: 'wrap', alignItems: 'flex-end' }}>
+                                                <div style={{ flex: 1, minWidth: '250px' }}>
+                                                    <label style={{ fontSize: '13px', fontWeight: '800', marginBottom: '6px', display: 'block' }}>Subject Name *</label>
+                                                    <input
+                                                        className="form-input"
+                                                        placeholder="e.g., Coding and Robotics"
+                                                        value={newSubject}
+                                                        onChange={(e) => setNewSubject(e.target.value)}
+                                                        required
+                                                    />
+                                                </div>
+                                                <button type="submit" className="btn-primary" style={{ height: '48px', display: 'flex', alignItems: 'center' }}>
+                                                    Add Subject
+                                                </button>
+                                            </div>
+                                        </form>
+                                    </div>
+
+                                    {loading ? (
+                                        <div className="card" style={{ textAlign: 'center', padding: '3rem' }}>
+                                            <p>Loading subjects...</p>
+                                        </div>
+                                    ) : subjects.length === 0 ? (
+                                        <div className="card" style={{ textAlign: 'center', padding: '3rem', color: '#888780' }}>
+                                            <p>No subjects registered yet. Create one above!</p>
+                                        </div>
+                                    ) : (
+                                        <div className="subject-grid">
+                                            {subjects.map((sub) => (
+                                                <div key={sub} className="subject-card">
+                                                    <div className="subject-name" style={{ marginBottom: '1.25rem' }}>{sub}</div>
+                                                    <div style={{ marginTop: 'auto', display: 'flex', gap: '.5rem' }}>
+                                                        <button className="btn-danger" onClick={() => setDeleteSubjectName(sub)} style={{ fontSize: '13px', padding: '8px 16px', width: '100%' }}>
+                                                            Delete
+                                                        </button>
+                                                    </div>
+                                                </div>
+                                            ))}
+                                        </div>
+                                    )}
+
+                                    {deleteSubjectName && (
+                                        <div className="overlay" onClick={() => setDeleteSubjectName(null)}>
+                                            <div className="modal" onClick={(e) => e.stopPropagation()}>
+                                                <h2 style={{ fontFamily: '"Fredoka One", cursive', marginBottom: '1rem' }}>Delete Subject?</h2>
+                                                <p style={{ color: '#5F5E5A', marginBottom: '1.5rem' }}>Are you sure you want to delete the subject "{deleteSubjectName}"? Staff links for this subject will be orphaned.</p>
+                                                <div style={{ display: 'flex', gap: '.75rem', justifyContent: 'flex-end' }}>
+                                                    <button className="btn-outline" onClick={() => setDeleteSubjectName(null)}>Cancel</button>
+                                                    <button className="btn-danger" onClick={handleDeleteSubject}>Delete</button>
                                                 </div>
                                             </div>
                                         </div>
