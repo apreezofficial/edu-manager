@@ -323,6 +323,7 @@ function StaffPortal({ results, loading, subjects, onRefresh, onBack }: { result
   const [form, setForm] = useState({ student: "", admissionNumber: "", classLevel: "Primary 1", term: "First Term", subject: "", score: "", remarks: "" })
   const [formErrors, setFormErrors] = useState<Partial<typeof form>>({})
   const [saving, setSaving] = useState(false)
+  const [deleting, setDeleting] = useState(false)
   const [saveMsg, setSaveMsg] = useState("")
   const [deleteId, setDeleteId] = useState<string | null>(null)
   const [sortBy, setSortBy] = useState<"date" | "name" | "score">("date")
@@ -452,6 +453,7 @@ function StaffPortal({ results, loading, subjects, onRefresh, onBack }: { result
   }
 
   async function handleDelete(id: string) {
+    setDeleting(true)
     try {
       const res = await fetch("/api/delete_result", {
         method: "POST",
@@ -461,6 +463,7 @@ function StaffPortal({ results, loading, subjects, onRefresh, onBack }: { result
       if (!res.ok) throw new Error(res.statusText)
       onRefresh()
     } catch { }
+    setDeleting(false)
     setDeleteId(null)
   }
 
@@ -475,8 +478,8 @@ function StaffPortal({ results, loading, subjects, onRefresh, onBack }: { result
             <h3>Delete this result?</h3>
             <p>This cannot be undone.</p>
             <div style={{ display: "flex", gap: ".75rem", justifyContent: "center", marginTop: "1.5rem" }}>
-              <button className="pk-btn pk-btn-outline" onClick={() => setDeleteId(null)}>Cancel</button>
-              <button className="pk-btn pk-btn-coral" onClick={() => handleDelete(deleteId)}>Yes, Delete</button>
+              <button className="pk-btn pk-btn-outline" onClick={() => setDeleteId(null)} disabled={deleting}>Cancel</button>
+              <button className="pk-btn pk-btn-coral" onClick={() => handleDelete(deleteId)} disabled={deleting}>{deleting ? "Deleting..." : "Yes, Delete"}</button>
             </div>
           </div>
         </div>
@@ -575,6 +578,7 @@ function StaffPortal({ results, loading, subjects, onRefresh, onBack }: { result
                       {currentStaff && currentStaff.subjects.length > 0 ? (
                         <select style={{ ...inp, borderColor: formErrors.subject ? "#D85A30" : "#E8E6DE" }}
                           value={form.subject} onChange={e => setForm(p => ({ ...p, subject: e.target.value }))}>
+                          <option value="">Select a subject...</option>
                           {currentStaff.subjects.map(s => <option key={s} value={s}>{s}</option>)}
                         </select>
                       ) : (

@@ -14,6 +14,15 @@ type ResultRecord = {
   date: string
 }
 
+type Staff = {
+  id: number
+  name: string
+  role: string
+  email: string
+  staff_number: string
+  subjects?: string[]
+}
+
 const CLASS_LEVELS = ["Primary 1", "Primary 2", "Primary 3", "Primary 4", "Primary 5", "Primary 6"]
 const TERMS = ["First Term", "Second Term", "Third Term"]
 
@@ -22,6 +31,9 @@ export default function StudentResultPage() {
   const admissionNumber = searchParams?.get("admissionNumber") ?? ""
 
   const [results, setResults] = useState<ResultRecord[]>([])
+  const [subjects, setSubjects] = useState<string[]>([])
+  const [staff, setStaff] = useState<Staff[]>([])
+  const [saving, setSaving] = useState(false)
   const [form, setForm] = useState({
     student: "",
     classLevel: "Primary 1",
@@ -31,13 +43,48 @@ export default function StudentResultPage() {
     remarks: "",
   })
 
-  // Load existing results
+  // Match the staff member by staff_number matching the admissionNumber query arg
+  const currentStaff = useMemo(() => {
+    if (!admissionNumber) return null
+    return staff.find(s => s.staff_number.trim().toUpperCase() === admissionNumber.trim().toUpperCase())
+  }, [staff, admissionNumber])
+
+  // Get subjects linked to this staff member
+  const staffSubjects = useMemo(() => {
+    return currentStaff?.subjects || []
+  }, [currentStaff])
+
+  // Load existing results, subjects, and staff via Next.js proxy endpoints to bypass connection blocks/challenges
   useEffect(() => {
-    fetch('https://backenddd-eduu.gt.tc/get_results.php')
+    fetch('/api/get_results')
       .then(res => res.json())
-      .then(data => setResults(data as ResultRecord[]))
+      .then(data => setResults(Array.isArray(data) ? data : []))
       .catch(() => setResults([]))
+
+    fetch('/api/get_subjects')
+      .then(res => res.json())
+      .then(data => setSubjects(Array.isArray(data) ? data : []))
+      .catch(() => setSubjects([]))
+
+    fetch('/api/get_staff')
+      .then(res => res.json())
+      .then(data => setStaff(Array.isArray(data) ? data : []))
+      .catch(() => setStaff([]))
   }, [])
+
+  // Auto-fill subject if staff member has subjects assigned
+  useEffect(() => {
+    if (staffSubjects.length > 0 && !form.subject) {
+      setForm(prev => ({ ...prev, subject: staffSubjects[0] }))
+    }
+  }, [staffSubjects])
+
+  // Alternate fallback auto-fill if all system subjects loaded
+  useEffect(() => {
+    if (subjects.length > 0 && !form.subject && staffSubjects.length === 0) {
+      setForm(prev => ({ ...prev, subject: subjects[0] }))
+    }
+  }, [subjects, staffSubjects])
 
   const summary = useMemo(() => {
     const total = results.length
@@ -55,9 +102,12 @@ export default function StudentResultPage() {
   const handleAddResult = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault()
     if (!form.student.trim() || !form.subject.trim() || !form.score.trim()) return
-    const newResult: ResultRecord = {
+
+    setSaving(true)
+    const newResult = {
       id: `${Date.now()}-${Math.random().toString(36).slice(2, 8)}`,
       student: form.student.trim(),
+      admissionNumber: admissionNumber.trim().toUpperCase() || "UNKNOWN",
       classLevel: form.classLevel,
       term: form.term,
       subject: form.subject.trim(),
@@ -65,14 +115,30 @@ export default function StudentResultPage() {
       remarks: form.remarks.trim() || "-",
       date: new Date().toLocaleDateString(),
     }
-    await fetch('https://backenddd-eduu.gt.tc/save_result.php', {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify(newResult),
-    })
-    const refreshed = await fetch('https://backenddd-eduu.gt.tc/get_results.php').then(r => r.json())
-    setResults(refreshed)
-    setForm({ student: "", classLevel: "Primary 1", term: "First Term", subject: "", score: "", remarks: "" })
+
+    try {
+      const res = await fetch('/api/save_result', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(newResult),
+      })
+      if (res.ok) {
+        const refreshed = await fetch('/api/get_results').then(r => r.json())
+        setResults(Array.isArray(refreshed) ? refreshed : [])
+        setForm({
+          student: "",
+          classLevel: "Primary 1",
+          term: "First Term",
+          subject: staffSubjects.length > 0 ? staffSubjects[0] : (subjects.length > 0 ? subjects[0] : ""),
+          score: "",
+          remarks: "",
+        })
+      }
+    } catch (e) {
+      console.error(e)
+    } finally {
+      setSaving(false)
+    }
   }
 
   return (
@@ -83,6 +149,7 @@ export default function StudentResultPage() {
             <p className="portal-label">Student Portal</p>
             <h1>Result Entry</h1>
             {admissionNumber && <p>Logged in as <strong>{admissionNumber}</strong></p>}
+            {currentStaff && <p style={{ fontSize: '14px', marginTop: '4px' }}>Staff Member: <strong>{currentStaff.name}</strong> ({currentStaff.role})</p>}
             <p>Enter a new result for your class.</p>
           </div>
         </header>
@@ -93,35 +160,51 @@ export default function StudentResultPage() {
             <div className="portal-grid">
               <label>
                 Student name
-                <input type="text" value={form.student} onChange={e => handleFormChange('student', e.target.value)} placeholder="e.g. Mary Johnson" />
+                <input type="text" value={form.student} onChange={e => handleFormChange('student', e.target.value)} placeholder="e.g. Mary Johnson" required disabled={saving} />
               </label>
               <label>
                 Class level
-                <select value={form.classLevel} onChange={e => handleFormChange('classLevel', e.target.value)}>
+                <select value={form.classLevel} onChange={e => handleFormChange('classLevel', e.target.value)} disabled={saving}>
                   {CLASS_LEVELS.map(level => <option key={level} value={level}>{level}</option>)}
                 </select>
               </label>
               <label>
                 Term
-                <select value={form.term} onChange={e => handleFormChange('term', e.target.value)}>
+                <select value={form.term} onChange={e => handleFormChange('term', e.target.value)} disabled={saving}>
                   {TERMS.map(term => <option key={term} value={term}>{term}</option>)}
                 </select>
               </label>
               <label>
                 Subject
-                <input type="text" value={form.subject} onChange={e => handleFormChange('subject', e.target.value)} placeholder="e.g. Mathematics" />
+                {staffSubjects.length > 0 ? (
+                  <select value={form.subject} onChange={e => handleFormChange('subject', e.target.value)} disabled={saving}>
+                    <option value="">Select a subject...</option>
+                    {staffSubjects.map(sub => (
+                      <option key={sub} value={sub}>{sub}</option>
+                    ))}
+                  </select>
+                ) : subjects.length > 0 ? (
+                  <select value={form.subject} onChange={e => handleFormChange('subject', e.target.value)} disabled={saving}>
+                    <option value="">Select a subject...</option>
+                    {subjects.map(sub => (
+                      <option key={sub} value={sub}>{sub}</option>
+                    ))}
+                  </select>
+                ) : (
+                  <input type="text" value={form.subject} onChange={e => handleFormChange('subject', e.target.value)} placeholder="e.g. Mathematics" required disabled={saving} />
+                )}
               </label>
               <label>
                 Score
-                <input type="text" value={form.score} onChange={e => handleFormChange('score', e.target.value)} placeholder="e.g. 85/100" />
+                <input type="text" value={form.score} onChange={e => handleFormChange('score', e.target.value)} placeholder="e.g. 85" required disabled={saving} />
               </label>
               <label>
                 Remarks
-                <input type="text" value={form.remarks} onChange={e => handleFormChange('remarks', e.target.value)} placeholder="e.g. Excellent effort" />
+                <input type="text" value={form.remarks} onChange={e => handleFormChange('remarks', e.target.value)} placeholder="e.g. Excellent effort" disabled={saving} />
               </label>
             </div>
             <div className="portal-actions">
-              <button type="submit">Save result</button>
+              <button type="submit" disabled={saving}>{saving ? "Saving..." : "Save result"}</button>
             </div>
           </form>
         </section>

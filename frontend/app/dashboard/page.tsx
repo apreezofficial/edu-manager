@@ -27,6 +27,7 @@ export default function DashboardPage() {
     const [students, setStudents] = useState<Student[]>([]);
     const [subjects, setSubjects] = useState<string[]>([]);
     const [loading, setLoading] = useState(false);
+    const [submitting, setSubmitting] = useState(false);
     const [msg, setMsg] = useState("");
     const [tab, setTab] = useState<"staff" | "students" | "subjects">("staff");
 
@@ -106,6 +107,7 @@ export default function DashboardPage() {
     // STAFF OPERATIONS
     const handleAddStaff = async (e: React.FormEvent) => {
         e.preventDefault();
+        setSubmitting(true);
         try {
             const res = await fetch("/api/create_staff", {
                 method: "POST",
@@ -125,12 +127,15 @@ export default function DashboardPage() {
             console.error(e);
             setMsg("Error adding staff");
             setTimeout(() => setMsg(""), 3000);
+        } finally {
+            setSubmitting(false);
         }
     };
 
     const handleUpdateStaff = async (e: React.FormEvent) => {
         e.preventDefault();
         if (!editingStaff) return;
+        setSubmitting(true);
         try {
             const res = await fetch("/api/update_staff", {
                 method: "POST",
@@ -151,11 +156,14 @@ export default function DashboardPage() {
             console.error(e);
             setMsg("Error updating staff");
             setTimeout(() => setMsg(""), 3000);
+        } finally {
+            setSubmitting(false);
         }
     };
 
     const handleDeleteStaff = async () => {
         if (!deleteStaffId) return;
+        setSubmitting(true);
         try {
             const res = await fetch("/api/delete_staff", {
                 method: "POST",
@@ -175,6 +183,8 @@ export default function DashboardPage() {
             console.error(e);
             setMsg("Error deleting staff");
             setTimeout(() => setMsg(""), 3000);
+        } finally {
+            setSubmitting(false);
         }
     };
 
@@ -186,6 +196,7 @@ export default function DashboardPage() {
     // STUDENT OPERATIONS
     const handleAddStudent = async (e: React.FormEvent) => {
         e.preventDefault();
+        setSubmitting(true);
         try {
             const res = await fetch("/api/add_student", {
                 method: "POST",
@@ -205,12 +216,15 @@ export default function DashboardPage() {
             console.error(e);
             setMsg("Error adding student");
             setTimeout(() => setMsg(""), 3000);
+        } finally {
+            setSubmitting(false);
         }
     };
 
     const handleUpdateStudent = async (e: React.FormEvent) => {
         e.preventDefault();
         if (!editingStudent) return;
+        setSubmitting(true);
         try {
             const res = await fetch("/api/update_student", {
                 method: "POST",
@@ -231,11 +245,14 @@ export default function DashboardPage() {
             console.error(e);
             setMsg("Error updating student");
             setTimeout(() => setMsg(""), 3000);
+        } finally {
+            setSubmitting(false);
         }
     };
 
     const handleDeleteStudent = async () => {
         if (!deleteStudentId) return;
+        setSubmitting(true);
         try {
             const res = await fetch("/api/delete_student", {
                 method: "POST",
@@ -255,6 +272,8 @@ export default function DashboardPage() {
             console.error(e);
             setMsg("Error deleting student");
             setTimeout(() => setMsg(""), 3000);
+        } finally {
+            setSubmitting(false);
         }
     };
 
@@ -276,6 +295,7 @@ export default function DashboardPage() {
     const handleAddSubject = async (e: React.FormEvent) => {
         e.preventDefault();
         if (!newSubject.trim()) return;
+        setSubmitting(true);
         try {
             const res = await fetch("/api/add_subject", {
                 method: "POST",
@@ -295,11 +315,14 @@ export default function DashboardPage() {
             console.error(e);
             setMsg("Error adding subject");
             setTimeout(() => setMsg(""), 3000);
+        } finally {
+            setSubmitting(false);
         }
     };
 
     const handleDeleteSubject = async () => {
         if (!deleteSubjectName) return;
+        setSubmitting(true);
         try {
             const res = await fetch("/api/delete_subject", {
                 method: "POST",
@@ -319,6 +342,8 @@ export default function DashboardPage() {
             console.error(e);
             setMsg("Error deleting subject");
             setTimeout(() => setMsg(""), 3000);
+        } finally {
+            setSubmitting(false);
         }
     };
 
@@ -497,11 +522,11 @@ export default function DashboardPage() {
                                                 </div>
                                             </div>
                                             <div style={{ display: 'flex', gap: '.75rem', marginTop: '1.5rem', flexWrap: 'wrap' }}>
-                                                <button type="submit" className="btn-primary">
-                                                    {editingStaff ? 'Update Staff Member' : 'Add Staff Member'}
+                                                <button type="submit" className="btn-primary" disabled={submitting}>
+                                                    {submitting ? 'Saving...' : editingStaff ? 'Update Staff Member' : 'Add Staff Member'}
                                                 </button>
                                                 {editingStaff && (
-                                                    <button type="button" className="btn-outline" onClick={() => { setEditingStaff(null); setStaffForm({ name: '', role: '', email: '', subjects: [] }); }}>
+                                                    <button type="button" className="btn-outline" onClick={() => { setEditingStaff(null); setStaffForm({ name: '', role: '', email: '', subjects: [] }); }} disabled={submitting}>
                                                         Cancel
                                                     </button>
                                                 )}
@@ -548,13 +573,13 @@ export default function DashboardPage() {
                                     )}
 
                                     {deleteStaffId && (
-                                        <div className="overlay" onClick={() => setDeleteStaffId(null)}>
+                                        <div className="overlay" onClick={() => !submitting && setDeleteStaffId(null)}>
                                             <div className="modal" onClick={(e) => e.stopPropagation()}>
                                                 <h2 style={{ fontFamily: '"Fredoka One", cursive', marginBottom: '1rem' }}>Delete Staff?</h2>
                                                 <p style={{ color: '#5F5E5A', marginBottom: '1.5rem' }}>This action cannot be undone. Are you sure you want to delete this staff member?</p>
                                                 <div style={{ display: 'flex', gap: '.75rem', justifyContent: 'flex-end' }}>
-                                                    <button className="btn-outline" onClick={() => setDeleteStaffId(null)}>Cancel</button>
-                                                    <button className="btn-danger" onClick={handleDeleteStaff}>Delete</button>
+                                                    <button className="btn-outline" onClick={() => setDeleteStaffId(null)} disabled={submitting}>Cancel</button>
+                                                    <button className="btn-danger" onClick={handleDeleteStaff} disabled={submitting}>{submitting ? 'Deleting...' : 'Delete'}</button>
                                                 </div>
                                             </div>
                                         </div>
@@ -606,11 +631,11 @@ export default function DashboardPage() {
                                                 </div>
                                             </div>
                                             <div style={{ display: 'flex', gap: '.75rem', marginTop: '1.5rem', flexWrap: 'wrap' }}>
-                                                <button type="submit" className="btn-primary">
-                                                    {editingStudent ? 'Update Student' : 'Add Student'}
+                                                <button type="submit" className="btn-primary" disabled={submitting}>
+                                                    {submitting ? 'Saving...' : editingStudent ? 'Update Student' : 'Add Student'}
                                                 </button>
                                                 {editingStudent && (
-                                                    <button type="button" className="btn-outline" onClick={() => { setEditingStudent(null); setStudentForm({ full_name: '', admission_number: '', class_level: '' }); }}>
+                                                    <button type="button" className="btn-outline" onClick={() => { setEditingStudent(null); setStudentForm({ full_name: '', admission_number: '', class_level: '' }); }} disabled={submitting}>
                                                         Cancel
                                                     </button>
                                                 )}
@@ -655,13 +680,13 @@ export default function DashboardPage() {
                                     )}
 
                                     {deleteStudentId && (
-                                        <div className="overlay" onClick={() => setDeleteStudentId(null)}>
+                                        <div className="overlay" onClick={() => !submitting && setDeleteStudentId(null)}>
                                             <div className="modal" onClick={(e) => e.stopPropagation()}>
                                                 <h2 style={{ fontFamily: '"Fredoka One", cursive', marginBottom: '1rem' }}>Delete Student?</h2>
                                                 <p style={{ color: '#5F5E5A', marginBottom: '1.5rem' }}>This action cannot be undone. Are you sure you want to delete this student?</p>
                                                 <div style={{ display: 'flex', gap: '.75rem', justifyContent: 'flex-end' }}>
-                                                    <button className="btn-outline" onClick={() => setDeleteStudentId(null)}>Cancel</button>
-                                                    <button className="btn-danger" onClick={handleDeleteStudent}>Delete</button>
+                                                    <button className="btn-outline" onClick={() => setDeleteStudentId(null)} disabled={submitting}>Cancel</button>
+                                                    <button className="btn-danger" onClick={handleDeleteStudent} disabled={submitting}>{submitting ? 'Deleting...' : 'Delete'}</button>
                                                 </div>
                                             </div>
                                         </div>
@@ -684,10 +709,11 @@ export default function DashboardPage() {
                                                         value={newSubject}
                                                         onChange={(e) => setNewSubject(e.target.value)}
                                                         required
+                                                        disabled={submitting}
                                                     />
                                                 </div>
-                                                <button type="submit" className="btn-primary" style={{ height: '48px', display: 'flex', alignItems: 'center' }}>
-                                                    Add Subject
+                                                <button type="submit" className="btn-primary" style={{ height: '48px', display: 'flex', alignItems: 'center' }} disabled={submitting}>
+                                                    {submitting ? 'Adding...' : 'Add Subject'}
                                                 </button>
                                             </div>
                                         </form>
@@ -717,13 +743,13 @@ export default function DashboardPage() {
                                     )}
 
                                     {deleteSubjectName && (
-                                        <div className="overlay" onClick={() => setDeleteSubjectName(null)}>
+                                        <div className="overlay" onClick={() => !submitting && setDeleteSubjectName(null)}>
                                             <div className="modal" onClick={(e) => e.stopPropagation()}>
                                                 <h2 style={{ fontFamily: '"Fredoka One", cursive', marginBottom: '1rem' }}>Delete Subject?</h2>
                                                 <p style={{ color: '#5F5E5A', marginBottom: '1.5rem' }}>Are you sure you want to delete the subject "{deleteSubjectName}"? Staff links for this subject will be orphaned.</p>
                                                 <div style={{ display: 'flex', gap: '.75rem', justifyContent: 'flex-end' }}>
-                                                    <button className="btn-outline" onClick={() => setDeleteSubjectName(null)}>Cancel</button>
-                                                    <button className="btn-danger" onClick={handleDeleteSubject}>Delete</button>
+                                                    <button className="btn-outline" onClick={() => setDeleteSubjectName(null)} disabled={submitting}>Cancel</button>
+                                                    <button className="btn-danger" onClick={handleDeleteSubject} disabled={submitting}>{submitting ? 'Deleting...' : 'Delete'}</button>
                                                 </div>
                                             </div>
                                         </div>
