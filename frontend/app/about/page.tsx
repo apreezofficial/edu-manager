@@ -47,6 +47,9 @@ const TEAM = [
   { initials: "AO", name: "Mr. Ajayi Reuben Opeyemi", role: "Proprietor", bio: "The visionary founder of Delightsome Kids School. Passionate about building a centre of excellence for early and primary education in Itori." },
   { initials: "AT", name: "Mrs. Ajayi Tosin", role: "Head of Administration", bio: "Ensures smooth day-to-day operations across all departments, manages staff coordination, and maintains high administrative standards." },
   { initials: "BT", name: "Mrs. Bankole Tomilade", role: "Supervisor", bio: "Oversees teaching quality, curriculum delivery, and student welfare across all classes to ensure academic standards are consistently met." },
+  { initials: "EA", name: "Mrs. Adedigba Esther", role: "HOD for Social and Pre-Vocational Studies", bio: "Guides teachers and coordinates lessons in social education and practical vocational skills to develop well-rounded students." },
+  { initials: "AO", name: "Mrs. Ajayi Oluwaseun", role: "Director of Phonetics", bio: "Directs language pronunciation, speech training, and early literacy developmental programs." },
+  { initials: "OW", name: "Mr. Olalekan Wasiu", role: "Director of Coding and Robotics", bio: "Leads technical curriculum, hands-on programming sessions, and innovative technology activities for students." },
 ]
 
 const TIMELINE = [
