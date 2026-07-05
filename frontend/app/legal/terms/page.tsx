@@ -175,7 +175,7 @@ export default function TermsPage() {
       <style>{LEGAL_STYLES}</style>
       <main>
         <section className="lg-hero" style={{ background: "linear-gradient(145deg, #2C2C2A 0%, #444441 100%)" }}>
-          <div className="lg-hero-badge">📋 Legal</div>
+          <div className="lg-hero-badge">Legal</div>
           <h1>Terms of Use</h1>
           <p>Please read these terms carefully before using the Delightsome Kids School website.</p>
         </section>
@@ -183,7 +183,7 @@ export default function TermsPage() {
         <div className="lg-layout">
           {/* TOC */}
           <aside className="lg-toc">
-            <p className="lg-toc-title">📋 On this page</p>
+            <p className="lg-toc-title">On this page</p>
             {TERMS_SECTIONS.map(s => <a key={s.id} href={`#${s.id}`}>{s.num}. {s.title}</a>)}
           </aside>
 
@@ -207,9 +207,9 @@ export default function TermsPage() {
 
             <Reveal>
               <div className="lg-contact-box">
-                <h3>📋 Questions about these terms?</h3>
+                <h3>Questions about these terms?</h3>
                 <p>If you have any questions about our Terms of Use, please contact us and we'll be happy to help.</p>
-                <Link href="/legal/contact" className="lg-contact-btn">💬 Contact Us</Link>
+                <Link href="/legal/contact" className="lg-contact-btn">Contact Us</Link>
               </div>
             </Reveal>
           </article>
@@ -218,4 +218,4 @@ export default function TermsPage() {
     </>
   )
 }
-
+

@@ -35,19 +35,18 @@ function Counter({ to, suffix = "" }: { to: number; suffix?: string }) {
 }
 
 const VALUES = [
-  { emoji: "🏅", label: "Discipline" },
-  { emoji: "🤝", label: "Integrity" },
-  { emoji: "⭐", label: "Excellence" },
-  { emoji: "🎨", label: "Creativity" },
-  { emoji: "👑", label: "Leadership" },
-  { emoji: "💪", label: "Responsibility" },
+  { label: "Discipline" },
+  { label: "Integrity" },
+  { label: "Excellence" },
+  { label: "Creativity" },
+  { label: "Leadership" },
+  { label: "Responsibility" },
 ]
 
 const TEAM = [
-  { emoji: "👩‍🏫", name: "Mrs. B. Adeyemi", role: "Principal", bio: "Over 20 years in education. Passionate about holistic child development and academic excellence." },
-  { emoji: "👨‍🏫", name: "Mr. K. Okonkwo", role: "Head of Academics", bio: "A curriculum specialist with a talent for making learning exciting and relevant for every child." },
-  { emoji: "👩‍🎨", name: "Ms. T. Fashola", role: "Creative Arts Lead", bio: "Award-winning art educator who believes every child has a unique creative voice worth nurturing." },
-  { emoji: "👨‍💻", name: "Mr. S. Bello", role: "ICT Coordinator", bio: "Brings technology and digital literacy into every classroom in age-appropriate, engaging ways." },
+  { initials: "AO", name: "Mr. Ajayi Reuben Opeyemi", role: "Proprietor", bio: "The visionary founder of Delightsome Kids School. Passionate about building a centre of excellence for early and primary education in Itori." },
+  { initials: "AT", name: "Mrs. Ajayi Tosin", role: "Head of Administration", bio: "Ensures smooth day-to-day operations across all departments, manages staff coordination, and maintains high administrative standards." },
+  { initials: "BT", name: "Mrs. Bankole Tomilade", role: "Supervisor", bio: "Oversees teaching quality, curriculum delivery, and student welfare across all classes to ensure academic standards are consistently met." },
 ]
 
 const TIMELINE = [
@@ -59,22 +58,16 @@ const TIMELINE = [
 ]
 
 const FACILITIES = [
-  { emoji: "🖥️", name: "ICT Lab", desc: "Modern computers and internet access for digital literacy." },
-  { emoji: "🎵", name: "Music Lab", desc: "Musical instruments and creative space for learning music." },
-  { emoji: "📚", name: "Library", desc: "Thousands of books and a cozy reading space." },
-  { emoji: "⚽", name: "Sports Field", desc: "Full-size field for football, athletics, and games." },
-  { emoji: "🎭", name: "Assembly Hall", desc: "A large hall for events, drama, and celebrations." },
-  { emoji: "🍽️", name: "Canteen", desc: "Nutritious meals prepared fresh every school day." },
+  { name: "ICT Lab", desc: "Modern computers and internet access for digital literacy." },
+  { name: "Music Lab", desc: "Musical instruments and creative space for learning music." },
+  { name: "Library", desc: "Thousands of books and a cozy reading space." },
+  { name: "Sports Field", desc: "Full-size field for football, athletics, and games." },
+  { name: "Assembly Hall", desc: "A large hall for events, drama, and celebrations." },
+  { name: "Canteen", desc: "Nutritious meals prepared fresh every school day." },
 ]
 
 export default function AboutPage() {
   const [activeYear, setActiveYear] = useState(0)
-  const [scrollY, setScrollY] = useState(0)
-  useEffect(() => {
-    const h = () => setScrollY(window.scrollY)
-    window.addEventListener("scroll", h, { passive: true })
-    return () => window.removeEventListener("scroll", h)
-  }, [])
 
   return (
     <>
@@ -83,7 +76,7 @@ export default function AboutPage() {
         *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
         body { font-family: 'Nunito', sans-serif; background: #FAFAF7; color: #2C2C2A; overflow-x: hidden; }
 
-        /* ── HERO ── */
+        /* HERO */
         .ab-hero {
           min-height: 60vh;
           background: linear-gradient(150deg, #085041 0%, #1D9E75 55%, #5DCAA5 100%);
@@ -122,7 +115,7 @@ export default function AboutPage() {
         @keyframes bounce { 0%,100%{transform:translateY(0)} 50%{transform:translateY(7px)} }
         @keyframes fadeDown { from{opacity:0;transform:translateY(-22px)} to{opacity:1;transform:translateY(0)} }
 
-        /* ── SHARED ── */
+        /* SHARED */
         .ab-section { padding: 5rem 1.5rem; }
         .ab-section-alt { background: #F1EFE8; }
         .ab-section-dark { background: #2C2C2A; }
@@ -130,11 +123,9 @@ export default function AboutPage() {
         .ab-label { font-size: 12px; font-weight: 800; letter-spacing: 0.2em; text-transform: uppercase; color: #1D9E75; margin-bottom: 0.6rem; }
         .ab-title { font-family: 'Fredoka One', cursive; font-size: clamp(1.9rem, 4.5vw, 3rem); color: #2C2C2A; line-height: 1.15; margin-bottom: 1rem; }
         .ab-title span { color: #D85A30; }
-        .ab-title-light { color: #fff; }
         .ab-body { font-size: 17px; color: #5F5E5A; line-height: 1.8; max-width: 620px; margin-bottom: 2.5rem; }
-        .ab-body-light { color: rgba(255,255,255,0.75); }
 
-        /* ── MISSION CARDS ── */
+        /* MISSION CARDS */
         .ab-mission-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: 1.5rem; }
         .ab-mission-card {
           border-radius: 20px; padding: 2.2rem 2rem; position: relative; overflow: hidden;
@@ -143,9 +134,9 @@ export default function AboutPage() {
         .ab-mission-card:hover { transform: translateY(-6px); box-shadow: 0 20px 50px rgba(0,0,0,0.1); }
         .ab-mission-card h3 { font-family: 'Fredoka One', cursive; font-size: 1.4rem; margin-bottom: 0.6rem; }
         .ab-mission-card p { font-size: 15px; line-height: 1.7; }
-        .ab-mission-deco { position: absolute; bottom: -16px; right: -10px; font-size: 5rem; opacity: 0.13; pointer-events: none; user-select: none; }
+        .ab-mission-icon { width: 48px; height: 48px; border-radius: 14px; display: flex; align-items: center; justify-content: center; font-weight: 900; font-size: 20px; margin-bottom: 1rem; }
 
-        /* ── VALUES PILLS ── */
+        /* VALUES PILLS */
         .ab-values-wrap { display: flex; flex-wrap: wrap; gap: 1rem; }
         .ab-value-pill {
           display: inline-flex; align-items: center; gap: 10px;
@@ -156,9 +147,9 @@ export default function AboutPage() {
           cursor: default;
         }
         .ab-value-pill:hover { transform: scale(1.07) rotate(-2deg); border-color: #1D9E75; box-shadow: 0 8px 24px rgba(29,158,117,0.15); }
-        .ab-value-pill span:first-child { font-size: 1.4rem; }
+        .ab-value-dot { width: 10px; height: 10px; border-radius: 50%; background: #1D9E75; flex-shrink: 0; }
 
-        /* ── PRINCIPAL SPLIT ── */
+        /* PRINCIPAL SPLIT */
         .ab-split { display: grid; grid-template-columns: 1fr 1fr; gap: 4rem; align-items: center; }
         @media(max-width:700px){ .ab-split { grid-template-columns: 1fr; gap: 2rem; } }
         .ab-principal-img {
@@ -178,7 +169,7 @@ export default function AboutPage() {
         .ab-sig { font-family: 'Fredoka One', cursive; font-size: 1.4rem; color: #1D9E75; }
         .ab-sig-role { font-size: 13px; color: #888780; font-weight: 700; letter-spacing: 0.08em; text-transform: uppercase; }
 
-        /* ── TIMELINE ── */
+        /* TIMELINE */
         .ab-timeline { position: relative; max-width: 700px; margin: 0 auto; }
         .ab-timeline::before {
           content: ''; position: absolute; left: 20px; top: 0; bottom: 0;
@@ -203,7 +194,7 @@ export default function AboutPage() {
         .ab-tl-title { font-family: 'Fredoka One', cursive; font-size: 1.2rem; color: #2C2C2A; margin-bottom: 4px; }
         .ab-tl-desc { font-size: 14px; color: #5F5E5A; line-height: 1.65; }
 
-        /* ── STATS BAND ── */
+        /* STATS BAND */
         .ab-stats-band {
           background: linear-gradient(135deg, #1D9E75 0%, #085041 100%);
           padding: 4rem 1.5rem;
@@ -212,8 +203,8 @@ export default function AboutPage() {
         .ab-stat-num { font-family: 'Fredoka One', cursive; font-size: 3.2rem; color: #FAC775; display: block; line-height: 1; }
         .ab-stat-label { font-size: 13px; font-weight: 700; color: rgba(255,255,255,0.7); text-transform: uppercase; letter-spacing: 0.1em; margin-top: 6px; display: block; }
 
-        /* ── TEAM ── */
-        .ab-team-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(230px, 1fr)); gap: 1.5rem; }
+        /* TEAM */
+        .ab-team-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 1.5rem; }
         .ab-team-card {
           background: #fff; border-radius: 20px; padding: 2rem;
           border: 1.5px solid #E8E6DE; text-align: center;
@@ -222,15 +213,16 @@ export default function AboutPage() {
         .ab-team-card:hover { transform: translateY(-6px); box-shadow: 0 16px 40px rgba(29,158,117,0.12); }
         .ab-team-avatar {
           width: 72px; height: 72px; border-radius: 50%;
-          background: #E1F5EE; font-size: 2.2rem;
+          background: linear-gradient(135deg, #1D9E75, #5DCAA5); color: #fff;
+          font-family: 'Fredoka One', cursive; font-size: 1.4rem;
           display: flex; align-items: center; justify-content: center;
-          margin: 0 auto 1rem; border: 3px solid #5DCAA5;
+          margin: 0 auto 1rem; border: 3px solid #E1F5EE;
         }
         .ab-team-name { font-family: 'Fredoka One', cursive; font-size: 1.1rem; color: #2C2C2A; margin-bottom: 4px; }
         .ab-team-role { font-size: 12px; font-weight: 800; color: #1D9E75; text-transform: uppercase; letter-spacing: 0.1em; margin-bottom: 0.75rem; }
         .ab-team-bio { font-size: 14px; color: #5F5E5A; line-height: 1.65; }
 
-        /* ── FACILITIES ── */
+        /* FACILITIES */
         .ab-fac-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(180px, 1fr)); gap: 1rem; }
         .ab-fac-card {
           background: #fff; border-radius: 16px; padding: 1.75rem 1.5rem;
@@ -238,15 +230,14 @@ export default function AboutPage() {
           transition: transform 0.2s, border-color 0.2s;
         }
         .ab-fac-card:hover { transform: scale(1.05) rotate(-1deg); border-color: #FAC775; }
-        .ab-fac-emoji { font-size: 2.4rem; display: block; margin-bottom: 0.75rem; }
+        .ab-fac-icon { width: 48px; height: 48px; border-radius: 14px; background: #E1F5EE; display: flex; align-items: center; justify-content: center; margin: 0 auto 0.75rem; font-weight: 900; font-size: 18px; color: #1D9E75; }
         .ab-fac-name { font-family: 'Fredoka One', cursive; font-size: 1rem; color: #2C2C2A; margin-bottom: 4px; }
         .ab-fac-desc { font-size: 13px; color: #888780; line-height: 1.5; }
 
-        /* ── CTA ── */
+        /* CTA */
         .ab-cta-band {
           background: #FAC775; padding: 5rem 1.5rem; text-align: center; position: relative; overflow: hidden;
         }
-        .ab-cta-band::before { content: '🌟'; position: absolute; font-size: 18rem; opacity: 0.08; top: -3rem; right: -3rem; pointer-events: none; user-select: none; }
         .ab-cta-band h2 { font-family: 'Fredoka One', cursive; font-size: clamp(2rem, 5vw, 3.2rem); color: #2C2C2A; margin-bottom: 1rem; position: relative; }
         .ab-cta-band p { font-size: 17px; color: #5F5E5A; max-width: 480px; margin: 0 auto 2.5rem; line-height: 1.7; position: relative; }
         .ab-btn {
@@ -268,40 +259,39 @@ export default function AboutPage() {
 
       <main>
 
-        {/* ── HERO ── */}
+        {/* HERO */}
         <section className="ab-hero">
-          {[200,350,500].map((s,i) => (
-            <div key={i} className="ab-hero-ring" style={{ width: s, height: s, top: `calc(50% - ${s/2}px)`, left: `calc(50% - ${s/2}px)`, animationDuration: `${18+i*5}s`, animationDirection: i%2===0?"normal":"reverse" }} />
+          {[200, 350, 500].map((s, i) => (
+            <div key={i} className="ab-hero-ring" style={{ width: s, height: s, top: `calc(50% - ${s / 2}px)`, left: `calc(50% - ${s / 2}px)`, animationDuration: `${18 + i * 5}s`, animationDirection: i % 2 === 0 ? "normal" : "reverse" }} />
           ))}
-          <div className="ab-hero-badge">🏫 Est. 2018 · Itori, Ogun State</div>
+          <div className="ab-hero-badge">Est. 2018 — Itori, Ogun State</div>
           <h1>About <em>Delightsome</em><br />Kids School</h1>
           <p>A forward-thinking school dedicated to academic excellence, discipline, and the whole-child development of every student.</p>
           <div className="ab-hero-scroll" aria-hidden="true">
             <span>SCROLL</span>
-            <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="rgba(255,255,255,0.4)" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M12 5v14M5 12l7 7 7-7"/></svg>
+            <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="rgba(255,255,255,0.4)" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M12 5v14M5 12l7 7 7-7" /></svg>
           </div>
         </section>
 
-        {/* ── MISSION / VISION / VALUES ── */}
+        {/* MISSION / VISION / VALUES */}
         <section className="ab-section">
           <div className="ab-container">
             <Reveal>
               <p className="ab-label">Who We Are</p>
               <h2 className="ab-title">Built on a <span>strong foundation</span></h2>
-              <p className="ab-body">Delightsome Kids School is an institution that puts children first — their minds, their characters, and their futures. Every decision we make starts with one question: what's best for the child?</p>
+              <p className="ab-body">Delightsome Kids School is an institution that puts children first — their minds, their characters, and their futures. Every decision we make starts with one question: what is best for the child?</p>
             </Reveal>
             <div className="ab-mission-grid">
               {[
-                { emoji:"🎯", title:"Our Mission", body:"To deliver quality education that prepares students intellectually, morally, and socially for the challenges and opportunities of the future.", bg:"#E1F5EE", col:"#085041" },
-                { emoji:"🔭", title:"Our Vision", body:"To become the leading centre of excellence in Ogun State — known for outstanding results, values-based leadership, and joyful learning.", bg:"#FAEEDA", col:"#633806" },
-                { emoji:"💎", title:"Our Core Values", body:"Discipline · Integrity · Excellence · Creativity · Leadership · Responsibility. These aren't just words — they're how we live every school day.", bg:"#FAECE7", col:"#4A1B0C" },
+                { icon: "M", title: "Our Mission", body: "To deliver quality education that prepares students intellectually, morally, and socially for the challenges and opportunities of the future.", bg: "#E1F5EE", col: "#085041", iconBg: "#B8E8D8" },
+                { icon: "V", title: "Our Vision", body: "To become the leading centre of excellence in Ogun State — known for outstanding results, values-based leadership, and joyful learning.", bg: "#FAEEDA", col: "#633806", iconBg: "#F5DFBA" },
+                { icon: "C", title: "Our Core Values", body: "Discipline, Integrity, Excellence, Creativity, Leadership, and Responsibility. These are not just words — they are how we live every school day.", bg: "#FAECE7", col: "#4A1B0C", iconBg: "#F5D5CB" },
               ].map((c, i) => (
                 <Reveal key={c.title} delay={i * 90}>
                   <div className="ab-mission-card" style={{ background: c.bg }}>
-                    <div style={{ fontSize:"2.4rem", marginBottom:"1rem" }}>{c.emoji}</div>
+                    <div className="ab-mission-icon" style={{ background: c.iconBg, color: c.col }}>{c.icon}</div>
                     <h3 style={{ color: c.col }}>{c.title}</h3>
                     <p style={{ color: c.col, opacity: 0.8 }}>{c.body}</p>
-                    <span className="ab-mission-deco">{c.emoji}</span>
                   </div>
                 </Reveal>
               ))}
@@ -309,7 +299,7 @@ export default function AboutPage() {
           </div>
         </section>
 
-        {/* ── CORE VALUES PILLS ── */}
+        {/* CORE VALUES PILLS */}
         <section className="ab-section ab-section-alt">
           <div className="ab-container">
             <Reveal>
@@ -321,7 +311,7 @@ export default function AboutPage() {
               {VALUES.map((v, i) => (
                 <Reveal key={v.label} delay={i * 60}>
                   <div className="ab-value-pill">
-                    <span>{v.emoji}</span>
+                    <span className="ab-value-dot" />
                     <span>{v.label}</span>
                   </div>
                 </Reveal>
@@ -330,34 +320,34 @@ export default function AboutPage() {
           </div>
         </section>
 
-        {/* ── PRINCIPAL MESSAGE ── */}
+        {/* PROPRIETOR MESSAGE */}
         <section className="ab-section">
           <div className="ab-container">
             <div className="ab-split">
               <Reveal>
                 <div className="ab-principal-img">
-                  <img src="https://images.unsplash.com/photo-1607746882042-944635dfe10e?w=600&q=80" alt="Principal of Delightsome Kids School" />
+                  <img src="https://images.unsplash.com/photo-1607746882042-944635dfe10e?w=600&q=80" alt="Proprietor of Delightsome Kids School" />
                   <div className="ab-principal-badge">
-                    <strong>Mrs. B. Adeyemi</strong>
-                    <span>School Principal</span>
+                    <strong>Mr. Ajayi Reuben Opeyemi</strong>
+                    <span>Proprietor</span>
                   </div>
                 </div>
               </Reveal>
               <Reveal delay={120}>
-                <p className="ab-label">From the Principal's Desk</p>
+                <p className="ab-label">From the Proprietor</p>
                 <h2 className="ab-title">A personal <span>welcome</span></h2>
-                <span className="ab-quote-mark">"</span>
+                <span className="ab-quote-mark">&ldquo;</span>
                 <p className="ab-quote-text">
                   Welcome to Delightsome Kids. Every morning our gates open, I see the future walking in. We are committed to nurturing confident, responsible students who will positively impact society. Our experienced teachers, modern facilities, and warm culture ensure every child receives an education that is both rigorous and joyful.
                 </p>
-                <p className="ab-sig">Mrs. B. Adeyemi</p>
-                <p className="ab-sig-role">B.Ed, M.Ed — Principal, Delightsome Kids School</p>
+                <p className="ab-sig">Mr. Ajayi Reuben Opeyemi</p>
+                <p className="ab-sig-role">Proprietor, Delightsome Kids School</p>
               </Reveal>
             </div>
           </div>
         </section>
 
-        {/* ── TIMELINE ── */}
+        {/* TIMELINE */}
         <section className="ab-section ab-section-alt">
           <div className="ab-container">
             <Reveal style={{ marginBottom: "3rem" }}>
@@ -381,7 +371,7 @@ export default function AboutPage() {
           </div>
         </section>
 
-        {/* ── STATS BAND ── */}
+        {/* STATS BAND */}
         <section className="ab-stats-band">
           <div className="ab-stats-grid">
             {[
@@ -398,19 +388,19 @@ export default function AboutPage() {
           </div>
         </section>
 
-        {/* ── TEAM ── */}
+        {/* TEAM */}
         <section className="ab-section">
           <div className="ab-container">
             <Reveal>
               <p className="ab-label">Meet Our Team</p>
               <h2 className="ab-title">The people behind <span>the magic</span></h2>
-              <p className="ab-body">Our educators are qualified, caring, and deeply invested in every student's success.</p>
+              <p className="ab-body">Our leadership team is passionate, experienced, and deeply invested in every child's success.</p>
             </Reveal>
             <div className="ab-team-grid">
               {TEAM.map((m, i) => (
                 <Reveal key={m.name} delay={i * 80}>
                   <div className="ab-team-card">
-                    <div className="ab-team-avatar">{m.emoji}</div>
+                    <div className="ab-team-avatar">{m.initials}</div>
                     <p className="ab-team-name">{m.name}</p>
                     <p className="ab-team-role">{m.role}</p>
                     <p className="ab-team-bio">{m.bio}</p>
@@ -421,7 +411,7 @@ export default function AboutPage() {
           </div>
         </section>
 
-        {/* ── FACILITIES ── */}
+        {/* FACILITIES */}
         <section className="ab-section ab-section-alt">
           <div className="ab-container">
             <Reveal>
@@ -433,7 +423,7 @@ export default function AboutPage() {
               {FACILITIES.map((f, i) => (
                 <Reveal key={f.name} delay={i * 60}>
                   <div className="ab-fac-card">
-                    <span className="ab-fac-emoji">{f.emoji}</span>
+                    <div className="ab-fac-icon">{f.name.charAt(0)}</div>
                     <p className="ab-fac-name">{f.name}</p>
                     <p className="ab-fac-desc">{f.desc}</p>
                   </div>
@@ -443,14 +433,14 @@ export default function AboutPage() {
           </div>
         </section>
 
-        {/* ── CTA ── */}
+        {/* CTA */}
         <section className="ab-cta-band">
           <Reveal>
-            <h2>Come see it for yourself 👀</h2>
-            <p>Schedule a visit and let your child experience a day at Delightsome Kids. We'd love to welcome your family.</p>
-            <div style={{ display:"flex", gap:"1rem", justifyContent:"center", flexWrap:"wrap" }}>
-              <Link href="/admissions" className="ab-btn">🎒 Apply Now</Link>
-              <Link href="/legal/contact" className="ab-btn" style={{ background:"#2C2C2A", boxShadow:"0 4px 0 #000" }}>📞 Book a Visit</Link>
+            <h2>Come see it for yourself</h2>
+            <p>Schedule a visit and let your child experience a day at Delightsome Kids. We would love to welcome your family.</p>
+            <div style={{ display: "flex", gap: "1rem", justifyContent: "center", flexWrap: "wrap" }}>
+              <Link href="/admissions" className="ab-btn">Apply Now</Link>
+              <Link href="/legal/contact" className="ab-btn" style={{ background: "#2C2C2A", boxShadow: "0 4px 0 #000" }}>Book a Visit</Link>
             </div>
           </Reveal>
         </section>
