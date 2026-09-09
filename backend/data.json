@@ -1,0 +1,158 @@
+{
+    "staff": [
+        {
+            "id": 1,
+            "name": "Mr Ajayi Reuben Opeyemi",
+            "role": "ADMIN",
+            "email": "reu4god@gmail.com",
+            "staff_number": "STF4704",
+            "subjects": ["Computer Studies"]
+        },
+        {
+            "id": 2,
+            "name": "Mrs Ajayi Tosin Omotunde",
+            "role": "Propietress",
+            "email": "",
+            "staff_number": "STF6982",
+            "subjects": []
+        },
+        {
+            "id": 3,
+            "name": "Mrs Bankole Temilade",
+            "role": "Supervisor",
+            "email": "",
+            "staff_number": "STF2960",
+            "subjects": ["NUMBER WORK", "CRS", "Food and Nutrition", "Handwritten", "Creative Arts", "Quantitative Reasoning", "Nursery Science", "Social Studies", "Verbal Reasoning", "Health Habit", "Civic Education", "Social Habit", "LETTER WORK", "Nusery Rhymes"]
+        },
+        {
+            "id": 4,
+            "name": "Mrs Adedigba Esther",
+            "role": "H.O.D & Class Teacher",
+            "email": "",
+            "staff_number": "STF1226",
+            "subjects": ["Mathematics", "Prevocational Studies", "Quantitative Reasoning", "Verbal Reasoning", "Vocational Education", "English Language"]
+        },
+        {
+            "id": 5,
+            "name": "Mrs Adekunle Grace",
+            "role": "Class Teacher",
+            "email": "",
+            "staff_number": "STF2502",
+            "subjects": ["Mathematics", "English Language", "Creative Arts", "Quantitative Reasoning", "Verbal Reasoning", "Religion and national Values"]
+        },
+        {
+            "id": 6,
+            "name": "Mrs Faremi Adurayemi",
+            "role": "Class Teacher",
+            "email": "",
+            "staff_number": "STF2118",
+            "subjects": ["Mathematics", "English Language", "CRS", "Creative Arts", "Quantitative Reasoning", "Verbal Reasoning", "Vocational Education", "Handwritten", "Religion and national Values"]
+        },
+        {
+            "id": 7,
+            "name": "Miss Salami Modupeola",
+            "role": "Class Teacher",
+            "email": "",
+            "staff_number": "STF5814",
+            "subjects": ["Mathematics", "English Language", "Creative Arts", "BST", "Handwritten", "Quantitative Reasoning", "Verbal Reasoning"]
+        },
+        {
+            "id": 8,
+            "name": "Mrs Gbolagade Bolanle",
+            "role": "Class Teacher",
+            "email": "",
+            "staff_number": "STF3007",
+            "subjects": ["Mathematics", "English Language", "Social Studies", "Vocational Education", "Verbal Reasoning", "Creative Arts", "Prevocational Studies", "Quantitative Reasoning", "Religion and national Values", "CRS", "BST", "Handwritten"]
+        },
+        {
+            "id": 9,
+            "name": "Mr Rilwan LOGIC",
+            "role": "Instructor",
+            "email": "",
+            "staff_number": "STF1373",
+            "subjects": ["Coding and Robotics"]
+        },
+        {
+            "id": 10,
+            "name": "Mr Lawson Abraham",
+            "role": "Music Grade classes",
+            "email": "",
+            "staff_number": "STF9638",
+            "subjects": ["Music"]
+        },
+        {
+            "id": 11,
+            "name": "Mrs Ademosun Bisola",
+            "role": "Class Teacher",
+            "email": "",
+            "staff_number": "STF5332",
+            "subjects": ["NUMBER WORK", "CRS", "Food and Nutrition", "Handwritten", "Creative Arts", "Quantitative Reasoning", "Nursery Science", "Social Habit", "LETTER WORK", "Nusery Rhymes", "Civic Education", "Health Habit", "Verbal Reasoning"]
+        },
+        {
+            "id": 12,
+            "name": "Mrs Ajayi Oluwaseun",
+            "role": "Phonics Teacher",
+            "email": "",
+            "staff_number": "STF3890",
+            "subjects": ["Phonics"]
+        },
+        {
+            "id": 13,
+            "name": "Mrs Ebuoluwa Elisbeth",
+            "role": "Class Teacher",
+            "email": "",
+            "staff_number": "STF3952",
+            "subjects": ["NUMBER WORK", "LETTER WORK", "Nusery Rhymes", "CRS", "Social Habit", "Creative Arts"]
+        },
+        {
+            "id": 14,
+            "name": "Mrs Joseph Dorcas",
+            "role": "Class Teacher",
+            "email": "",
+            "staff_number": "STF2761",
+            "subjects": ["NUMBER WORK", "LETTER WORK", "CRS", "Nursery Science", "Quantitative Reasoning", "Verbal Reasoning", "Social Habit", "Health Habit", "Handwritten", "Creative Arts"]
+        },
+        {
+            "id": 15,
+            "name": "Mrs Oladunjoye Mercy",
+            "role": "Assistant Class teacher",
+            "email": "",
+            "staff_number": "STF3456",
+            "subjects": ["NUMBER WORK", "LETTER WORK", "Health Habit", "Creative Arts", "Nursery Science", "Handwritten", "Food and Nutrition", "CRS"]
+        }
+    ],
+    "students": [],
+    "subjects": [
+        "Mathematics",
+        "English Language",
+        "Social Studies",
+        "Yoruba",
+        "CRS",
+        "Creative Arts",
+        "Computer Studies",
+        "Coding and Robotics",
+        "BST",
+        "Prevocational Studies",
+        "Vocational Education",
+        "Music",
+        "Religion and national Values",
+        "Quantitative Reasoning",
+        "Verbal Reasoning",
+        "LETTER WORK",
+        "NUMBER WORK",
+        "Nursery Science",
+        "Health Habit",
+        "Social Habit",
+        "Food and Nutrition",
+        "Phonics",
+        "Civic Education",
+        "Nusery Rhymes",
+        "Handwritten"
+    ],
+    "results": [],
+    "terms": [
+        "First Term",
+        "Second Term",
+        "Third Term"
+    ]
+}

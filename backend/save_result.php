@@ -71,7 +71,7 @@ try {
         "admissionNumber" => $admNo,
         "term" => $body["term"],
         "subject" => trim($body["subject"]),
-        "score" => String($body["score"]),
+        "score" => (string)$body["score"],
         "grade" => $body["grade"],
         "remarks" => trim($body["remarks"]),
         "date" => $body["date"]

@@ -154,7 +154,7 @@ function json_update(string $table, int $id, array $updates): void {
 }
 
 /** Delete a record by id – returns number of rows deleted (0 or 1) */
-function json_delete(string $table, int $id): int {
+function json_delete(string $table, $id): int {
     try {
         $db = load_json_db();
         if (!isset($db[$table])) {
@@ -162,7 +162,7 @@ function json_delete(string $table, int $id): int {
         }
         
         $originalCount = count($db[$table]);
-        $db[$table] = array_values(array_filter($db[$table], fn($row) => $row['id'] != $id));
+        $db[$table] = array_values(array_filter($db[$table], fn($row) => (string)($row['id'] ?? '') !== (string)$id));
         $deleted = $originalCount - count($db[$table]);
         save_json_db($db);
         return $deleted;

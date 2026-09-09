@@ -10,7 +10,15 @@ if ($_SERVER['REQUEST_METHOD'] !== 'GET') { http_response_code(405); echo json_e
 
 require_once __DIR__ . '/json_db.php';
 
-$terms = json_query('terms');
-
-echo json_encode(['terms' => $terms]);
+try {
+    $db = load_json_db();
+    if (!isset($db['terms'])) {
+        $db['terms'] = ["First Term", "Second Term", "Third Term"];
+        save_json_db($db);
+    }
+    echo json_encode(['terms' => $db['terms']]);
+} catch (Exception $e) {
+    http_response_code(500);
+    echo json_encode(['error' => 'Failed to fetch terms: ' . $e->getMessage()]);
+}
 ?>

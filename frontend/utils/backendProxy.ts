@@ -12,7 +12,7 @@ function decryptChallenge(cHex: string, aHex: string, bHex: string): string {
   return decrypted.toString('hex');
 }
 
-const BACKEND_BASE = 'https://backenddd-eduu.gt.tc';
+const BACKEND_BASE = 'https://backendforoureduu.iceiy.com';
 const USER_AGENT = 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36';
 
 let cachedCookie: string | null = null;
