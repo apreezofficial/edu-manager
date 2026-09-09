@@ -23,7 +23,7 @@ type Staff = {
   subjects?: string[]
 }
 
-const CLASS_LEVELS = ["Primary 1", "Primary 2", "Primary 3", "Primary 4", "Primary 5", "Primary 6"]
+const CLASS_LEVELS = ["Crèche/Reception", "Learning to Read", "Pre-School", "Grade 1", "Grade 2", "Grade 3", "Grade 4", "Grade 5"]
 const TERMS = ["First Term", "Second Term", "Third Term"]
 
 export default function StudentResultPage() {
@@ -36,7 +36,7 @@ export default function StudentResultPage() {
   const [saving, setSaving] = useState(false)
   const [form, setForm] = useState({
     student: "",
-    classLevel: "Primary 1",
+    classLevel: "Crèche/Reception",
     term: "First Term",
     subject: "",
     score: "",
@@ -127,7 +127,7 @@ export default function StudentResultPage() {
         setResults(Array.isArray(refreshed) ? refreshed : [])
         setForm({
           student: "",
-          classLevel: "Primary 1",
+          classLevel: "Crèche/Reception",
           term: "First Term",
           subject: staffSubjects.length > 0 ? staffSubjects[0] : (subjects.length > 0 ? subjects[0] : ""),
           score: "",

@@ -315,13 +315,11 @@ export default function AdmissionsPage() {
                             <option>Crèche/Reception (Ages 1–3)</option>
                             <option>Learning to Read (Ages 3–5)</option>
                             <option>Pre-School (Ages 5–7)</option>
-                            <option>Grade School (Ages 7–11)</option>
-                            <option>Primary 1</option>
-                            <option>Primary 2</option>
-                            <option>Primary 3</option>
-                            <option>Primary 4</option>
-                            <option>Primary 5</option>
-                            <option>Primary 6</option>
+                            <option>Grade 1</option>
+                            <option>Grade 2</option>
+                            <option>Grade 3</option>
+                            <option>Grade 4</option>
+                            <option>Grade 5</option>
                           </select>
                           {errors.programme && <span className="ad-field-err">{errors.programme}</span>}
                         </div>

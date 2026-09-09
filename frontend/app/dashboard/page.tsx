@@ -624,7 +624,7 @@ export default function DashboardPage() {
                                                         required
                                                     >
                                                         <option value="">Select a class...</option>
-                                                        {["Nursery 1", "Nursery 2", "Primary 1", "Primary 2", "Primary 3", "Primary 4", "Primary 5", "Primary 6"].map(c => (
+                                                        {["Crèche/Reception", "Learning to Read", "Pre-School", "Grade 1", "Grade 2", "Grade 3", "Grade 4", "Grade 5"].map(c => (
                                                             <option key={c} value={c}>{c}</option>
                                                         ))}
                                                     </select>

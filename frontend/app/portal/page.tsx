@@ -21,7 +21,7 @@ interface LoggedInStaff {
   subjects: string[]
 }
 
-const CLASS_LEVELS = ["Nursery 1", "Nursery 2", "Primary 1", "Primary 2", "Primary 3", "Primary 4", "Primary 5", "Primary 6"]
+const CLASS_LEVELS = ["Crèche/Reception", "Learning to Read", "Pre-School", "Grade 1", "Grade 2", "Grade 3", "Grade 4", "Grade 5"]
 const TERMS = ["First Term", "Second Term", "Third Term"]
 
 function getGrade(score: string): string {
@@ -320,7 +320,7 @@ function StaffPortal({ results, loading, subjects, onRefresh, onBack }: { result
   const [currentStaff, setCurrentStaff] = useState<LoggedInStaff | null>(null)
   const [tab, setTab] = useState<"view" | "log">("view")
   const [filter, setFilter] = useState({ search: "", classLevel: "", term: "", subject: "", grade: "" })
-  const [form, setForm] = useState({ student: "", admissionNumber: "", classLevel: "Primary 1", term: "First Term", subject: "", score: "", remarks: "" })
+  const [form, setForm] = useState({ student: "", admissionNumber: "", classLevel: "Crèche/Reception", term: "First Term", subject: "", score: "", remarks: "" })
   const [formErrors, setFormErrors] = useState<Partial<typeof form>>({})
   const [saving, setSaving] = useState(false)
   const [deleting, setDeleting] = useState(false)
@@ -440,7 +440,7 @@ function StaffPortal({ results, loading, subjects, onRefresh, onBack }: { result
       setForm({
         student: "",
         admissionNumber: "",
-        classLevel: "Primary 1",
+    classLevel: "Crèche/Reception",
         term: "First Term",
         subject: currentStaff && currentStaff.subjects.length > 0 ? currentStaff.subjects[0] : "",
         score: "",
